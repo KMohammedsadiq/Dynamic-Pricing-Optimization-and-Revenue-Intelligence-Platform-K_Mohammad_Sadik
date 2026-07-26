@@ -14,12 +14,16 @@ PricePilot AI utilizes two primary open-source/synthetic datasets commonly found
 
 ### 1. Retail Pricing Dataset
 - **Source**: Kaggle / Enterprise Data Warehouse Extracts
+- **Version**: v1.0
+- **Upload Date**: 2026-07-01
 - **Format**: `.csv` (Comma Separated Values)
 - **Size**: ~500,000+ records
 - **Description**: Contains historical snapshots of product base costs, competitor pricing scrapes, and the applied discount strategies over time.
 
 ### 2. E-commerce Sales Dataset
 - **Source**: Kaggle / Internal ERP (Enterprise Resource Planning) Systems
+- **Version**: v1.0
+- **Upload Date**: 2026-07-01
 - **Format**: `.csv`
 - **Size**: ~1,000,000+ records
 - **Description**: A transactional ledger detailing daily units sold, total revenue generated, inventory levels, and timestamped purchase events.
@@ -43,8 +47,8 @@ To train effective models, the datasets are merged on `Product ID` and `Date`. T
 - **Day of Week**: The day the sale occurred (Monday-Sunday).
 - **Month**: The month of the sale, crucial for macro-trends.
 - **Season**: Categorical value (Spring, Summer, Fall, Winter).
-- **Demand (Target Variable 1)**: The future units expected to be sold.
-- **Optimal Price (Target Variable 2)**: The theoretical price that yields the highest revenue.
+- **Demand (Target Variable 1)**: The future units expected to be sold. *Target variable for Prophet/LSTM.*
+- **Optimal Price (Target Variable 2)**: The theoretical price that yields the highest revenue. *Target variable for XGBoost.*
 
 ---
 
@@ -134,21 +138,25 @@ Not all features are used for every model. Selecting the right features prevents
 
 ## 10. Dataset Split
 
-To ensure the AI models can generalize to new data, the dataset is strictly split chronologically (because this is time-series data, random splitting causes data leakage).
+To ensure the AI models can generalize to new data, the dataset is strictly split chronologically. 
 
 - **Training Set (70%)**: The oldest data. Used to teach the model patterns.
 - **Validation Set (15%)**: Used during training to tune hyperparameters and prevent overfitting.
 - **Testing Set (15%)**: The most recent data. Used strictly at the end to evaluate the final accuracy of the model on unseen data.
+
+*Note: Random splitting is strictly avoided in time-series data because it introduces "data leakage", allowing the model to falsely learn from future information when predicting past events.*
 
 ---
 
 ## 11. Machine Learning Models
 
 ### XGBoost (Extreme Gradient Boosting)
+- **Target Variable**: `Optimal Price`
 - **Why**: The industry standard for tabular data. It handles non-linear relationships exceptionally well and is highly resistant to outliers.
 - **Used For**: **Price Prediction**. It easily calculates complex interactions between inventory, competitor prices, and seasonality to output an optimal price.
 
 ### Prophet
+- **Target Variable**: `Demand (Units Sold)`
 - **Why**: Developed by Meta (Facebook), it is designed specifically for time-series forecasting with strong seasonal effects and missing data.
 - **Used For**: **Demand Forecasting**. It excels at predicting future sales volumes based on historical dates and holiday flags.
 
@@ -157,6 +165,7 @@ To ensure the AI models can generalize to new data, the dataset is strictly spli
 - **Used For**: **Feature Importance**. Used during EDA to understand which features (e.g., price vs. promotion) impact revenue the most.
 
 ### LSTM (Long Short-Term Memory)
+- **Target Variable**: `Demand (Units Sold)`
 - **Why**: A Deep Learning Recurrent Neural Network (RNN) that remembers long-term dependencies.
 - **Used For**: Advanced **Demand Forecasting** for highly volatile products where Prophet may struggle. (Secondary/Future implementation).
 
