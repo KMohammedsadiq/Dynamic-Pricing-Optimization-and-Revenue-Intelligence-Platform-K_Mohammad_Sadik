@@ -28,11 +28,22 @@ flowchart TD
 
 ---
 
-## 3. Entity Relationship Diagram (ERD)
+## 3. Database Naming Convention
+
+To maintain a clean and professional standard, the database strictly adheres to the following conventions:
+- **Case**: `snake_case` for all tables and columns.
+- **Table Names**: Pluralized (e.g., `users`, `products`, `sales_history`).
+- **Primary Keys**: Always named exactly `id`.
+- **Foreign Keys**: Always explicitly named based on the referenced table (e.g., `product_id`, `role_id`).
+- **Timestamps**: `created_at` for insertion time, and `updated_at` for modification time.
+
+---
+
+## 4. Entity Relationship Diagram (ERD)
 
 ```mermaid
 erDiagram
-    USERS ||--o{ ROLES : has
+    ROLES ||--o{ USERS : has
     ROLES {
         int id PK
         string role_name
@@ -42,12 +53,16 @@ erDiagram
         string email
         string password_hash
         int role_id FK
+        date created_at
+        date updated_at
     }
 
     CATEGORIES ||--o{ PRODUCTS : contains
     CATEGORIES {
         int id PK
         string name
+        date created_at
+        date updated_at
     }
 
     PRODUCTS {
@@ -56,6 +71,8 @@ erDiagram
         string name
         float base_cost
         int category_id FK
+        date created_at
+        date updated_at
     }
 
     PRODUCTS ||--o{ PRODUCT_PRICE_HISTORY : logs
@@ -71,6 +88,7 @@ erDiagram
         int id PK
         int product_id FK
         int stock_level
+        date created_at
         date updated_at
     }
 
@@ -79,6 +97,7 @@ erDiagram
         int id PK
         int product_id FK
         int units_sold
+        float selling_price
         float total_revenue
         date sale_date
     }
@@ -90,6 +109,8 @@ erDiagram
         string competitor_name
         float competitor_price
         date scrape_date
+        date created_at
+        date updated_at
     }
 
     PRODUCTS ||--o{ PRICE_PREDICTIONS : generates
@@ -98,7 +119,8 @@ erDiagram
         int product_id FK
         float recommended_price
         float confidence_score
-        date prediction_date
+        string model_used
+        date created_at
     }
 
     PRODUCTS ||--o{ DEMAND_FORECASTS : forecasts
@@ -106,6 +128,8 @@ erDiagram
         int id PK
         int product_id FK
         int predicted_volume
+        int forecast_period
+        float confidence_score
         date forecast_date
     }
 
@@ -115,26 +139,36 @@ erDiagram
         int product_id FK
         float simulated_price
         float expected_revenue
+        float profit
+        float margin
+        date created_at
     }
     
     DATASETS ||--o{ ML_MODELS : trains
     DATASETS {
         int id PK
         string file_name
+        int record_count
+        string status
+        int uploaded_by FK
         date uploaded_at
     }
     
     ML_MODELS {
         int id PK
         string model_name
+        string model_type
         string version
+        float accuracy
+        float mae
+        float rmse
         int dataset_id FK
     }
 ```
 
 ---
 
-## 4. Table Design
+## 5. Table Design
 
 ### 1. Roles
 - **Purpose**: Defines access levels (Admin, Pricing Manager, Analyst).
@@ -144,20 +178,20 @@ erDiagram
 
 ### 2. Users
 - **Purpose**: Stores authenticated personnel.
-- **Columns**: `id` (INT), `email` (VARCHAR), `password_hash` (VARCHAR), `role_id` (INT), `created_at` (TIMESTAMP).
+- **Columns**: `id` (INT), `email` (VARCHAR), `password_hash` (VARCHAR), `role_id` (INT), `created_at` (TIMESTAMP), `updated_at` (TIMESTAMP).
 - **PK**: `id` | **FK**: `role_id` -> Roles(id)
 - **Constraints**: `email` is UNIQUE and NOT NULL.
-- **Defaults**: `created_at` = CURRENT_TIMESTAMP.
+- **Defaults**: `created_at` = CURRENT_TIMESTAMP, `updated_at` = CURRENT_TIMESTAMP.
 
 ### 3. Categories
 - **Purpose**: Groups products logically.
-- **Columns**: `id` (INT), `name` (VARCHAR).
+- **Columns**: `id` (INT), `name` (VARCHAR), `created_at` (TIMESTAMP), `updated_at` (TIMESTAMP).
 - **PK**: `id`
 - **Constraints**: `name` is UNIQUE.
 
 ### 4. Products
 - **Purpose**: The core catalog item.
-- **Columns**: `id` (INT), `sku` (VARCHAR), `name` (VARCHAR), `base_cost` (NUMERIC), `category_id` (INT), `is_active` (BOOLEAN).
+- **Columns**: `id` (INT), `sku` (VARCHAR), `name` (VARCHAR), `base_cost` (NUMERIC), `category_id` (INT), `is_active` (BOOLEAN), `created_at` (TIMESTAMP), `updated_at` (TIMESTAMP).
 - **PK**: `id` | **FK**: `category_id` -> Categories(id)
 - **Constraints**: `sku` is UNIQUE and NOT NULL. `base_cost` > 0.
 - **Defaults**: `is_active` = TRUE.
@@ -170,50 +204,53 @@ erDiagram
 
 ### 6. Inventory
 - **Purpose**: Real-time stock levels.
-- **Columns**: `id` (INT), `product_id` (INT), `stock_level` (INT), `updated_at` (TIMESTAMP).
+- **Columns**: `id` (INT), `product_id` (INT), `stock_level` (INT), `created_at` (TIMESTAMP), `updated_at` (TIMESTAMP).
 - **PK**: `id` | **FK**: `product_id` -> Products(id)
 - **Constraints**: `stock_level` >= 0.
 
 ### 7. Sales_History
 - **Purpose**: Daily aggregate of units sold.
-- **Columns**: `id` (INT), `product_id` (INT), `units_sold` (INT), `total_revenue` (NUMERIC), `sale_date` (DATE).
+- **Columns**: `id` (INT), `product_id` (INT), `units_sold` (INT), `selling_price` (NUMERIC), `total_revenue` (NUMERIC), `sale_date` (DATE).
 - **PK**: `id` | **FK**: `product_id` -> Products(id)
+- **Note**: Preserving `selling_price` is vital because `total_revenue` / `units_sold` might skew if prices changed mid-day.
 
 ### 8. Competitor_Prices
 - **Purpose**: Scraped external market data.
-- **Columns**: `id` (INT), `product_id` (INT), `competitor_name` (VARCHAR), `competitor_price` (NUMERIC), `scrape_date` (TIMESTAMP).
+- **Columns**: `id` (INT), `product_id` (INT), `competitor_name` (VARCHAR), `competitor_price` (NUMERIC), `scrape_date` (TIMESTAMP), `created_at` (TIMESTAMP), `updated_at` (TIMESTAMP).
 - **PK**: `id` | **FK**: `product_id` -> Products(id)
 
 ### 9. Price_Predictions
 - **Purpose**: Log of AI price recommendations.
-- **Columns**: `id` (INT), `product_id` (INT), `recommended_price` (NUMERIC), `confidence_score` (NUMERIC), `prediction_date` (TIMESTAMP).
+- **Columns**: `id` (INT), `product_id` (INT), `recommended_price` (NUMERIC), `confidence_score` (NUMERIC), `model_used` (VARCHAR), `created_at` (TIMESTAMP).
 - **PK**: `id` | **FK**: `product_id` -> Products(id)
 
 ### 10. Demand_Forecasts
 - **Purpose**: Log of future sales projections.
-- **Columns**: `id` (INT), `product_id` (INT), `predicted_volume` (INT), `forecast_date` (DATE).
+- **Columns**: `id` (INT), `product_id` (INT), `predicted_volume` (INT), `forecast_period` (INT), `confidence_score` (NUMERIC), `forecast_date` (DATE).
 - **PK**: `id` | **FK**: `product_id` -> Products(id)
+- **Note**: `forecast_period` represents the horizon (e.g., 30 for 30-days).
 
 ### 11. Revenue_Simulations
 - **Purpose**: Saved scenarios for profitability analysis.
-- **Columns**: `id` (INT), `product_id` (INT), `simulated_price` (NUMERIC), `expected_revenue` (NUMERIC), `created_at` (TIMESTAMP).
+- **Columns**: `id` (INT), `product_id` (INT), `simulated_price` (NUMERIC), `expected_revenue` (NUMERIC), `profit` (NUMERIC), `margin` (NUMERIC), `created_at` (TIMESTAMP).
 - **PK**: `id` | **FK**: `product_id` -> Products(id)
 
 ### 12. Datasets
 - **Purpose**: Tracks uploaded CSV files for ML training.
-- **Columns**: `id` (INT), `file_name` (VARCHAR), `uploaded_at` (TIMESTAMP).
-- **PK**: `id`
+- **Columns**: `id` (INT), `file_name` (VARCHAR), `record_count` (INT), `status` (VARCHAR), `uploaded_by` (INT), `uploaded_at` (TIMESTAMP).
+- **PK**: `id` | **FK**: `uploaded_by` -> Users(id)
 
 ### 13. ML_Models
 - **Purpose**: Registry of trained algorithms.
-- **Columns**: `id` (INT), `model_name` (VARCHAR), `version` (VARCHAR), `dataset_id` (INT).
+- **Columns**: `id` (INT), `model_name` (VARCHAR), `model_type` (VARCHAR), `version` (VARCHAR), `accuracy` (NUMERIC), `mae` (NUMERIC), `rmse` (NUMERIC), `dataset_id` (INT).
 - **PK**: `id` | **FK**: `dataset_id` -> Datasets(id)
+- **Note**: Tracks core evaluation metrics (`mae`, `rmse`) to objectively compare model drift over time.
 
 ---
 
-## 5. Relationship Explanation
+## 6. Relationship Explanation
 
-- **One-to-One**: (Rare in this schema). A theoretical example would be if `Inventory` was strictly one row per product, but we use a history log to track changes.
+- **One-to-One**: (Rare in this schema). A theoretical example would be if `Inventory` was strictly one row per product, but we use an audit log architecture.
 - **One-to-Many (1:N)**: This is the dominant relationship.
   - *One Category has Many Products*.
   - *One Product has Many Sales History records*. (Allows tracking sales over time).
@@ -224,7 +261,7 @@ erDiagram
 
 ---
 
-## 6. Database Constraints
+## 7. Database Constraints
 
 Strict constraints guarantee data integrity before data ever reaches the application logic:
 - **Primary Keys (PK)**: Every table has a unique, auto-incrementing `id` to ensure absolute row uniqueness.
@@ -236,18 +273,18 @@ Strict constraints guarantee data integrity before data ever reaches the applica
 
 ---
 
-## 7. Indexing Strategy
+## 8. Indexing Strategy
 
 To ensure queries return in milliseconds even with millions of rows, B-Tree indexes are applied to frequently searched columns:
 - **`email`**: Indexed for ultra-fast User Login lookups.
 - **`sku`**: Indexed because Product Searches in the dashboard heavily rely on it.
 - **`product_id` (Foreign Keys)**: All Foreign Keys are indexed. When fetching the "Price History" for a specific product, indexing `product_id` prevents full-table scans.
 - **`forecast_date` & `prediction_date`**: Indexed for fast time-series queries (e.g., "Get all forecasts for the next 30 days").
-- **`created_at`**: Indexed for chronological sorting in Analytics Dashboards.
+- **`created_at` & `updated_at`**: Indexed for chronological sorting in Analytics Dashboards.
 
 ---
 
-## 8. Database Normalization
+## 9. Database Normalization
 
 The schema adheres strictly to the Third Normal Form (3NF) to eliminate data redundancy.
 - **First Normal Form (1NF)**: All columns contain atomic values. There are no arrays or comma-separated lists stored in columns.
@@ -256,7 +293,7 @@ The schema adheres strictly to the Third Normal Form (3NF) to eliminate data red
 
 ---
 
-## 9. Data Flow
+## 10. Data Flow
 
 ```mermaid
 sequenceDiagram
@@ -287,7 +324,7 @@ sequenceDiagram
 
 ---
 
-## 10. Database Security
+## 11. Database Security
 
 - **Password Hashing**: Plain text passwords are never stored. Passwords are hashed using bcrypt before insertion.
 - **Role-Based Access**: Handled application-side, but the DB natively supports row-level security (RLS) if multi-tenancy is introduced later.
@@ -298,7 +335,7 @@ sequenceDiagram
 
 ---
 
-## 11. Future Improvements
+## 12. Future Improvements
 
 As the dataset grows (specifically tables like `Sales_History` and `Competitor_Prices`), the following enterprise enhancements should be considered:
 - **Table Partitioning**: Splitting the `Sales_History` table by year or month to speed up time-series queries.
