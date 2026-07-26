@@ -50,6 +50,7 @@ Because PricePilot AI relies heavily on machine learning (XGBoost, Prophet), off
 4. **Train Model**: The processed dataset is fed into algorithms to train the model.
 5. **Evaluate Model**: The model is scored (e.g., RMSE, MAE).
 6. **Deploy**: The trained model is saved (e.g., as a `.pkl` file) and loaded into the Prediction API.
+7. **Schedule Retraining**: The ML models are scheduled for weekly or monthly retraining to adapt to new market trends, after which the updated model is redeployed automatically.
 
 ```mermaid
 flowchart TD
@@ -62,13 +63,15 @@ flowchart TD
     G --> H[Evaluate Model]
     H --> I[(Save Model)]
     I --> J[Deploy to Prediction API]
+    J --> K[Schedule Retraining Weekly/Monthly]
+    K --> L[Deploy Updated Model]
 ```
 
 ---
 
-## 4. Product Management Workflow
+## 4. Product Management & Inventory Workflow
 
-**Step-by-Step Explanation:**
+**Step-by-Step Explanation (Product Management):**
 1. The Pricing Manager navigates to the Product Management module.
 2. The frontend fetches and displays the product list.
 3. The user adds or updates a product (e.g., new base cost).
@@ -76,6 +79,11 @@ flowchart TD
 5. The data is saved to the PostgreSQL database.
 6. **Crucially, the system also saves a snapshot to the `Price History` table** to track dynamic pricing changes over time.
 7. The product list refreshes.
+
+**Step-by-Step Explanation (Automated Inventory Update):**
+1. **Order Completed**: A customer completes a purchase through an external storefront integration.
+2. **Inventory Updated**: The system decrements the product's available stock in the database.
+3. **Forecast Dependency**: The Demand Forecasting and Price Prediction models immediately use this updated, real-time inventory data for future calculations.
 
 ```mermaid
 flowchart TD
@@ -89,6 +97,9 @@ flowchart TD
     H --> I[(Save Price History Record)]
     I --> J[Refresh Product List]
     J --> C
+    
+    A2[Order Completed] --> B2[(Inventory Updated in DB)]
+    B2 --> C2[Demand Forecast Uses Updated Inventory]
 ```
 
 ---
@@ -100,7 +111,7 @@ flowchart TD
 2. The backend retrieves a highly contextual set of data: **Historical Sales**, **Product Information**, **Current Inventory**, and **Competitor Prices**.
 3. The data undergoes real-time feature engineering.
 4. The Prediction Model (XGBoost) calculates the optimal recommended price.
-5. The prediction is saved to the database.
+5. The prediction is saved to the **Prediction History** table for audit trails and future user review.
 6. The result and confidence score are displayed to the user.
 
 ```mermaid
@@ -113,7 +124,7 @@ flowchart TD
     B1 & B2 & B3 & B4 --> C[Feature Engineering]
     C --> D{Prediction Model}
     D --> E[Generate Recommended Price]
-    E --> F[(Save Prediction)]
+    E --> F[(Save Prediction History)]
     F --> G[Display Results]
 ```
 
@@ -123,7 +134,7 @@ flowchart TD
 
 **Step-by-Step Explanation:**
 1. The Business Analyst selects a product and forecast period.
-2. The backend retrieves **Historical Sales**, **Seasonal Data**, **Holiday Indicators**, and **Inventory**.
+2. The backend retrieves **Historical Sales**, **Seasonal Data**, **Holiday Indicators**, and **Updated Inventory**.
 3. The data is fed into the Forecast Model (Prophet).
 4. The model outputs a Demand Forecast with a Confidence Score.
 5. The frontend renders this forecast as an interactive chart.
@@ -193,7 +204,8 @@ flowchart TD
 1. The user navigates to the Analytics Dashboard.
 2. The backend queries the database for strict KPIs.
 3. The system aggregates and formats: **Revenue, Profit, Demand, Predictions, Competitor Insights, Products, and Users**.
-4. The frontend renders these specific metrics into interactive charts and report tables.
+4. The frontend renders these specific metrics into interactive charts and report tables utilizing **real-time dashboard refresh** after the APIs return.
+5. The user can apply global date filters or leverage enterprise exporting tools to **Export PDF** or **Export Excel** for stakeholders.
 
 ```mermaid
 flowchart TD
@@ -205,7 +217,8 @@ flowchart TD
     B --> C5[Competitor Insights]
     B --> C6[Products]
     B --> C7[Users]
-    C1 & C2 & C3 & C4 & C5 & C6 & C7 --> D[Render Reports & Charts]
+    C1 & C2 & C3 & C4 & C5 & C6 & C7 --> D[Render Reports & Charts Real-Time]
+    D --> E[Export PDF / Excel]
 ```
 
 ---
@@ -240,7 +253,7 @@ flowchart TD
 
 ### Business Analyst
 - **After Login:** Passes role validation, lands on the dashboard to review total Revenue KPIs.
-- **Actions:** Spends time in the **Demand Forecasting** and **Revenue Optimization** modules running long-term simulations. Exports data from the **Analytics Dashboard** to build reports for executive stakeholders.
+- **Actions:** Spends time in the **Demand Forecasting** and **Revenue Optimization** modules running long-term simulations. Exports data from the **Analytics Dashboard** to build reports in Excel/PDF for executive stakeholders.
 
 ---
 
