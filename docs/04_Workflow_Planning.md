@@ -8,211 +8,264 @@ In **PricePilot AI**, workflows act as the connective tissue between the 3-tier 
 
 ---
 
-## 2. Authentication Workflow
+## 2. Authentication & Logout Workflow
 
-**Step-by-Step Explanation:**
-1. The user navigates to the login page and submits their email and password.
-2. The React frontend sends these credentials to the FastAPI backend.
-3. The backend validates the credentials against the hashed passwords in the PostgreSQL database.
-4. Upon successful validation, the backend generates a secure JSON Web Token (JWT) containing the user's Role (Admin, Pricing Manager, or Business Analyst).
-5. The frontend receives the JWT and stores it securely.
-6. The frontend decodes the token for Role-Based Access Control (RBAC) and redirects the user to the appropriate Dashboard view.
+**Step-by-Step Explanation (Login):**
+1. The user navigates to the login page and submits credentials.
+2. The React frontend sends these to the FastAPI backend.
+3. The backend validates the credentials against the database.
+4. Upon successful validation, the backend generates a JSON Web Token (JWT) containing the user's Role (Admin, Pricing Manager, or Business Analyst).
+5. The frontend receives the JWT, decodes it for Role-Based Access Control (RBAC), and redirects the user to the Dashboard.
+
+**Step-by-Step Explanation (Logout):**
+1. The user clicks "Logout".
+2. The frontend clears the JWT from local storage.
+3. The backend invalidates the token (optional via blocklist).
+4. The user is returned to the Login Page.
 
 ```mermaid
 flowchart TD
     A[User Submits Credentials] --> B[Frontend API Call]
     B --> C{Backend Validation}
-    C -->|Invalid| D[Return Error Message]
+    C -->|Invalid| D[Show Unauthorized Error]
     D --> A
     C -->|Valid| E[Generate JWT & Role]
-    E --> F[Store Token on Client]
-    F --> G[Redirect to Dashboard based on Role]
+    E --> F[Store Token & Role Validation]
+    F --> G[Dashboard]
+    
+    H[User Clicks Logout] --> I[Invalidate JWT Token]
+    I --> J[Return to Login Page]
 ```
 
 ---
 
-## 3. Product Management Workflow
+## 3. Dataset Loading & AI Model Training Workflow (Week 1-2 Core)
+
+Because PricePilot AI relies heavily on machine learning (XGBoost, Prophet), offline dataset loading and model training are critical prerequisite workflows.
 
 **Step-by-Step Explanation:**
-1. The Pricing Manager or Admin navigates to the Product Management module.
-2. The frontend requests the current product list from the backend, which retrieves it from the database and displays it in a data table.
-3. To add or update a product, the user fills out a form (e.g., Name, SKU, Base Cost, Stock).
-4. The frontend sends a POST/PUT request to the backend.
-5. The backend validates the input data (checking for duplicate SKUs or invalid negative costs).
-6. The data is saved to the PostgreSQL database.
-7. The backend returns a success response, and the frontend refreshes the product list.
+1. **Download Dataset**: Raw Retail Pricing and E-commerce Sales CSVs are downloaded.
+2. **Validate & Clean**: The backend validates the CSV structure, cleans the data, and handles any missing values (e.g., interpolating missing sales days).
+3. **Feature Engineering**: New predictive features are created (moving averages, holiday flags).
+4. **Train Model**: The processed dataset is fed into algorithms to train the model.
+5. **Evaluate Model**: The model is scored (e.g., RMSE, MAE).
+6. **Deploy**: The trained model is saved (e.g., as a `.pkl` file) and loaded into the Prediction API.
+
+```mermaid
+flowchart TD
+    A[Download Retail & E-commerce Datasets] --> B[Validate CSV Files]
+    B --> C[Data Cleaning]
+    C --> D[Handle Missing Values]
+    D --> E[Feature Engineering]
+    E --> F[(Store Processed Dataset)]
+    F --> G[Train ML Models]
+    G --> H[Evaluate Model]
+    H --> I[(Save Model)]
+    I --> J[Deploy to Prediction API]
+```
+
+---
+
+## 4. Product Management Workflow
+
+**Step-by-Step Explanation:**
+1. The Pricing Manager navigates to the Product Management module.
+2. The frontend fetches and displays the product list.
+3. The user adds or updates a product (e.g., new base cost).
+4. The backend validates the input data.
+5. The data is saved to the PostgreSQL database.
+6. **Crucially, the system also saves a snapshot to the `Price History` table** to track dynamic pricing changes over time.
+7. The product list refreshes.
 
 ```mermaid
 flowchart TD
     A[Navigate to Products] --> B[Fetch Product List]
     B --> C[Display Data Table]
     C --> D{User Action}
-    D -->|Add/Edit Product| E[Fill Product Form]
-    D -->|Delete Product| I[Confirm Deletion]
-    E --> F[Backend Validation]
-    F -->|Success| G[(Save to Database)]
-    F -->|Error| H[Show Validation Error]
-    I --> G
-    G --> J[Refresh Product List]
+    D -->|Add/Update Product| E[Fill Product Form]
+    E --> F{Backend Validation}
+    F -->|Error| G[Display Validation Error Message & Retry]
+    F -->|Success| H[(Save Product)]
+    H --> I[(Save Price History Record)]
+    I --> J[Refresh Product List]
     J --> C
 ```
 
 ---
 
-## 4. Price Prediction Workflow
+## 5. Price Prediction Workflow
 
 **Step-by-Step Explanation:**
-1. The Pricing Manager selects a specific product from the Prediction Module.
-2. The manager inputs any necessary parameters (e.g., date range, current inventory levels).
-3. The backend validates the request and retrieves historical sales data and base costs from the database.
-4. The backend sends the structured data to the Machine Learning Model (XGBoost).
-5. The ML Model processes the features and calculates the optimal recommended price and a confidence score.
-6. The prediction is saved to the database for audit trails.
-7. The result, including an AI explanation, is displayed to the user on the dashboard.
+1. The Pricing Manager selects a product to optimize.
+2. The backend retrieves a highly contextual set of data: **Historical Sales**, **Product Information**, **Current Inventory**, and **Competitor Prices**.
+3. The data undergoes real-time feature engineering.
+4. The Prediction Model (XGBoost) calculates the optimal recommended price.
+5. The prediction is saved to the database.
+6. The result and confidence score are displayed to the user.
 
 ```mermaid
 flowchart TD
-    A[Select Product] --> B[Input Parameters]
-    B --> C[Backend Validation]
-    C --> D[(Retrieve Historical Data)]
-    D --> E{ML Model Inference}
+    A[Select Product] --> B[(Retrieve Data)]
+    B --> B1[Historical Sales]
+    B --> B2[Product Information]
+    B --> B3[Inventory]
+    B --> B4[Competitor Prices]
+    B1 & B2 & B3 & B4 --> C[Feature Engineering]
+    C --> D{Prediction Model}
+    D --> E[Generate Recommended Price]
+    E --> F[(Save Prediction)]
+    F --> G[Display Results]
+```
+
+---
+
+## 6. Demand Forecasting Workflow
+
+**Step-by-Step Explanation:**
+1. The Business Analyst selects a product and forecast period.
+2. The backend retrieves **Historical Sales**, **Seasonal Data**, **Holiday Indicators**, and **Inventory**.
+3. The data is fed into the Forecast Model (Prophet).
+4. The model outputs a Demand Forecast with a Confidence Score.
+5. The frontend renders this forecast as an interactive chart.
+
+```mermaid
+flowchart TD
+    A[Select Product & Period] --> B[(Retrieve Data)]
+    B --> B1[Historical Sales]
+    B --> B2[Seasonal Data]
+    B --> B3[Holiday Indicators]
+    B --> B4[Inventory]
+    B1 & B2 & B3 & B4 --> C{Forecast Model}
+    C --> D[Generate Demand Forecast]
+    D --> E[Calculate Confidence Score]
+    E --> F[Dashboard Visualization]
+```
+
+---
+
+## 7. Competitor Analysis Workflow
+
+**Step-by-Step Explanation:**
+1. The Pricing Manager selects a product.
+2. The system retrieves competitor prices via **External API integrations** or **Web Scraping bots**, supplementing it with cached **Database** records.
+3. The system compares internal vs. market prices.
+4. A pricing opportunity is identified.
+5. An AI recommendation is generated and displayed on the dashboard.
+
+```mermaid
+flowchart TD
+    A[Select Product] --> B{Data Source}
+    B -->|Cached| C[(Database)]
+    B -->|Live| D[External API / Web Scraping]
+    C & D --> E[Compare Market Prices]
+    E --> F[Identify Pricing Opportunity]
+    F --> G[Generate Recommendation]
+    G --> H[Display on Dashboard]
+```
+
+---
+
+## 8. Revenue Optimization Workflow
+
+**Step-by-Step Explanation:**
+1. The Analyst initiates a revenue optimization scenario.
+2. The system combines the **Current Price**, the **Demand Forecast**, and the **Profit Margin**.
+3. A simulation is run across various price points (elasticity testing).
+4. The simulation outputs a Recommended Price that maximizes the Expected Revenue.
+5. The results are displayed for review.
+
+```mermaid
+flowchart TD
+    A[Initiate Simulation] --> B[Current Price]
+    A --> C[Demand Forecast]
+    A --> D[Profit Margin]
+    B & C & D --> E{Revenue Simulation}
     E --> F[Generate Recommended Price]
-    F --> G[(Save Prediction to DB)]
-    G --> H[Display Results & AI Explanation]
+    F --> G[Calculate Expected Revenue]
+    G --> H[Render Simulation Dashboard]
 ```
 
 ---
 
-## 5. Demand Forecasting Workflow
+## 9. Analytics Dashboard Workflow
 
 **Step-by-Step Explanation:**
-1. The Business Analyst selects a product group or specific SKU.
-2. They select the forecast horizon (e.g., Next 30 Days).
-3. The backend retrieves historical sales volume data from the database.
-4. The data is fed into the Forecasting Model (Prophet/LSTM).
-5. The model generates a time-series demand prediction with upper and lower confidence bounds.
-6. The frontend renders the forecast as an interactive line chart on the dashboard.
+1. The user navigates to the Analytics Dashboard.
+2. The backend queries the database for strict KPIs.
+3. The system aggregates and formats: **Revenue, Profit, Demand, Predictions, Competitor Insights, Products, and Users**.
+4. The frontend renders these specific metrics into interactive charts and report tables.
 
 ```mermaid
 flowchart TD
-    A[Select Product] --> B[Select Forecast Period]
-    B --> C[(Retrieve Historical Sales)]
-    C --> D{Time-Series Model}
-    D --> E[Generate Demand Prediction]
-    E --> F[Calculate Confidence Score]
-    F --> G[Render Forecast Graph]
+    A[Load Dashboard] --> B[(Query DB for KPIs)]
+    B --> C1[Revenue]
+    B --> C2[Profit]
+    B --> C3[Demand]
+    B --> C4[Predictions]
+    B --> C5[Competitor Insights]
+    B --> C6[Products]
+    B --> C7[Users]
+    C1 & C2 & C3 & C4 & C5 & C6 & C7 --> D[Render Reports & Charts]
 ```
 
 ---
 
-## 6. Competitor Analysis Workflow
+## 10. General Error Handling Workflow
 
-**Step-by-Step Explanation:**
-1. The Pricing Manager accesses the Competitor Analysis module and selects a product.
-2. The backend retrieves the latest competitor pricing data (either from an external API, a web scraper, or a database feed).
-3. The system compares the internal base price against the market average.
-4. The system identifies if the product is priced too high (losing volume) or too low (losing margin).
-5. The AI generates a pricing recommendation to match, beat, or ignore the competitor.
-6. The results are displayed in a comparison table.
+Enterprise systems must fail gracefully. Throughout all modules, error handling follows this standard flow to ensure the system never crashes ungracefully.
 
 ```mermaid
 flowchart TD
-    A[Select Product] --> B[(Retrieve Competitor Prices)]
-    B --> C[Compare Internal vs Market Price]
-    C --> D{Identify Pricing Opportunity}
-    D --> E[Generate AI Recommendation]
-    E --> F[Display Competitor Table & Delta]
+    A[User Submits Action] --> B{Backend Processing}
+    B -->|Validation Error| C[Return 400 Status]
+    C --> D[Display Specific Error Message]
+    D --> E[User Retries Action]
+    
+    B -->|Server Error| F[Return 500 Status]
+    F --> G[Log Error to System]
+    G --> H[Display 'Something went wrong' UI]
 ```
 
 ---
 
-## 7. Revenue Optimization Workflow
-
-**Step-by-Step Explanation:**
-1. The Business Analyst triggers a revenue simulation.
-2. The system retrieves historical sales, current margins, and the demand curve.
-3. The backend runs a profitability analysis across various simulated price points (e.g., -5% to +5%).
-4. The ML engine calculates the projected revenue for each simulated price point based on price elasticity.
-5. The system recommends the exact price point that yields the highest total revenue.
-6. The frontend displays the revenue simulation chart.
-
-```mermaid
-flowchart TD
-    A[Trigger Simulation] --> B[(Retrieve Sales & Margin Data)]
-    B --> C[Analyze Price Elasticity]
-    C --> D{Revenue Simulation Model}
-    D --> E[Calculate Projected Profitability]
-    E --> F[Generate AI Strategy Recommendation]
-    F --> G[Render Revenue Area Chart]
-```
-
----
-
-## 8. Analytics Dashboard Workflow
-
-**Step-by-Step Explanation:**
-1. The user logs in and navigates to the Analytics Dashboard.
-2. The React frontend asynchronously dispatches multiple API requests to the FastAPI backend.
-3. The backend queries the database for Revenue KPIs, Product Performance, and recent Predictions.
-4. The backend aggregates and formats this data into JSON.
-5. The frontend receives the JSON payloads and maps them to Recharts components (Line charts, Bar charts, KPI cards).
-6. The user can apply global date filters, which re-triggers the data fetching cycle.
-
-```mermaid
-flowchart TD
-    A[Load Dashboard] --> B[Dispatch API Requests]
-    B --> C[(Query DB for KPIs & Reports)]
-    C --> D[Aggregate & Format Data]
-    D --> E[Return JSON Payload]
-    E --> F[Render KPI Cards & Charts]
-    F --> G{User Applies Filter?}
-    G -->|Yes| B
-    G -->|No| H[Wait for Interaction]
-```
-
----
-
-## 9. User Workflow
+## 11. User Workflow
 
 ### Admin
-- **After Login:** Lands on the main dashboard.
+- **After Login:** Passes role validation, lands on the main dashboard.
 - **Actions:** Can view all analytics, but primarily focuses on navigating to the **User Management** module to add new analysts, reset passwords, or assign roles. They can also view system health logs.
 
 ### Pricing Manager
-- **After Login:** Lands on the dashboard, immediately checking the **Recent Predictions** alerts.
-- **Actions:** Navigates to **Competitor Analysis** to see market threats. Moves to **Price Prediction** to run AI models on specific products. Reviews the AI explanations and officially applies new prices to the catalog.
+- **After Login:** Passes role validation, lands on the dashboard, checking **Recent Predictions** alerts.
+- **Actions:** Navigates to **Competitor Analysis** to see market threats. Moves to **Price Prediction** to run AI models on specific products. Reviews the AI explanations and officially applies new prices to the catalog, generating new Price History records.
 
 ### Business Analyst
-- **After Login:** Lands on the dashboard to review total Revenue KPIs.
+- **After Login:** Passes role validation, lands on the dashboard to review total Revenue KPIs.
 - **Actions:** Spends time in the **Demand Forecasting** and **Revenue Optimization** modules running long-term simulations. Exports data from the **Analytics Dashboard** to build reports for executive stakeholders.
 
 ---
 
-## 10. End-to-End System Workflow
+## 12. End-to-End System Workflow
 
 ```mermaid
 flowchart TD
-    A([User Login]) --> B[Frontend Application]
-    B --> C{Backend Router}
-    C --> D[(PostgreSQL DB)]
+    A([User Submits Credentials]) --> B{Authentication}
+    B -->|Fail| Z[Show Error]
+    B -->|Success| C{Role Validation}
+    C --> D[Frontend Dashboard]
     
-    B --> E[Dashboard Overview]
-    E --> F[Product Management]
-    E --> G[Analytics Dashboard]
+    D --> E[Product Management]
+    D --> F[Analytics Dashboard]
+    D --> G[AI Workflows]
     
-    F --> H[Update Catalog]
-    H --> C
+    E --> H[Update Catalog & Price History]
+    H --> I[(PostgreSQL DB)]
     
-    E --> I[AI Workflows]
-    I --> J[Competitor Analysis]
-    I --> K[Price Prediction]
-    I --> L[Demand Forecast]
-    I --> M[Revenue Optimization]
+    G --> J[Competitor Analysis]
+    G --> K[Price Prediction]
+    G --> L[Demand Forecast]
+    G --> M[Revenue Optimization]
     
-    J --> N{ML Engine}
-    K --> N
-    L --> N
-    M --> N
+    J & K & L & M --> N{ML Engine}
     
     N --> O[Generate Intelligence]
     O --> P[(Save to DB)]
@@ -222,8 +275,8 @@ flowchart TD
 
 ---
 
-## 11. Business Process Summary
+## 13. Business Process Summary
 
-The workflows defined above orchestrate a seamless loop of intelligence. It begins with the **Product Management** and **Competitor Analysis** workflows establishing the baseline reality of the business. 
+The workflows defined above orchestrate a seamless loop of intelligence. It begins with the **Dataset Loading & Training** and **Product Management** workflows establishing the baseline reality of the business. 
 
-The core value is generated when the Pricing Manager utilizes the **Price Prediction** and **Demand Forecasting** workflows, invoking the AI models to find hidden efficiencies in the market. Finally, the **Revenue Optimization** and **Analytics Dashboard** workflows allow Business Analysts to step back, simulate macro-level strategies, and measure the overarching financial success of the platform. Together, these workflows transform raw e-commerce data into actionable, automated revenue growth.
+The core value is generated when the Pricing Manager utilizes the **Price Prediction** and **Demand Forecasting** workflows, invoking the AI models (fed by rich inputs like inventory, seasonality, and competitor scraping) to find hidden efficiencies in the market. Finally, the **Revenue Optimization** and **Analytics Dashboard** workflows allow Business Analysts to step back, simulate macro-level strategies, and measure overarching KPIs like Revenue and Profit. Together, these workflows transform raw e-commerce data into actionable, automated revenue growth.
