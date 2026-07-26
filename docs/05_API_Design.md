@@ -7,24 +7,34 @@ REST (Representational State Transfer) APIs are a standard architectural style u
 In **PricePilot AI**, we use REST APIs to strictly decouple the React frontend from the FastAPI backend. 
 - **Communication Flow**: The React frontend captures user interactions and sends asynchronous HTTP requests (via Axios) containing JSON payloads to the FastAPI backend. FastAPI processes the request, communicates with PostgreSQL or the ML engine, and returns a structured JSON response.
 - **Naming Conventions**: All endpoints follow standard RESTful noun-based conventions (e.g., `/api/v1/products` instead of `/api/v1/getProducts`). Plural nouns are used for resource collections.
+- **Interactive Documentation**: Because we use FastAPI, automatic OpenAPI documentation is generated and available out-of-the-box:
+  - **Swagger UI**: `/api/docs` (Interactive testing)
+  - **ReDoc**: `/api/redoc` (Clean reading)
+
+### Health Check API
+Crucial for Docker and Kubernetes deployments to monitor container health.
+- **Endpoint**: `GET /api/v1/health`
+- **Method**: `GET`
+- **Auth Required**: No.
+- **Response**:
+  ```json
+  {
+    "status": "healthy",
+    "version": "1.0.0"
+  }
+  ```
 
 ---
 
 ## 2. Authentication APIs
 
-### Register User
-- **Endpoint**: `/api/v1/auth/register`
-- **Method**: `POST`
-- **Purpose**: Creates a new user account.
-- **Auth Required**: No (or Admin only depending on business rules; assuming open registration for this doc).
-- **Request Body**: `{"username": "jdoe", "email": "jdoe@example.com", "password": "securePass123"}`
-- **Success Response (201 Created)**: `{"id": 1, "username": "jdoe", "email": "jdoe@example.com", "role": "pending"}`
+*Note: As an enterprise system, self-registration is disabled. New users must be provisioned by an Administrator via the User Management APIs.*
 
 ### Login User
 - **Endpoint**: `/api/v1/auth/login`
 - **Method**: `POST`
 - **Purpose**: Authenticates a user and returns a JWT.
-- **Auth Required**: No.
+- **Auth Required**: No. (Rate-limited to prevent brute-force attacks).
 - **Request Body**: `{"email": "jdoe@example.com", "password": "securePass123"}`
 - **Success Response (200 OK)**: `{"access_token": "eyJhbG...", "token_type": "bearer", "role": "Pricing Manager"}`
 
@@ -55,14 +65,13 @@ In **PricePilot AI**, we use REST APIs to strictly decouple the React frontend f
 
 These APIs are restricted to the **Admin** role for managing platform access.
 
-- **Get All Users**: `GET /api/v1/users` (Returns array of user objects)
+- **Get All Users**: `GET /api/v1/users?page=1&limit=20` (Supports pagination)
 - **Get User By ID**: `GET /api/v1/users/{id}` (Returns single user object)
-- **Create User**: `POST /api/v1/users` (Payload: user details and role)
+- **Create User**: `POST /api/v1/users` (Payload: user details and role. e.g. "Business Analyst")
 - **Update User**: `PUT /api/v1/users/{id}` (Payload: updated user details)
-- **Delete User**: `DELETE /api/v1/users/{id}` (Returns 204 No Content)
+- **Delete User**: `DELETE /api/v1/users/{id}` (Soft Delete: Marks user as inactive)
 - **Assign Role**: `PATCH /api/v1/users/{id}/role` 
   - **Payload**: `{"role": "Business Analyst"}`
-  - **Success**: `200 OK`
 
 ---
 
@@ -70,9 +79,9 @@ These APIs are restricted to the **Admin** role for managing platform access.
 
 Accessible by **Admin** and **Pricing Manager**.
 
-### Get Products
-- **Endpoint**: `GET /api/v1/products`
-- **Response**: `[{"id": 1, "sku": "IP-15", "name": "iPhone 15", "base_cost": 700.00, "stock": 50}]`
+### Get Products (With Pagination, Filtering & Sorting)
+- **Endpoint**: `GET /api/v1/products?page=1&limit=20&category=Electronics&stock=low&search=iPhone&sort=price&order=desc`
+- **Response**: `{"total": 140, "page": 1, "data": [{"id": 1, "sku": "IP-15", "name": "iPhone 15", "base_cost": 700.00, "stock": 10}]}`
 
 ### Get Product Details
 - **Endpoint**: `GET /api/v1/products/{id}`
@@ -84,8 +93,9 @@ Accessible by **Admin** and **Pricing Manager**.
 ### Update Product
 - **Endpoint**: `PUT /api/v1/products/{id}`
 
-### Delete Product
+### Soft Delete Product
 - **Endpoint**: `DELETE /api/v1/products/{id}`
+- **Purpose**: Soft deletes the product (updates DB status to 'Inactive' to preserve historical sales data).
 
 ### Update Product Price
 - **Endpoint**: `PATCH /api/v1/products/{id}/price`
@@ -108,14 +118,16 @@ Accessible by **Pricing Manager**.
   ```json
   {
     "product_id": 1,
+    "current_price": 1399.00,
     "recommended_price": 1449.00,
+    "expected_revenue": 520000.00,
     "confidence_score": 0.94,
     "explanation": "High historical demand approaching. Competitor average increased by 2%."
   }
   ```
 
 ### Get Prediction History
-- **Endpoint**: `GET /api/v1/predictions/history`
+- **Endpoint**: `GET /api/v1/predictions/history?page=1&limit=20` (Supports pagination)
 
 ### Get Prediction Details
 - **Endpoint**: `GET /api/v1/predictions/{id}`
@@ -142,7 +154,7 @@ Accessible by **Business Analyst** and **Pricing Manager**.
   ```
 
 ### Get Forecast History
-- **Endpoint**: `GET /api/v1/forecasts/history`
+- **Endpoint**: `GET /api/v1/forecasts/history?page=1&limit=20`
 
 ### Get Forecast Details
 - **Endpoint**: `GET /api/v1/forecasts/{id}`
@@ -193,6 +205,10 @@ Accessible by **Admin** and **Business Analyst**.
 - **Demand Reports**: `GET /api/v1/analytics/demand/trends`
 - **Prediction Reports**: `GET /api/v1/analytics/predictions/accuracy`
 
+### Analytics Export (Business Intelligence)
+- **Export PDF**: `GET /api/v1/analytics/export/pdf?timeframe=month`
+- **Export Excel**: `GET /api/v1/analytics/export/excel?timeframe=month`
+
 ---
 
 ## 10. Dataset & AI Model APIs
@@ -201,6 +217,7 @@ Restricted to **Admin** only. Used for offline batch processing and ML maintenan
 
 - **Upload Dataset**: `POST /api/v1/ml/datasets/upload` (Form-data: CSV file)
 - **Validate Dataset**: `POST /api/v1/ml/datasets/{id}/validate`
+- **Get All Models**: `GET /api/v1/ml/models` (Returns array of models e.g., `[{"id":1, "name":"XGBoost", "version":"1.0"}]`)
 - **Train Model**: `POST /api/v1/ml/models/train` (Payload: `{"model_type": "xgboost", "dataset_id": 1}`)
 - **Evaluate Model**: `GET /api/v1/ml/models/{id}/evaluate`
 - **Load Trained Model**: `POST /api/v1/ml/models/{id}/load`
@@ -210,8 +227,9 @@ Restricted to **Admin** only. Used for offline batch processing and ML maintenan
 
 ## 11. API Security
 
-- **JWT Authentication**: All requests (except login/register) must include an `Authorization: Bearer <token>` header.
+- **JWT Authentication**: All requests (except login/health) must include an `Authorization: Bearer <token>` header.
 - **Role-Based Access Control (RBAC)**: FastAPI dependencies check the role embedded in the JWT before executing the endpoint logic.
+- **Rate Limiting**: Authentication APIs (like `/login`) are heavily rate-limited to prevent brute-force and dictionary attacks.
 - **Authorization Flow**: If a user attempts to access an endpoint outside their role scope, the system aborts the request.
 - **Protected Routes**: Defined globally using FastAPI's `Depends(get_current_user)` utility.
 - **Input Validation**: Pydantic schemas strictly validate all incoming request bodies (e.g., ensuring `price` is a positive float).
@@ -269,6 +287,7 @@ All API errors return a standardized JSON format containing a `detail` message.
 | `404 Not Found` | Missing Resource | The requested URL or database ID does not exist. |
 | `409 Conflict` | Data Conflict | The request violates a database constraint (e.g., duplicate email). |
 | `422 Unprocessable` | Validation Error | Pydantic failed to validate the request payload schema. |
+| `429 Too Many Requests`| Rate Limited | The user exceeded the allowed request limits (e.g., failed logins). |
 | `500 Internal Server Error`| Server Error | The Python backend crashed due to an unhandled exception. |
 
 ---
@@ -277,6 +296,7 @@ All API errors return a standardized JSON format containing a `detail` message.
 
 | Module | Endpoint | Method | Auth Required | Allowed Roles |
 |--------|----------|--------|---------------|---------------|
+| System | `/api/v1/health` | GET | No | All |
 | Auth | `/api/v1/auth/login` | POST | No | All |
 | Auth | `/api/v1/auth/me` | GET | Yes | All |
 | Users | `/api/v1/users` | GET | Yes | Admin |
@@ -286,5 +306,5 @@ All API errors return a standardized JSON format containing a `detail` message.
 | Forecasting | `/api/v1/forecasts/demand` | POST | Yes | Pricing Mgr, Analyst |
 | Competitors | `/api/v1/competitors/prices` | GET | Yes | Pricing Mgr, Analyst |
 | Revenue | `/api/v1/revenue/simulate` | POST | Yes | Admin, Analyst |
-| Analytics | `/api/v1/analytics/kpis` | GET | Yes | Admin, Analyst |
-| AI Models | `/api/v1/ml/models/train` | POST | Yes | Admin |
+| Analytics | `/api/v1/analytics/export/pdf` | GET | Yes | Admin, Analyst |
+| AI Models | `/api/v1/ml/models` | GET | Yes | Admin |
