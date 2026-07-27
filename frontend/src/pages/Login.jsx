@@ -1,38 +1,39 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Input from "../components/Input";
 import Button from "../components/Button";
+import { authService } from "../services/authService";
 
 export default function Login() {
-  // 1. Controlled Component State
+  const navigate = useNavigate();
+  
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
   const [errors, setErrors] = useState({});
-  const [loading, setLoading] = useState(false); // For future API integration
+  const [loading, setLoading] = useState(false);
+  const [apiError, setApiError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
-  // 2. Form State Management (Input Binding)
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    setErrors((prev) => ({ ...prev, [name]: "" })); // Clear error when typing
+    setErrors((prev) => ({ ...prev, [name]: "" }));
+    setApiError("");
   };
 
-  // 3. Client-Side Validation
   const validateForm = () => {
     const newErrors = {};
-    
-    // Email Validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    
     if (!formData.email) {
       newErrors.email = "Email is required.";
     } else if (!emailRegex.test(formData.email)) {
       newErrors.email = "Please enter a valid email address.";
     }
 
-    // Password Validation
     if (!formData.password) {
       newErrors.password = "Password is required.";
     }
@@ -41,20 +42,45 @@ export default function Login() {
     return Object.keys(newErrors).length === 0;
   };
 
-  // 4. Handle Submission
-  const handleSubmit = (e) => {
-    e.preventDefault(); // Prevent page reload
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setApiError("");
+    setSuccessMessage("");
     
     if (validateForm()) {
-      // SUCCESS! DO NOT CALL BACKEND YET!
-      console.log("SUCCESS! Login form is valid.");
-      console.log("Login Credentials:", {
-        email: formData.email,
-        password: formData.password,
-      });
-      // In Day 12, we will call Axios here.
-    } else {
-      console.log("Login form has validation errors.");
+      setLoading(true);
+      try {
+        const result = await authService.loginUser({
+          email: formData.email,
+          password: formData.password
+        });
+        
+        // Handle Success
+        setSuccessMessage(`Welcome back, ${result.full_name}!`);
+        
+        // Wait 1 second so the user sees the success message, then redirect
+        setTimeout(() => {
+          navigate("/dashboard");
+        }, 1000);
+        
+      } catch (err) {
+        // Handle Errors
+        if (err.response) {
+          if (err.response.status === 401) {
+            setApiError("Invalid email or password.");
+          } else if (err.response.status === 403) {
+            setApiError("Account is inactive. Please contact support.");
+          } else if (err.response.status === 422) {
+            setApiError("Validation error. Please check your inputs.");
+          } else {
+            setApiError("Server error. Please try again later.");
+          }
+        } else {
+          setApiError("Network error. Could not reach the server.");
+        }
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -66,6 +92,10 @@ export default function Login() {
           <h1 className="text-3xl font-bold text-gray-800">Welcome Back</h1>
           <p className="text-gray-500 mt-2">Log in to PricePilot AI.</p>
         </div>
+
+        {/* Global Notifications */}
+        {apiError && <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-lg text-sm">{apiError}</div>}
+        {successMessage && <div className="mb-4 p-3 bg-green-100 text-green-700 rounded-lg text-sm">{successMessage}</div>}
 
         <form onSubmit={handleSubmit}>
           

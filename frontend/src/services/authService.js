@@ -9,11 +9,15 @@ export const authService = {
   
   // Registration API Call
   registerUser: async (userData) => {
-    // We expect userData to contain: { full_name, email, password }
-    // POST request to http://localhost:8000/api/v1/auth/register
     const response = await api.post("/auth/register", userData);
-    
-    // Axios automatically parses the JSON response and stores it in response.data
+    return response.data;
+  },
+  
+  // Login API Call
+  loginUser: async (credentials) => {
+    // We expect credentials to contain: { email, password }
+    // POST request to http://localhost:8000/api/v1/auth/login
+    const response = await api.post("/auth/login", credentials);
     return response.data;
   }
   
