@@ -17,3 +17,8 @@ class UserResponse(BaseModel):
     
     class Config:
         from_attributes = True  # Tells Pydantic to read data even if it is not a dict (like a SQLAlchemy model)
+
+# Login Schema: Specific to login requests
+class UserLogin(BaseModel):
+    email: EmailStr = Field(..., description="The registered email address")
+    password: str = Field(..., description="The user's raw password")

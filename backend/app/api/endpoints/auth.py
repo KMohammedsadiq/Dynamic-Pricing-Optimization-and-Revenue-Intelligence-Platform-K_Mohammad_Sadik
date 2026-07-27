@@ -26,3 +26,33 @@ def register_user(user: UserCreate, db: Session = Depends(get_db)):
     # 3. Return the newly created user (FastAPI automatically strips out the password_hash 
     # because our UserResponse schema does not include it)
     return new_user
+
+from app.schemas.user import UserLogin
+from app.core.security import verify_password
+
+@router.post("/login", response_model=UserResponse)
+def login_user(user_credentials: UserLogin, db: Session = Depends(get_db)):
+    """
+    Authenticate a user and return their profile information.
+    """
+    # 1. Search the database for the provided email
+    db_user = get_user_by_email(db, email=user_credentials.email)
+    
+    # 2. Handle User Not Found or Incorrect Password
+    # Security Note: We return the exact same generic error for both scenarios.
+    # If we said "User not found", hackers could use our API to guess valid emails.
+    if not db_user or not verify_password(user_credentials.password, db_user.password_hash):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid email or password"
+        )
+        
+    # 3. Check if the account is active (not banned/soft-deleted)
+    if not db_user.is_active:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Account has been deactivated"
+        )
+        
+    # 4. Return the authenticated user's information
+    return db_user
