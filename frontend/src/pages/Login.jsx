@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Input from "../components/Input";
 import Button from "../components/Button";
 import { authService } from "../services/authService";
+import { setAuthData } from "../utils/auth";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -55,8 +56,11 @@ export default function Login() {
           password: formData.password
         });
         
+        // --- NEW: Save the token and user to localStorage! ---
+        setAuthData(result.access_token, result.user);
+        
         // Handle Success
-        setSuccessMessage(`Welcome back, ${result.full_name}!`);
+        setSuccessMessage(`Welcome back, ${result.user.full_name}!`);
         
         // Wait 1 second so the user sees the success message, then redirect
         setTimeout(() => {

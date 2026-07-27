@@ -11,4 +11,26 @@ const api = axios.create({
   timeout: 10000, 
 });
 
+import { getToken } from "../utils/auth";
+
+// Axios Request Interceptor
+// This runs before EVERY single request sent by Axios.
+api.interceptors.request.use(
+  (config) => {
+    // 1. Get the token from localStorage
+    const token = getToken();
+    
+    // 2. If the token exists, attach it to the HTTP Authorization header
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    
+    return config;
+  },
+  (error) => {
+    // Do something with request error
+    return Promise.reject(error);
+  }
+);
+
 export default api;
