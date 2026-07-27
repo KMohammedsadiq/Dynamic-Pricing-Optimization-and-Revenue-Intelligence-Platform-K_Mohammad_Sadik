@@ -22,3 +22,9 @@ class UserResponse(BaseModel):
 class UserLogin(BaseModel):
     email: EmailStr = Field(..., description="The registered email address")
     password: str = Field(..., description="The user's raw password")
+
+# Token Response Schema: What is returned on successful login
+class TokenResponse(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+    user: UserResponse

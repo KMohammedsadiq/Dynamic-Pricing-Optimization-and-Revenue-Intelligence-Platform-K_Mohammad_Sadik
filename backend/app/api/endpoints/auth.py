@@ -27,32 +27,37 @@ def register_user(user: UserCreate, db: Session = Depends(get_db)):
     # because our UserResponse schema does not include it)
     return new_user
 
-from app.schemas.user import UserLogin
-from app.core.security import verify_password
+from app.schemas.user import UserLogin, TokenResponse
+from app.core.security import verify_password, create_access_token
 
-@router.post("/login", response_model=UserResponse)
+@router.post("/login", response_model=TokenResponse)
 def login_user(user_credentials: UserLogin, db: Session = Depends(get_db)):
     """
-    Authenticate a user and return their profile information.
+    Authenticate a user and return a JWT access token along with their profile.
     """
     # 1. Search the database for the provided email
     db_user = get_user_by_email(db, email=user_credentials.email)
     
     # 2. Handle User Not Found or Incorrect Password
-    # Security Note: We return the exact same generic error for both scenarios.
-    # If we said "User not found", hackers could use our API to guess valid emails.
     if not db_user or not verify_password(user_credentials.password, db_user.password_hash):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid email or password"
         )
         
-    # 3. Check if the account is active (not banned/soft-deleted)
+    # 3. Check if the account is active
     if not db_user.is_active:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Account has been deactivated"
         )
         
-    # 4. Return the authenticated user's information
-    return db_user
+    # 4. Generate the JWT Access Token
+    access_token = create_access_token(data={"sub": db_user.email})
+        
+    # 5. Return the TokenResponse schema
+    return {
+        "access_token": access_token,
+        "token_type": "bearer",
+        "user": db_user
+    }
