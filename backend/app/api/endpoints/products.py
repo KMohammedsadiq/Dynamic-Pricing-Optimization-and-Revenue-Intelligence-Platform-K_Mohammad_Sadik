@@ -9,6 +9,7 @@ import math
 from app.db.session import get_db
 from app.api.deps import require_admin
 from app.models.product import Product
+from app.models.dataset_upload import DatasetUpload
 
 router = APIRouter()
 
@@ -68,32 +69,58 @@ async def upload_dataset(
     # 4. Drop negative prices
     df = df[df["unit_price"] >= 0]
 
-    # 5. Handle duplicate records (Assuming product_id + month_year should be unique for this dataset)
-    # The mentor requested "Duplicate product_id" validation. We will drop exact duplicate rows.
+    # 5. Handle duplicate records
     df = df.drop_duplicates()
 
     # 6. Final Cleaning: Replace remaining NaN with None for SQLAlchemy compatibility
     df = df.where(pd.notnull(df), None)
 
-    # Convert DataFrame to a list of dictionaries for bulk insert
     records = df.to_dict(orient="records")
     rows_imported = len(records)
     rows_skipped = total_rows_initial - rows_imported
+
+    upload_status = "Success"
 
     if rows_imported > 0:
         try:
             # High-performance bulk insert
             db.execute(insert(Product), records)
+            
+            # Record Audit Log
+            audit_log = DatasetUpload(
+                file_name=file.filename,
+                uploaded_by=admin_user["id"],
+                total_rows=total_rows_initial,
+                imported_rows=rows_imported,
+                skipped_rows=rows_skipped,
+                status="Success"
+            )
+            db.add(audit_log)
+            
             db.commit()
         except Exception as e:
             db.rollback()
+            upload_status = "Failed"
+            
+            # Record Failed Audit Log
+            failed_log = DatasetUpload(
+                file_name=file.filename,
+                uploaded_by=admin_user["id"],
+                total_rows=total_rows_initial,
+                imported_rows=0,
+                skipped_rows=total_rows_initial,
+                status="Failed: " + str(e)[:100]
+            )
+            db.add(failed_log)
+            db.commit()
+            
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail=f"Database insertion failed: {str(e)}"
             )
 
     return {
-        "status": "success",
+        "status": upload_status,
         "file_name": file.filename,
         "total_rows": total_rows_initial,
         "rows_imported": rows_imported,
