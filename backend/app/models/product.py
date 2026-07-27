@@ -9,7 +9,7 @@ class Product(Base):
     id = Column(Integer, primary_key=True, index=True)
     
     # Core Product Info
-    product_id = Column(String, unique=True, index=True, nullable=False)
+    product_id = Column(String, index=True, nullable=False)
     product_category_name = Column(String, index=True)
     month_year = Column(String(50))
     

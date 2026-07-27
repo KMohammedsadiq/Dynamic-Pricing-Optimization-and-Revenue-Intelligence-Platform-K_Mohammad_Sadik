@@ -1,5 +1,5 @@
 import { Outlet, Link } from "react-router-dom";
-import { LayoutDashboard, Package, TrendingUp, BarChart3, LineChart, LogOut } from "lucide-react";
+import { LayoutDashboard, Package, TrendingUp, BarChart3, LineChart, LogOut, UploadCloud } from "lucide-react";
 import { logout, getUser } from "../utils/auth";
 
 export default function MainLayout() {
@@ -18,6 +18,14 @@ export default function MainLayout() {
             <LayoutDashboard size={20} />
             <span>Dashboard</span>
           </Link>
+
+          {/* Admin Only Route */}
+          {user?.role_name === "Admin" && (
+            <Link to="/upload" className="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 rounded-lg transition-colors text-blue-300">
+              <UploadCloud size={20} />
+              <span>Upload Data</span>
+            </Link>
+          )}
 
           {/* Pricing Managers and Admins see Products and Predictions */}
           {(user?.role_name === "Admin" || user?.role_name === "Pricing Manager") && (

@@ -3,6 +3,7 @@ import MainLayout from "./layouts/MainLayout";
 
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Upload from "./pages/Upload";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -28,6 +29,11 @@ export default function App() {
             {/* Dashboard is accessible to all logged-in users */}
             <Route index element={<Navigate to="/dashboard" replace />} />
             <Route path="dashboard" element={<Dashboard />} />
+            
+            {/* Admin Only Routes */}
+            <Route element={<ProtectedRoute allowedRoles={["Admin"]} />}>
+              <Route path="upload" element={<Upload />} />
+            </Route>
             
             {/* Pricing Manager and Admin Routes */}
             <Route element={<ProtectedRoute allowedRoles={["Admin", "Pricing Manager"]} />}>
