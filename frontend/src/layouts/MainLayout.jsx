@@ -1,7 +1,10 @@
 import { Outlet, Link } from "react-router-dom";
-import { LayoutDashboard, Package, TrendingUp, BarChart3, LineChart } from "lucide-react";
+import { LayoutDashboard, Package, TrendingUp, BarChart3, LineChart, LogOut } from "lucide-react";
+import { logout, getUser } from "../utils/auth";
 
 export default function MainLayout() {
+  const user = getUser();
+  
   return (
     <div className="min-h-screen bg-gray-50 flex">
       {/* Sidebar */}
@@ -31,6 +34,17 @@ export default function MainLayout() {
             <span>Analytics</span>
           </Link>
         </nav>
+        
+        {/* Logout Button */}
+        <div className="p-4 border-t border-slate-700">
+          <button 
+            onClick={logout}
+            className="flex items-center gap-3 px-4 py-3 w-full text-left text-red-400 hover:bg-slate-800 hover:text-red-300 rounded-lg transition-colors"
+          >
+            <LogOut size={20} />
+            <span>Log Out</span>
+          </button>
+        </div>
       </aside>
 
       {/* Main Content Area */}
@@ -39,8 +53,10 @@ export default function MainLayout() {
         <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-8">
           <h2 className="text-lg font-semibold text-gray-700">Enterprise Dashboard</h2>
           <div className="flex items-center gap-4">
-            <span className="text-sm text-gray-500">Admin User</span>
-            <div className="w-8 h-8 bg-blue-500 rounded-full"></div>
+            <span className="text-sm text-gray-700 font-medium">{user ? user.full_name : "Admin User"}</span>
+            <div className="w-8 h-8 bg-blue-500 rounded-full text-white flex items-center justify-center font-bold">
+              {user ? user.full_name.charAt(0).toUpperCase() : "A"}
+            </div>
           </div>
         </header>
 
