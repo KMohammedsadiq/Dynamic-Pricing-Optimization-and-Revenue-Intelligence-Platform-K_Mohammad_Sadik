@@ -53,7 +53,13 @@ def login_user(user_credentials: UserLogin, db: Session = Depends(get_db)):
         )
         
     # 4. Generate the JWT Access Token
-    access_token = create_access_token(data={"sub": db_user.email})
+    # We include user_id and role directly inside the token to avoid database lookups on every request!
+    role_name = db_user.role.name if db_user.role else "User"
+    access_token = create_access_token(data={
+        "sub": db_user.email,
+        "user_id": db_user.id,
+        "role": role_name
+    })
         
     # 5. Return the TokenResponse schema
     return {

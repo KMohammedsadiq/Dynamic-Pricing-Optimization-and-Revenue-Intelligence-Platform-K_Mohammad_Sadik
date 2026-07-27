@@ -13,26 +13,39 @@ export default function MainLayout() {
           <h1 className="text-2xl font-bold text-blue-400">PricePilot AI</h1>
         </div>
         <nav className="flex-1 px-4 space-y-2">
+          {/* Everyone sees the Dashboard */}
           <Link to="/dashboard" className="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 rounded-lg transition-colors">
             <LayoutDashboard size={20} />
             <span>Dashboard</span>
           </Link>
-          <Link to="/products" className="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 rounded-lg transition-colors">
-            <Package size={20} />
-            <span>Products</span>
-          </Link>
-          <Link to="/predictions" className="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 rounded-lg transition-colors">
-            <TrendingUp size={20} />
-            <span>Predictions</span>
-          </Link>
-          <Link to="/forecasts" className="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 rounded-lg transition-colors">
-            <LineChart size={20} />
-            <span>Forecasts</span>
-          </Link>
-          <Link to="/analytics" className="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 rounded-lg transition-colors">
-            <BarChart3 size={20} />
-            <span>Analytics</span>
-          </Link>
+
+          {/* Pricing Managers and Admins see Products and Predictions */}
+          {(user?.role_name === "Admin" || user?.role_name === "Pricing Manager") && (
+            <>
+              <Link to="/products" className="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 rounded-lg transition-colors">
+                <Package size={20} />
+                <span>Products</span>
+              </Link>
+              <Link to="/predictions" className="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 rounded-lg transition-colors">
+                <TrendingUp size={20} />
+                <span>Predictions</span>
+              </Link>
+            </>
+          )}
+
+          {/* Business Analysts and Admins see Forecasts and Analytics */}
+          {(user?.role_name === "Admin" || user?.role_name === "Business Analyst") && (
+            <>
+              <Link to="/forecasts" className="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 rounded-lg transition-colors">
+                <LineChart size={20} />
+                <span>Forecasts</span>
+              </Link>
+              <Link to="/analytics" className="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 rounded-lg transition-colors">
+                <BarChart3 size={20} />
+                <span>Analytics</span>
+              </Link>
+            </>
+          )}
         </nav>
         
         {/* Logout Button */}

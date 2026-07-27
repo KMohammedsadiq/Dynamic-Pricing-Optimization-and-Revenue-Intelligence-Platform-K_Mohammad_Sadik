@@ -28,3 +28,7 @@ class User(Base):
 
     # Relationship back to Role
     role = relationship("Role", back_populates="users")
+
+    @property
+    def role_name(self):
+        return self.role.name if self.role else "User"

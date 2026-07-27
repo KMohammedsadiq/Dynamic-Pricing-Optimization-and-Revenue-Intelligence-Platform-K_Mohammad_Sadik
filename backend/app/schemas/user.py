@@ -14,6 +14,7 @@ class UserResponse(BaseModel):
     email: str
     is_active: bool
     created_at: datetime
+    role_name: str | None = None
     
     class Config:
         from_attributes = True  # Tells Pydantic to read data even if it is not a dict (like a SQLAlchemy model)

@@ -25,12 +25,21 @@ export default function App() {
         <Route element={<ProtectedRoute />}>
           {/* Layout Wrapper */}
           <Route path="/" element={<MainLayout />}>
+            {/* Dashboard is accessible to all logged-in users */}
             <Route index element={<Navigate to="/dashboard" replace />} />
             <Route path="dashboard" element={<Dashboard />} />
-            <Route path="products" element={<Products />} />
-            <Route path="predictions" element={<Predictions />} />
-            <Route path="forecasts" element={<Forecasts />} />
-            <Route path="analytics" element={<Analytics />} />
+            
+            {/* Pricing Manager and Admin Routes */}
+            <Route element={<ProtectedRoute allowedRoles={["Admin", "Pricing Manager"]} />}>
+              <Route path="products" element={<Products />} />
+              <Route path="predictions" element={<Predictions />} />
+            </Route>
+            
+            {/* Business Analyst and Admin Routes */}
+            <Route element={<ProtectedRoute allowedRoles={["Admin", "Business Analyst"]} />}>
+              <Route path="forecasts" element={<Forecasts />} />
+              <Route path="analytics" element={<Analytics />} />
+            </Route>
           </Route>
         </Route>
       </Routes>
