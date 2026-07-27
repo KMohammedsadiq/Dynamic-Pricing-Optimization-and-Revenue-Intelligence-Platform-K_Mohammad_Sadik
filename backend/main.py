@@ -41,3 +41,12 @@ async def test_db_connection(db: Session = Depends(get_db)):
             return {"status": "success", "message": "Successfully connected to PostgreSQL database!"}
     except Exception as e:
         return {"status": "error", "message": f"Database connection failed: {str(e)}"}
+
+# Import and include the Authentication router
+from app.api.endpoints import auth
+
+app.include_router(
+    auth.router,
+    prefix="/api/v1/auth",
+    tags=["Authentication"]
+)
