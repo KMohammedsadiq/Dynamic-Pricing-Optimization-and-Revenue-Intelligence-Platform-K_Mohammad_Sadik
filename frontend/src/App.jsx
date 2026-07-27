@@ -1,10 +1,10 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import MainLayout from "./layouts/MainLayout";
 
+import Login from "./pages/Login";
 import Register from "./pages/Register";
 
 // Placeholder Page Components
-const Login = () => <div className="p-10 text-center"><h1 className="text-3xl font-bold">Login Page</h1><p className="mt-4 text-gray-600">Authentication comes later.</p></div>;
 const Dashboard = () => <div><h1 className="text-2xl font-bold mb-4">Dashboard Overview</h1><div className="h-64 bg-white rounded-lg border border-gray-200 flex items-center justify-center">KPI Widgets Placeholder</div></div>;
 const Products = () => <div><h1 className="text-2xl font-bold mb-4">Product Management</h1><div className="h-64 bg-white rounded-lg border border-gray-200 flex items-center justify-center">Data Table Placeholder</div></div>;
 const Predictions = () => <div><h1 className="text-2xl font-bold mb-4">Price Predictions</h1><div className="h-64 bg-white rounded-lg border border-gray-200 flex items-center justify-center">AI Results Placeholder</div></div>;
