@@ -89,7 +89,7 @@ async def upload_dataset(
             # Record Audit Log
             audit_log = DatasetUpload(
                 file_name=file.filename,
-                uploaded_by=admin_user["id"],
+                uploaded_by=admin_user["user_id"],
                 total_rows=total_rows_initial,
                 imported_rows=rows_imported,
                 skipped_rows=rows_skipped,
@@ -103,16 +103,19 @@ async def upload_dataset(
             upload_status = "Failed"
             
             # Record Failed Audit Log
-            failed_log = DatasetUpload(
-                file_name=file.filename,
-                uploaded_by=admin_user["id"],
-                total_rows=total_rows_initial,
-                imported_rows=0,
-                skipped_rows=total_rows_initial,
-                status="Failed: " + str(e)[:100]
-            )
-            db.add(failed_log)
-            db.commit()
+            try:
+                failed_log = DatasetUpload(
+                    file_name=file.filename,
+                    uploaded_by=admin_user["user_id"],
+                    total_rows=total_rows_initial,
+                    imported_rows=0,
+                    skipped_rows=total_rows_initial,
+                    status="Failed: " + str(e)[:100]
+                )
+                db.add(failed_log)
+                db.commit()
+            except Exception as inner_e:
+                db.rollback()
             
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -127,3 +130,48 @@ async def upload_dataset(
         "rows_skipped": rows_skipped,
         "upload_time": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     }
+
+from typing import Optional
+from app.crud.crud_product import get_products, get_product
+from app.api.deps import get_current_user_token
+
+@router.get("")
+def read_products(
+    skip: int = 0,
+    limit: int = 20,
+    search: Optional[str] = None,
+    category: Optional[str] = None,
+    sort_by: Optional[str] = None,
+    sort_desc: bool = False,
+    db: Session = Depends(get_db),
+    current_user: dict = Depends(get_current_user_token)
+):
+    """
+    Retrieve products with support for pagination, search, filter, and sorting.
+    """
+    products, total_count = get_products(
+        db, skip=skip, limit=limit, search=search, 
+        category=category, sort_by=sort_by, sort_desc=sort_desc
+    )
+    
+    # Return both the paginated data and the total count for the frontend pager
+    return {
+        "data": products,
+        "total_count": total_count,
+        "page": (skip // limit) + 1,
+        "total_pages": math.ceil(total_count / limit) if limit > 0 else 1
+    }
+
+@router.get("/{id}")
+def read_product(
+    id: int, 
+    db: Session = Depends(get_db),
+    current_user: dict = Depends(get_current_user_token)
+):
+    """
+    Retrieve a specific product by its internal database ID.
+    """
+    product = get_product(db, product_id=id)
+    if not product:
+        raise HTTPException(status_code=404, detail="Product not found")
+    return product
