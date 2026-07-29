@@ -59,110 +59,109 @@ export default function ProductDetails() {
           <div>
             <div className="flex items-center gap-3 mb-2">
               <span className="px-3 py-1 bg-blue-100 text-blue-700 text-xs font-bold uppercase tracking-wider rounded-full">
-                {product.product_category_name?.replace("_", " ")}
+                {(product.category || "").replace("_", " ")}
               </span>
               <span className="flex items-center gap-1 text-yellow-600 text-sm font-bold bg-yellow-50 px-2 py-1 rounded">
-                {product.product_score} ★
+                Demand: {product.demand_index}
               </span>
+              {product.brand && (
+                <span className="flex items-center gap-1 text-gray-600 text-sm font-bold bg-gray-200 px-2 py-1 rounded">
+                  {product.brand}
+                </span>
+              )}
             </div>
             <h1 className="text-3xl font-mono font-bold text-slate-800">{product.product_id}</h1>
           </div>
           <div className="text-right">
-            <p className="text-sm text-gray-500 mb-1">Unit Price</p>
-            <p className="text-4xl font-bold text-green-600">${parseFloat(product.unit_price).toFixed(2)}</p>
+            <p className="text-sm text-gray-500 mb-1">Current Price</p>
+            <p className="text-4xl font-bold text-green-600">
+              ${parseFloat(product.current_price || 0).toFixed(2)}
+            </p>
           </div>
         </div>
 
         {/* Content Grid */}
         <div className="p-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           
-          {/* Sales & Demand */}
+          {/* Sales & Inventory */}
           <div className="space-y-4">
             <h3 className="text-lg font-bold flex items-center gap-2 text-slate-700 border-b pb-2">
               <Package className="w-5 h-5 text-blue-500" />
-              Sales & Demand
+              Sales & Inventory
             </h3>
             <div className="space-y-3">
               <div className="flex justify-between">
-                <span className="text-gray-500">Units Sold (Qty)</span>
-                <span className="font-medium text-gray-900">{product.qty}</span>
+                <span className="text-gray-500">Units Sold</span>
+                <span className="font-medium text-gray-900">{product.units_sold}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-500">Total Revenue</span>
-                <span className="font-medium text-gray-900">${parseFloat(product.total_price).toFixed(2)}</span>
+                <span className="font-medium text-gray-900">${parseFloat(product.revenue || 0).toFixed(2)}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-500">Customers</span>
-                <span className="font-medium text-gray-900">{product.customers}</span>
+                <span className="text-gray-500">Inventory Level</span>
+                <span className="font-medium text-gray-900">{product.inventory_level}</span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-gray-500">Volume</span>
-                <span className="font-medium text-gray-900">{product.volume} cm³</span>
+              <div className="flex justify-between items-center">
+                <span className="text-gray-500">Stockout Flag</span>
+                <span className={`px-2 py-0.5 rounded text-xs font-bold ${product.stockout_flag ? "bg-red-100 text-red-700" : "bg-green-100 text-green-700"}`}>
+                  {product.stockout_flag ? "YES" : "NO"}
+                </span>
               </div>
             </div>
           </div>
 
-          {/* Pricing & Competitors */}
+          {/* Pricing & Promotions */}
           <div className="space-y-4">
             <h3 className="text-lg font-bold flex items-center gap-2 text-slate-700 border-b pb-2">
               <DollarSign className="w-5 h-5 text-green-500" />
-              Pricing Landscape
+              Pricing & Promotions
             </h3>
             <div className="space-y-3">
               <div className="flex justify-between">
-                <span className="text-gray-500">Freight Price</span>
-                <span className="font-medium text-gray-900">${parseFloat(product.freight_price).toFixed(2)}</span>
+                <span className="text-gray-500">Base Price</span>
+                <span className="font-medium text-gray-900">${parseFloat(product.base_price || 0).toFixed(2)}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-500">Lag Price (Previous)</span>
-                <span className="font-medium text-gray-900">${parseFloat(product.lag_price || 0).toFixed(2)}</span>
+                <span className="text-gray-500">Discount %</span>
+                <span className="font-medium text-gray-900">{product.discount_pct}%</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-500">Competitor 1</span>
-                <span className="font-medium text-gray-900">${parseFloat(product.comp_1 || 0).toFixed(2)}</span>
+                <span className="text-gray-500">Promotion Type</span>
+                <span className="font-medium text-gray-900">{product.promotion_type || "None"}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-500">Competitor 2</span>
-                <span className="font-medium text-gray-900">${parseFloat(product.comp_2 || 0).toFixed(2)}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-500">Competitor 3</span>
-                <span className="font-medium text-gray-900">${parseFloat(product.comp_3 || 0).toFixed(2)}</span>
+                <span className="text-gray-500">Price Change %</span>
+                <span className="font-medium text-gray-900">{product.price_change_pct}%</span>
               </div>
             </div>
           </div>
 
-          {/* Time & Seasonality */}
+          {/* Market Context */}
           <div className="space-y-4">
             <h3 className="text-lg font-bold flex items-center gap-2 text-slate-700 border-b pb-2">
-              <Calendar className="w-5 h-5 text-purple-500" />
-              Seasonality Flags
+              <BarChart2 className="w-5 h-5 text-purple-500" />
+              Market Context
             </h3>
             <div className="space-y-3">
               <div className="flex justify-between">
-                <span className="text-gray-500">Month / Year</span>
-                <span className="font-medium text-gray-900">{product.month} / {product.year}</span>
+                <span className="text-gray-500">Region</span>
+                <span className="font-medium text-gray-900">{product.region}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-500">Month-Year Code</span>
-                <span className="font-medium text-gray-900">{product.month_year}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-gray-500">Weekend Sale?</span>
-                <span className={`px-2 py-0.5 rounded text-xs font-bold ${product.weekend ? "bg-red-100 text-red-700" : "bg-gray-100 text-gray-600"}`}>
-                  {product.weekend ? "YES" : "NO"}
-                </span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-gray-500">Holiday Sale?</span>
-                <span className={`px-2 py-0.5 rounded text-xs font-bold ${product.holiday ? "bg-red-100 text-red-700" : "bg-gray-100 text-gray-600"}`}>
-                  {product.holiday ? "YES" : "NO"}
-                </span>
+                <span className="text-gray-500">Channel</span>
+                <span className="font-medium text-gray-900">{product.channel}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-500">Seasonality Index (s)</span>
-                <span className="font-medium text-gray-900">{product.s}</span>
+                <span className="text-gray-500">Season</span>
+                <span className="font-medium text-gray-900 capitalize">{product.season}</span>
               </div>
+              {product.date && (
+                <div className="flex justify-between">
+                  <span className="text-gray-500">Date Recorded</span>
+                  <span className="font-medium text-gray-900">{new Date(product.date).toLocaleDateString()}</span>
+                </div>
+              )}
             </div>
           </div>
 

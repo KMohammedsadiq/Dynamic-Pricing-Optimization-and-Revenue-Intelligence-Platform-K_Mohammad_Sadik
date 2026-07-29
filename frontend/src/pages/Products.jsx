@@ -18,7 +18,7 @@ export default function Products() {
   const [searchInput, setSearchInput] = useState(""); // For debouncing or explicit search
   
   const [category, setCategory] = useState("");
-  const [categories, setCategories] = useState(["bed_bath_table", "health_beauty", "sports_leisure", "furniture_decor", "computers_accessories", "watches_gifts"]);
+  const [categories, setCategories] = useState(["Accessories", "Apparel", "Beauty", "Electronics", "Groceries", "Home", "Shoes", "Sports"]);
   
   const [sortBy, setSortBy] = useState(null);
   const [sortDesc, setSortDesc] = useState(false);
@@ -136,21 +136,25 @@ export default function Products() {
               <tr className="bg-gray-100 text-gray-600 text-sm font-semibold uppercase tracking-wider">
                 <th className="p-4 border-b">Product ID</th>
                 <th className="p-4 border-b">Category</th>
-                <th className="p-4 border-b cursor-pointer hover:bg-gray-200" onClick={() => handleSort("unit_price")}>
-                  Unit Price <SortIcon column="unit_price" />
+                <th className="p-4 border-b">Brand</th>
+                <th className="p-4 border-b cursor-pointer hover:bg-gray-200" onClick={() => handleSort("base_price")}>
+                  Base Price <SortIcon column="base_price" />
                 </th>
-                <th className="p-4 border-b cursor-pointer hover:bg-gray-200" onClick={() => handleSort("qty")}>
-                  Quantity <SortIcon column="qty" />
+                <th className="p-4 border-b cursor-pointer hover:bg-gray-200" onClick={() => handleSort("current_price")}>
+                  Current Price <SortIcon column="current_price" />
                 </th>
-                <th className="p-4 border-b cursor-pointer hover:bg-gray-200" onClick={() => handleSort("total_price")}>
-                  Total Price <SortIcon column="total_price" />
+                <th className="p-4 border-b cursor-pointer hover:bg-gray-200" onClick={() => handleSort("units_sold")}>
+                  Units Sold <SortIcon column="units_sold" />
                 </th>
-                <th className="p-4 border-b cursor-pointer hover:bg-gray-200" onClick={() => handleSort("product_score")}>
-                  Score <SortIcon column="product_score" />
+                <th className="p-4 border-b cursor-pointer hover:bg-gray-200" onClick={() => handleSort("revenue")}>
+                  Revenue <SortIcon column="revenue" />
                 </th>
-                <th className="p-4 border-b text-gray-400">Comp 1</th>
-                <th className="p-4 border-b text-gray-400">Comp 2</th>
-                <th className="p-4 border-b text-gray-400">Comp 3</th>
+                <th className="p-4 border-b cursor-pointer hover:bg-gray-200" onClick={() => handleSort("inventory_level")}>
+                  Inventory <SortIcon column="inventory_level" />
+                </th>
+                <th className="p-4 border-b cursor-pointer hover:bg-gray-200" onClick={() => handleSort("demand_index")}>
+                  Demand Index <SortIcon column="demand_index" />
+                </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
@@ -163,23 +167,25 @@ export default function Products() {
                   <td colSpan="9" className="p-8 text-center text-gray-500">No products found.</td>
                 </tr>
               ) : (
-                products.map((product) => (
-                  <tr 
-                    key={product.id} 
-                    onClick={() => handleRowClick(product.id)}
-                    className="hover:bg-blue-50 cursor-pointer transition-colors"
-                  >
-                    <td className="p-4 text-sm font-mono text-gray-700 truncate max-w-[120px]" title={product.product_id}>{product.product_id}</td>
-                    <td className="p-4 text-sm text-gray-700 capitalize">{product.product_category_name?.replace("_", " ")}</td>
-                    <td className="p-4 text-sm font-medium text-gray-900">${parseFloat(product.unit_price).toFixed(2)}</td>
-                    <td className="p-4 text-sm text-gray-700">{product.qty}</td>
-                    <td className="p-4 text-sm text-gray-900 font-medium">${parseFloat(product.total_price).toFixed(2)}</td>
-                    <td className="p-4 text-sm text-gray-700">{product.product_score} ★</td>
-                    <td className="p-4 text-sm text-gray-500">${parseFloat(product.comp_1 || 0).toFixed(2)}</td>
-                    <td className="p-4 text-sm text-gray-500">${parseFloat(product.comp_2 || 0).toFixed(2)}</td>
-                    <td className="p-4 text-sm text-gray-500">${parseFloat(product.comp_3 || 0).toFixed(2)}</td>
-                  </tr>
-                ))
+                products.map((product) => {
+                  return (
+                    <tr 
+                      key={product.id} 
+                      onClick={() => handleRowClick(product.id)}
+                      className="hover:bg-blue-50 cursor-pointer transition-colors"
+                    >
+                      <td className="p-4 text-sm font-mono text-gray-700 truncate max-w-[120px]" title={product.product_id}>{product.product_id}</td>
+                      <td className="p-4 text-sm text-gray-700 capitalize">{product.category?.replace("_", " ")}</td>
+                      <td className="p-4 text-sm text-gray-700 font-medium">{product.brand}</td>
+                      <td className="p-4 text-sm text-gray-500">${parseFloat(product.base_price || 0).toFixed(2)}</td>
+                      <td className="p-4 text-sm font-medium text-gray-900">${parseFloat(product.current_price || 0).toFixed(2)}</td>
+                      <td className="p-4 text-sm text-gray-700">{product.units_sold}</td>
+                      <td className="p-4 text-sm text-gray-900 font-medium">${parseFloat(product.revenue || 0).toFixed(2)}</td>
+                      <td className="p-4 text-sm text-gray-700">{product.inventory_level}</td>
+                      <td className="p-4 text-sm text-gray-700">{parseFloat(product.demand_index || 0).toFixed(2)}</td>
+                    </tr>
+                  )
+                })
               )}
             </tbody>
           </table>

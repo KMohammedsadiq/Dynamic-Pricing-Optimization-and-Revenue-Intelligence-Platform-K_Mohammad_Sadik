@@ -37,6 +37,7 @@ export default function Upload() {
         headers: {
           "Content-Type": "multipart/form-data",
         },
+        timeout: 120000, // Increase timeout to 120 seconds for large dataset uploads
       });
       setResult(response.data);
       

@@ -40,14 +40,36 @@ async def upload_dataset(
 
     total_rows_initial = len(df)
 
-    # 1. Validate required columns exist
-    expected_columns = [
+    # 1. Detect Dataset Type and Validate Columns
+    expected_old_columns = [
         "product_id", "product_category_name", "month_year", "qty", "total_price", 
         "freight_price", "unit_price", "product_score", "customers", "weekday", 
         "weekend", "holiday", "month", "year", "s", "volume", 
         "comp_1", "comp_2", "comp_3", "lag_price"
     ]
-    missing_cols = [col for col in expected_columns if col not in df.columns]
+    
+    expected_new_columns = [
+        "date", "product_id", "category", "brand", "region", "channel", 
+        "season", "base_price", "current_price", "price_change_pct", 
+        "discount_pct", "promotion_type", "units_sold", "revenue", 
+        "inventory_level", "stockout_flag", "demand_index"
+    ]
+
+    is_new_dataset = all(col in df.columns for col in ["brand", "current_price", "revenue"])
+    
+    if is_new_dataset:
+        missing_cols = [col for col in expected_new_columns if col not in df.columns]
+        critical_cols = ["product_id", "category", "current_price", "units_sold"]
+        numeric_cols = ["current_price", "units_sold", "base_price", "revenue"]
+        price_col = "current_price"
+        qty_col = "units_sold"
+    else:
+        missing_cols = [col for col in expected_old_columns if col not in df.columns]
+        critical_cols = ["product_id", "product_category_name", "unit_price", "qty"]
+        numeric_cols = ["unit_price", "qty", "freight_price", "total_price"]
+        price_col = "unit_price"
+        qty_col = "qty"
+
     if missing_cols:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -55,19 +77,18 @@ async def upload_dataset(
         )
 
     # 2. Drop rows with missing critical information
-    critical_cols = ["product_id", "product_category_name", "unit_price", "qty"]
     df = df.dropna(subset=critical_cols)
     
     # 3. Ensure numeric columns are actually numeric, coercing errors to NaN
-    numeric_cols = ["unit_price", "qty", "freight_price", "total_price"]
     for col in numeric_cols:
-        df[col] = pd.to_numeric(df[col], errors='coerce')
+        if col in df.columns:
+            df[col] = pd.to_numeric(df[col], errors='coerce')
     
-    # Drop rows that became NaN due to invalid numeric parsing
-    df = df.dropna(subset=["unit_price", "qty"])
+    # Drop rows that became NaN due to invalid numeric parsing in critical cols
+    df = df.dropna(subset=[price_col, qty_col])
     
     # 4. Drop negative prices
-    df = df[df["unit_price"] >= 0]
+    df = df[df[price_col] >= 0]
 
     # 5. Handle duplicate records
     df = df.drop_duplicates()

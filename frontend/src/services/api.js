@@ -33,4 +33,24 @@ api.interceptors.request.use(
   }
 );
 
+// Axios Response Interceptor
+api.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    // If the error is a 401 Unauthorized, the token is likely expired or invalid.
+    if (error.response && error.response.status === 401) {
+      console.warn("Unauthorized! Token may have expired. Redirecting to login...");
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      // Use window.location.href to force a full reload and redirect
+      if (window.location.pathname !== "/login") {
+        window.location.href = "/login";
+      }
+    }
+    return Promise.reject(error);
+  }
+);
+
 export default api;

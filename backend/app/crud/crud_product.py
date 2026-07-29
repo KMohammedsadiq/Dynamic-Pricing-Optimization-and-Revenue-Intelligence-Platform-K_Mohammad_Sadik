@@ -19,13 +19,20 @@ def get_products(
         query = query.filter(
             or_(
                 Product.product_id.ilike(f"%{search}%"),
-                Product.product_category_name.ilike(f"%{search}%")
+                Product.product_category_name.ilike(f"%{search}%"),
+                Product.category.ilike(f"%{search}%")
             )
         )
 
     # 2. Filter Logic
     if category:
-        query = query.filter(Product.product_category_name == category)
+        # Support both old dataset 'product_category_name' and new 'category'
+        query = query.filter(
+            or_(
+                Product.product_category_name == category,
+                Product.category == category
+            )
+        )
 
     # 3. Sort Logic
     if sort_by:
