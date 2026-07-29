@@ -25,6 +25,14 @@ export default function SeasonalPerformanceChart({ data }) {
     return null;
   };
 
+  // Helper to format large numbers like 600000000 to "600M"
+  const formatCompactNumber = (number) => {
+    return new Intl.NumberFormat('en-US', {
+      notation: 'compact',
+      compactDisplay: 'short'
+    }).format(number);
+  };
+
   return (
     <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
       <h3 className="text-lg font-bold text-slate-800 mb-4">Seasonal Performance</h3>
@@ -41,7 +49,7 @@ export default function SeasonalPerformanceChart({ data }) {
             />
             <YAxis 
               yAxisId="left"
-              tickFormatter={(value) => `$${(value / 1000).toFixed(0)}k`}
+              tickFormatter={(value) => `$${formatCompactNumber(value)}`}
               tick={{ fill: '#475569', fontSize: 12 }}
             />
             <YAxis 

@@ -26,20 +26,34 @@ export default function PromotionAnalysisChart({ data }) {
     return null;
   };
 
+  // Clean data: Replace 'NaN' with 'No Promotion'
+  const cleanData = data.map(item => ({
+    ...item,
+    promotion_type: item.promotion_type === 'NaN' ? 'No Promotion' : item.promotion_type
+  }));
+
+  // Helper to format large numbers like 600000000 to "600M"
+  const formatCompactNumber = (number) => {
+    return new Intl.NumberFormat('en-US', {
+      notation: 'compact',
+      compactDisplay: 'short'
+    }).format(number);
+  };
+
   return (
     <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm col-span-1 lg:col-span-2">
       <h3 className="text-lg font-bold text-slate-800 mb-4">Promotion Analysis (Revenue vs Discount)</h3>
       <div className="h-80">
         <ResponsiveContainer width="100%" height="100%">
           <ComposedChart
-            data={data}
+            data={cleanData}
             margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
           >
             <CartesianGrid stroke="#f5f5f5" />
             <XAxis dataKey="promotion_type" scale="band" tick={{ fill: '#475569', fontSize: 12 }} />
             <YAxis 
               yAxisId="left" 
-              tickFormatter={(value) => `$${(value / 1000).toFixed(0)}k`} 
+              tickFormatter={(value) => `$${formatCompactNumber(value)}`} 
               tick={{ fill: '#475569', fontSize: 12 }}
             />
             <YAxis 
