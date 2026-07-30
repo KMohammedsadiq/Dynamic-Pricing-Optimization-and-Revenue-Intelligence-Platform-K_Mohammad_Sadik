@@ -7,33 +7,38 @@ import Upload from "./pages/Upload";
 import Products from "./pages/Products";
 import Dashboard from "./pages/Dashboard";
 import ProductDetails from "./pages/ProductDetails";
+import Landing from "./pages/Landing";
+import Users from "./pages/Users";
+import Analytics from "./pages/Analytics";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 
 // Placeholder Page Components
-const Predictions = () => <div><h1 className="text-2xl font-bold mb-4">Price Predictions</h1><div className="h-64 bg-white rounded-lg border border-gray-200 flex items-center justify-center">AI Results Placeholder</div></div>;
-const Forecasts = () => <div><h1 className="text-2xl font-bold mb-4">Demand Forecasts</h1><div className="h-64 bg-white rounded-lg border border-gray-200 flex items-center justify-center">Time Series Chart Placeholder</div></div>;
-const Analytics = () => <div><h1 className="text-2xl font-bold mb-4">Analytics & Revenue</h1><div className="h-64 bg-white rounded-lg border border-gray-200 flex items-center justify-center">BI Reports Placeholder</div></div>;
+const Predictions = () => <div><h1 className="text-2xl font-bold mb-4">Price Predictions</h1><div className="h-64 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 flex items-center justify-center text-white/50">AI Results Placeholder</div></div>;
+const Forecasts = () => <div><h1 className="text-2xl font-bold mb-4">Demand Forecasts</h1><div className="h-64 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 flex items-center justify-center text-white/50">Time Series Chart Placeholder</div></div>;
+const Competitors = () => <div><h1 className="text-2xl font-bold mb-4">Competitor Analysis</h1><div className="h-64 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 flex items-center justify-center text-white/50">Competitor Monitoring Placeholder</div></div>;
 
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
         {/* Public Routes */}
+        <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         
         {/* Protected Routes Wrapper */}
         <Route element={<ProtectedRoute />}>
           {/* Layout Wrapper */}
-          <Route path="/" element={<MainLayout />}>
+          <Route element={<MainLayout />}>
             {/* Dashboard is accessible to all logged-in users */}
-            <Route index element={<Navigate to="/dashboard" replace />} />
-            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             
             {/* Admin Only Routes */}
             <Route element={<ProtectedRoute allowedRoles={["Admin"]} />}>
               <Route path="upload" element={<Upload />} />
+              <Route path="competitors" element={<Competitors />} />
+              <Route path="users" element={<Users />} />
             </Route>
             
             {/* Pricing Manager and Admin Routes */}

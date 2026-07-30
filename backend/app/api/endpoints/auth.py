@@ -67,3 +67,90 @@ def login_user(user_credentials: UserLogin, db: Session = Depends(get_db)):
         "token_type": "bearer",
         "user": db_user
     }
+
+from pydantic import BaseModel
+import urllib.request
+import json
+from app.models.role import Role
+from app.core.security import get_password_hash
+import uuid
+
+class GoogleLogin(BaseModel):
+    access_token: str
+
+@router.post("/google", response_model=TokenResponse)
+def google_login(google_credentials: GoogleLogin, db: Session = Depends(get_db)):
+    """
+    Authenticate a user using a Google OAuth Access Token.
+    If the user doesn't exist, create an account with 'Viewer' role.
+    """
+    access_token = google_credentials.access_token
+    
+    # 1. Fetch user info from Google
+    try:
+        req = urllib.request.Request("https://www.googleapis.com/oauth2/v3/userinfo")
+        req.add_header("Authorization", f"Bearer {access_token}")
+        with urllib.request.urlopen(req) as response:
+            google_data = json.loads(response.read().decode())
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid Google token"
+        )
+        
+    email = google_data.get("email")
+    name = google_data.get("name")
+    
+    if not email:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Google account must have an email"
+        )
+        
+    # 2. Check if user exists
+    db_user = get_user_by_email(db, email=email)
+    
+    # 3. Create user if they don't exist
+    if not db_user:
+        viewer_role = db.query(Role).filter(Role.name == "Viewer").first()
+        if not viewer_role:
+            # Fallback if Viewer role doesn't exist for some reason
+            viewer_role = Role(name="Viewer")
+            db.add(viewer_role)
+            db.commit()
+            db.refresh(viewer_role)
+            
+        from app.models.user import User
+        # Create user with a dummy secure password
+        random_password = get_password_hash(str(uuid.uuid4()))
+        db_user = User(
+            full_name=name,
+            email=email,
+            password_hash=random_password,
+            role_id=viewer_role.id
+        )
+        db.add(db_user)
+        db.commit()
+        db.refresh(db_user)
+        
+    # 4. Check if account is active
+    if not db_user.is_active:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Account has been deactivated"
+        )
+        
+    # 5. Generate JWT Access Token
+    role_name = db_user.role.name if db_user.role else "User"
+    jwt_token = create_access_token(data={
+        "sub": db_user.email,
+        "user_id": db_user.id,
+        "role": role_name
+    })
+    
+    # 6. Return standard TokenResponse
+    return {
+        "access_token": jwt_token,
+        "token_type": "bearer",
+        "user": db_user
+    }

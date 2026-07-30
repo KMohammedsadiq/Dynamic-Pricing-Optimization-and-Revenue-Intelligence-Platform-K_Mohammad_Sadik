@@ -14,7 +14,7 @@ def seed_rbac():
     
     try:
         print("Seeding Roles...")
-        roles_data = ["Admin", "Pricing Manager", "Business Analyst"]
+        roles_data = ["Admin", "Pricing Manager", "Business Analyst", "Viewer"]
         roles = {}
         
         for r_name in roles_data:
@@ -28,9 +28,11 @@ def seed_rbac():
             
         print("Seeding Users...")
         users_data = [
+            {"name": "Master Admin", "email": "mohammedsadiq4850@gmail.com", "role": "Admin"},
             {"name": "Alice Admin", "email": "admin@example.com", "role": "Admin"},
             {"name": "Peter Pricing", "email": "pricing@example.com", "role": "Pricing Manager"},
-            {"name": "Bob Analyst", "email": "analyst@example.com", "role": "Business Analyst"}
+            {"name": "Bob Analyst", "email": "analyst@example.com", "role": "Business Analyst"},
+            {"name": "Test Viewer", "email": "viewer@example.com", "role": "Viewer"}
         ]
         
         for u_data in users_data:

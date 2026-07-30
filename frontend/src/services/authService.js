@@ -19,6 +19,12 @@ export const authService = {
     // POST request to http://localhost:8000/api/v1/auth/login
     const response = await api.post("/auth/login", credentials);
     return response.data;
+  },
+
+  // Google Login API Call
+  loginWithGoogle: async (accessToken) => {
+    const response = await api.post("/auth/google", { access_token: accessToken });
+    return response.data;
   }
   
 };

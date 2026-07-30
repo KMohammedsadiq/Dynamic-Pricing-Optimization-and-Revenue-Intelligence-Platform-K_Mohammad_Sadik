@@ -16,9 +16,11 @@
     "vite": "^8.1.1"
   },
   "dependencies": {
+    "@react-oauth/google": "^0.13.5",
     "@tailwindcss/vite": "^4.3.3",
     "@vitejs/plugin-react": "^6.0.4",
     "axios": "^1.18.1",
+    "framer-motion": "^12.43.0",
     "lucide-react": "^1.27.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
