@@ -249,7 +249,16 @@ def create_new_product(
     """
     Create a new product. Only accessible by Admins.
     """
-    return create_product(db=db, product_in=product_in)
+    from sqlalchemy.exc import IntegrityError
+    try:
+        return create_product(db=db, product_in=product_in)
+    except IntegrityError:
+        db.rollback()
+        sku = product_in.product_id or "Auto-generated"
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, 
+            detail=f"A product with SKU '{sku}' already exists."
+        )
 
 @router.get("/{id}", response_model=ProductCatalogOut)
 def read_product_by_id(
