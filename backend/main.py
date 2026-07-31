@@ -43,7 +43,7 @@ async def test_db_connection(db: Session = Depends(get_db)):
         return {"status": "error", "message": f"Database connection failed: {str(e)}"}
 
 # Import and include the Authentication router
-from app.api.endpoints import auth, dashboard, products, users, analytics
+from app.api.endpoints import auth, dashboard, products, users, analytics, predictions, historical, recommendation
 
 app.include_router(
     auth.router,
@@ -73,4 +73,22 @@ app.include_router(
     analytics.router,
     prefix="/api/v1/analytics",
     tags=["Analytics"]
+)
+
+app.include_router(
+    predictions.router,
+    prefix="/api/v1/predictions",
+    tags=["Machine Learning"]
+)
+
+app.include_router(
+    historical.router,
+    prefix="/api/v1",
+    tags=["Historical Analysis"]
+)
+
+app.include_router(
+    recommendation.router,
+    prefix="/api/v1",
+    tags=["Business Recommendations"]
 )
