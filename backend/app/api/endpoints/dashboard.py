@@ -30,6 +30,7 @@ def get_dashboard_summary(
     result = db.query(
         func.count(Product.id).label("total_products"),
         func.sum(Product.revenue).label("total_revenue"),
+        func.sum(Product.units_sold).label("total_units"),
         func.avg(Product.current_price).label("average_price"),
         func.avg(Product.discount_pct).label("average_discount"),
         func.avg(Product.demand_index).label("average_demand"),
@@ -41,6 +42,7 @@ def get_dashboard_summary(
     return {
         "total_products": result.total_products or 0,
         "total_revenue": result.total_revenue or 0,
+        "total_units": result.total_units or 0,
         "average_price": result.average_price or 0,
         "average_discount": result.average_discount or 0,
         "average_demand": result.average_demand or 0,
@@ -62,13 +64,22 @@ def get_revenue_by_category(
 ):
     results = db.query(
         Product.category,
-        func.sum(Product.revenue).label("total_revenue")
+        func.sum(Product.revenue).label("total_revenue"),
+        func.sum(Product.units_sold).label("units_sold"),
+        func.avg(Product.current_price).label("avg_price")
     ).filter(Product.category.isnot(None))\
      .group_by(Product.category)\
      .order_by(desc("total_revenue"))\
      .all()
     
-    return [{"category": r.category, "total_revenue": float(r.total_revenue or 0)} for r in results]
+    return [
+        {
+            "category": r.category, 
+            "total_revenue": float(r.total_revenue or 0),
+            "units_sold": int(r.units_sold or 0),
+            "avg_price": float(r.avg_price or 0)
+        } for r in results
+    ]
 
 @router.get("/revenue-by-brand")
 def get_revenue_by_brand(
@@ -77,14 +88,23 @@ def get_revenue_by_brand(
 ):
     results = db.query(
         Product.brand,
-        func.sum(Product.revenue).label("total_revenue")
+        func.sum(Product.revenue).label("total_revenue"),
+        func.sum(Product.units_sold).label("units_sold"),
+        func.avg(Product.current_price).label("avg_price")
     ).filter(Product.brand.isnot(None))\
      .group_by(Product.brand)\
      .order_by(desc("total_revenue"))\
      .limit(10)\
      .all()
     
-    return [{"brand": r.brand, "total_revenue": float(r.total_revenue or 0)} for r in results]
+    return [
+        {
+            "brand": r.brand, 
+            "total_revenue": float(r.total_revenue or 0),
+            "units_sold": int(r.units_sold or 0),
+            "avg_price": float(r.avg_price or 0)
+        } for r in results
+    ]
 
 @router.get("/inventory-overview")
 def get_inventory_overview(
@@ -195,7 +215,8 @@ def get_regional_sales(
     results = db.query(
         Product.region,
         func.sum(Product.revenue).label("total_revenue"),
-        func.sum(Product.units_sold).label("total_units")
+        func.sum(Product.units_sold).label("total_units"),
+        func.avg(Product.current_price).label("avg_price")
     ).filter(Product.region.isnot(None))\
      .group_by(Product.region)\
      .order_by(desc("total_revenue"))\
@@ -205,7 +226,8 @@ def get_regional_sales(
         {
             "region": r.region,
             "total_revenue": float(r.total_revenue or 0),
-            "units_sold": int(r.total_units or 0)
+            "units_sold": int(r.total_units or 0),
+            "avg_price": float(r.avg_price or 0)
         } for r in results
     ]
 
@@ -298,6 +320,41 @@ def get_product_performance(
         })
     
     return formatted
+
+# ---------------------------------------------------------
+# DATASET UPLOAD HISTORY
+# ---------------------------------------------------------
+from app.models.dataset_upload import DatasetUpload
+from app.models.user import User
+
+@router.get("/upload-history")
+def get_upload_history(
+    token_payload: Annotated[dict, Depends(get_current_user_token)],
+    db: Session = Depends(get_db)
+):
+    """
+    Returns the last 10 dataset uploads from the database audit trail.
+    """
+    uploads = (
+        db.query(DatasetUpload, User.full_name)
+        .join(User, DatasetUpload.uploaded_by == User.id)
+        .order_by(desc(DatasetUpload.uploaded_at))
+        .limit(10)
+        .all()
+    )
+    return [
+        {
+            "id": u.DatasetUpload.id,
+            "file_name": u.DatasetUpload.file_name,
+            "uploaded_by": u.full_name,
+            "uploaded_at": u.DatasetUpload.uploaded_at.isoformat() if u.DatasetUpload.uploaded_at else None,
+            "total_rows": u.DatasetUpload.total_rows,
+            "imported_rows": u.DatasetUpload.imported_rows,
+            "skipped_rows": u.DatasetUpload.skipped_rows,
+            "status": u.DatasetUpload.status,
+        }
+        for u in uploads
+    ]
 
 # ---------------------------------------------------------
 # ADMIN ENDPOINTS

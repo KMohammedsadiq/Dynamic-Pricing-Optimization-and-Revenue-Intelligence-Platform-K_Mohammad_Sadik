@@ -64,7 +64,7 @@ def update_user_role(
         
     # Prevent Admin from demoting themselves accidentally
     if user.email == "mohammedsadiq4850@gmail.com" and request.role_name != "Admin":
-        raise HTTPException(status_code=403, detail="Cannot change the role of the Master Admin")
+        raise HTTPException(status_code=403, detail="Cannot change the role of the Admin")
         
     # Update role
     user.role_id = target_role.id

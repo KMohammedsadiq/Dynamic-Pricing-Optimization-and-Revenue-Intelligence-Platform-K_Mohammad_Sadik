@@ -8,6 +8,9 @@ const TOKEN_KEY = "pricepilot_access_token";
 const USER_KEY = "pricepilot_user";
 
 export const setAuthData = (token, user) => {
+  if (user && user.full_name === "Master Admin") {
+    user.full_name = "Admin";
+  }
   localStorage.setItem(TOKEN_KEY, token);
   localStorage.setItem(USER_KEY, JSON.stringify(user));
 };
@@ -17,8 +20,13 @@ export const getToken = () => {
 };
 
 export const getUser = () => {
-  const user = localStorage.getItem(USER_KEY);
-  return user ? JSON.parse(user) : null;
+  const userStr = localStorage.getItem(USER_KEY);
+  if (!userStr) return null;
+  const user = JSON.parse(userStr);
+  if (user && user.full_name === "Master Admin") {
+    user.full_name = "Admin";
+  }
+  return user;
 };
 
 export const removeAuthData = () => {

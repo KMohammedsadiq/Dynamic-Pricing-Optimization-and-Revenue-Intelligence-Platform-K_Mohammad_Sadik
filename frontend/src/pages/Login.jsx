@@ -4,8 +4,7 @@ import Input from "../components/Input";
 import Button from "../components/Button";
 import { authService } from "../services/authService";
 import { setAuthData } from "../utils/auth";
-import { motion, AnimatePresence } from "framer-motion";
-import { Hexagon, Lock, Target, LineChart, Zap } from "lucide-react";
+import { Hexagon, Lock, Target, LineChart } from "lucide-react";
 import { useGoogleLogin } from "@react-oauth/google";
 
 export default function Login() {
@@ -115,140 +114,113 @@ export default function Login() {
   });
 
   return (
-    <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2 bg-black overflow-hidden relative">
+    <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2 bg-[#111827] overflow-hidden relative">
 
       {/* LEFT SIDE - SHOWCASE */}
-      <div className="hidden lg:flex flex-col justify-between p-12 relative border-r border-white/5 bg-white/[0.01]">
-        {/* Decorative Grid & Orbs */}
-        <div className="cyber-grid-bg opacity-30 absolute inset-0 z-0"></div>
-        <div className="absolute top-1/4 -left-20 w-[500px] h-[500px] bg-brand-500/20 rounded-full blur-[120px] pointer-events-none"></div>
-        <div className="absolute bottom-1/4 -right-20 w-[500px] h-[500px] bg-accent-500/20 rounded-full blur-[120px] pointer-events-none"></div>
+      <div className="hidden lg:flex flex-col justify-between p-12 relative border-r border-[#374151] bg-[#1F2937]">
 
         {/* Logo */}
         <div className="relative z-10 flex items-center gap-3">
-          <Hexagon className="text-brand-400 w-8 h-8" />
-          <span className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-accent-400 tracking-tight">
+          <Hexagon className="text-blue-500 w-8 h-8" />
+          <span className="text-2xl font-black text-gray-50 tracking-tight">
             PricePilot AI
           </span>
         </div>
 
         {/* Main Showcase Content */}
         <div className="relative z-10 max-w-lg mt-12">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <h2 className="text-5xl lg:text-6xl font-black text-white leading-tight mb-6 tracking-tight">
+          <div>
+            <h2 className="text-5xl lg:text-6xl font-black text-gray-50 leading-tight mb-6 tracking-tight">
               Intelligent pricing <br /> for modern commerce.
             </h2>
-            <p className="text-white/60 text-lg font-medium leading-relaxed mb-12">
+            <p className="text-gray-400 text-lg font-medium leading-relaxed mb-12">
               Join industry leaders who use our advanced machine learning models to predict demand, track competitors, and optimize revenue strategies automatically.
             </p>
-          </motion.div>
+          </div>
 
           <div className="space-y-6">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="flex items-center gap-4 glass-panel p-5 rounded-2xl border border-white/10 w-fit backdrop-blur-xl"
-            >
-              <div className="w-12 h-12 rounded-xl bg-brand-500/20 flex items-center justify-center border border-brand-500/30 text-brand-400 shadow-[0_0_15px_rgba(56,189,248,0.2)]">
+            <div className="flex items-center gap-4 ent-panel p-5 w-fit">
+              <div className="w-12 h-12 rounded-lg bg-blue-500/10 flex items-center justify-center border border-blue-500/20 text-blue-500">
                 <Target size={24} />
               </div>
               <div>
-                <h4 className="font-bold text-white text-sm tracking-wide">Dynamic Adjustments</h4>
-                <p className="text-white/50 text-xs font-medium mt-1">Real-time market responses</p>
+                <h4 className="font-bold text-gray-100 text-sm tracking-wide">Dynamic Adjustments</h4>
+                <p className="text-gray-400 text-xs font-medium mt-1">Real-time market responses</p>
               </div>
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="flex items-center gap-4 glass-panel p-5 rounded-2xl border border-white/10 w-fit ml-12 backdrop-blur-xl"
-            >
-              <div className="w-12 h-12 rounded-xl bg-accent-500/20 flex items-center justify-center border border-accent-500/30 text-accent-400 shadow-[0_0_15px_rgba(168,85,247,0.2)]">
+            <div className="flex items-center gap-4 ent-panel p-5 w-fit ml-12">
+              <div className="w-12 h-12 rounded-lg bg-indigo-500/10 flex items-center justify-center border border-indigo-500/20 text-indigo-500">
                 <LineChart size={24} />
               </div>
               <div>
-                <h4 className="font-bold text-white text-sm tracking-wide">Predictive Analytics</h4>
-                <p className="text-white/50 text-xs font-medium mt-1">Forecast demand with 99% accuracy</p>
+                <h4 className="font-bold text-gray-100 text-sm tracking-wide">Predictive Analytics</h4>
+                <p className="text-gray-400 text-xs font-medium mt-1">Forecast demand with 99% accuracy</p>
               </div>
-            </motion.div>
+            </div>
           </div>
         </div>
 
         {/* Footer */}
-        <div className="relative z-10 flex items-center gap-2 text-white/30 text-sm font-bold mt-12">
+        <div className="relative z-10 flex items-center gap-2 text-gray-500 text-sm font-bold mt-12">
           <Hexagon className="w-4 h-4" /> PricePilot AI © 2026.
         </div>
       </div>
 
       {/* RIGHT SIDE - LOGIN FORM */}
       <div className="flex items-center justify-center p-8 relative">
-        {/* Subtle mobile orbs */}
-        <div className="absolute top-0 right-0 w-64 h-64 bg-brand-500/10 rounded-full blur-[100px] lg:hidden pointer-events-none"></div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 30, scale: 0.95 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="glass-panel p-10 rounded-[2.5rem] max-w-md w-full relative z-10 border border-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.12)]"
-        >
+        <div className="ent-panel p-10 max-w-md w-full relative z-10 border border-[#374151]">
           <div className="text-center mb-10">
             {/* Mobile Logo Only */}
-            <div className="lg:hidden inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-white/5 border border-white/10 mb-6 shadow-xl">
-              <Hexagon className="text-brand-400" size={32} />
+            <div className="lg:hidden inline-flex items-center justify-center w-16 h-16 rounded-lg bg-[#111827] border border-[#374151] mb-6 shadow-xl">
+              <Hexagon className="text-blue-500" size={32} />
             </div>
-            <h1 className="text-4xl font-black text-white tracking-tight mb-2">Welcome Back</h1>
-            <p className="text-white/50 font-medium">Log in to your command center</p>
+            <h1 className="text-3xl font-black text-gray-50 tracking-tight mb-2">Welcome Back</h1>
+            <p className="text-gray-400 font-medium">Log in to your command center</p>
           </div>
 
           {/* Global Notifications */}
-          <AnimatePresence>
-            {apiError && (
-              <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="mb-6 p-4 bg-red-500/10 border border-red-500/20 text-red-400 rounded-xl text-sm font-medium flex items-center gap-2">
-                <div className="w-1.5 h-1.5 rounded-full bg-red-400"></div> {apiError}
-              </motion.div>
-            )}
-            {successMessage && (
-              <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="mb-6 p-4 bg-green-500/10 border border-green-500/20 text-green-400 rounded-xl text-sm font-medium flex items-center gap-2">
-                <div className="w-1.5 h-1.5 rounded-full bg-green-400"></div> {successMessage}
-              </motion.div>
-            )}
-          </AnimatePresence>
+          {apiError && (
+            <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 text-red-500 rounded-lg text-sm font-medium flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-red-500"></div> {apiError}
+            </div>
+          )}
+          {successMessage && (
+            <div className="mb-6 p-4 bg-green-500/10 border border-green-500/20 text-green-500 rounded-lg text-sm font-medium flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-green-500"></div> {successMessage}
+            </div>
+          )}
 
           <form onSubmit={handleSubmit} className="space-y-5">
-            {/* Visual Role Selector (No Autofill) */}
+            {/* Visual Role Selector */}
             <div className="mb-6">
-              <label className="block text-xs font-bold text-white/50 mb-2 uppercase tracking-widest">Select Role</label>
+              <label className="block text-xs font-bold text-gray-400 mb-2 uppercase tracking-widest">Select Role</label>
               <div className="relative">
                 <select
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-white focus:outline-none focus:ring-2 focus:ring-brand-500/50 appearance-none font-semibold transition-all hover:bg-white/[0.07]"
+                  className="ent-input w-full appearance-none pr-10"
                   value={selectedRole}
                   onChange={(e) => setSelectedRole(e.target.value)}
                 >
-                  <option value="" className="bg-slate-900 text-white">Select a role...</option>
-                  <option value="Admin" className="bg-slate-900 text-brand-400 font-bold">👑 Master Admin</option>
-                  <option value="Pricing Manager" className="bg-slate-900 text-white">Pricing Manager</option>
-                  <option value="Business Analyst" className="bg-slate-900 text-white">Business Analyst</option>
-                  <option value="Viewer" className="bg-slate-900 text-white">Normal User (Viewer)</option>
+                  <option value="">Select a role...</option>
+                  <option value="Admin">👑 Admin</option>
+                  <option value="Pricing Manager">Pricing Manager</option>
+                  <option value="Business Analyst">Business Analyst</option>
+                  <option value="Viewer">Normal User (Viewer)</option>
                 </select>
                 <div className="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none">
-                  <svg className="w-5 h-5 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+                  <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
                 </div>
               </div>
             </div>
 
-            <div className="h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent my-8"></div>
+            <div className="h-px w-full bg-[#374151] my-8"></div>
 
             <Input
               label="Email Address"
               name="email"
               type="email"
-              placeholder="Enter your gmail"
+              placeholder="Enter your email"
               value={formData.email}
               onChange={handleChange}
               error={errors.email}
@@ -266,7 +238,7 @@ export default function Login() {
             />
 
             <div className="flex justify-end items-center mb-6 mt-2">
-              <a href="#" className="text-sm font-bold text-brand-400 hover:text-brand-300 transition-colors">
+              <a href="#" className="text-sm font-bold text-blue-500 hover:text-blue-400 transition-colors">
                 Forgot password?
               </a>
             </div>
@@ -279,19 +251,19 @@ export default function Login() {
                     Authenticating...
                   </span>
                 ) : (
-                  <>Log In <Lock size={18} /></>
+                  <span className="flex items-center gap-2">Log In <Lock size={18} /></span>
                 )}
               </Button>
 
               <div className="relative flex items-center py-2">
-                <div className="flex-grow border-t border-white/10"></div>
-                <span className="flex-shrink-0 mx-4 text-white/30 text-[10px] font-bold uppercase tracking-widest">Or continue with</span>
-                <div className="flex-grow border-t border-white/10"></div>
+                <div className="flex-grow border-t border-[#374151]"></div>
+                <span className="flex-shrink-0 mx-4 text-gray-500 text-[10px] font-bold uppercase tracking-widest">Or continue with</span>
+                <div className="flex-grow border-t border-[#374151]"></div>
               </div>
 
               <button
                 type="button"
-                className="w-full bg-white text-gray-900 font-extrabold rounded-[1.25rem] px-6 py-4 flex items-center justify-center gap-3 hover:bg-gray-100 hover:scale-[1.02] active:scale-[0.98] transition-all shadow-xl disabled:opacity-50"
+                className="w-full bg-white text-gray-900 font-extrabold rounded-md px-6 py-2.5 flex items-center justify-center gap-3 hover:bg-gray-100 transition-colors border border-gray-200 disabled:opacity-50"
                 onClick={() => handleGoogleLogin()}
                 disabled={loading}
               >
@@ -307,13 +279,13 @@ export default function Login() {
             </div>
           </form>
 
-          <p className="mt-8 text-center text-sm text-white/50 font-medium">
+          <p className="mt-8 text-center text-sm text-gray-400 font-medium">
             Don't have an account?{" "}
-            <Link to="/register" className="text-brand-400 font-bold hover:text-brand-300 transition-colors">
+            <Link to="/register" className="text-blue-500 font-bold hover:text-blue-400 transition-colors">
               Sign Up
             </Link>
           </p>
-        </motion.div>
+        </div>
       </div>
     </div>
   );

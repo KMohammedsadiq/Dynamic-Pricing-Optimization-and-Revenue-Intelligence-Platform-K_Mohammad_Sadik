@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, Package, DollarSign, BarChart2, Calendar, TrendingUp } from "lucide-react";
+import { ArrowLeft, Package, IndianRupee, BarChart2, Calendar, TrendingUp } from "lucide-react";
 import { motion } from "framer-motion";
 import api from "../services/api";
 
@@ -97,7 +97,7 @@ export default function ProductDetails() {
                 {(product.category || "").replace("_", " ")}
               </span>
               <span className="flex items-center gap-1 text-orange-400 text-xs font-bold bg-orange-500/10 border border-orange-500/20 px-3 py-1.5 rounded-full">
-                Demand: {product.demand_index}
+                Demand: {product.demand_index != null ? Number(product.demand_index).toFixed(2) : "N/A"}
               </span>
               {product.brand && (
                 <span className="flex items-center gap-1 text-white/70 text-xs font-bold bg-white/5 border border-white/10 px-3 py-1.5 rounded-full">
@@ -111,7 +111,7 @@ export default function ProductDetails() {
           <div className="text-left md:text-right z-10 p-6 bg-white/5 rounded-2xl border border-white/10 shadow-inner">
             <p className="text-xs font-bold text-white/50 uppercase tracking-widest mb-1">Current Price</p>
             <p className="price-text text-5xl">
-              ${parseFloat(product.current_price || product.base_price || 0).toFixed(2)}
+              ₹{parseFloat(product.current_price || product.base_price || 0).toFixed(2)}
             </p>
           </div>
         </div>
@@ -134,7 +134,7 @@ export default function ProductDetails() {
               </div>
               <div className="flex justify-between items-center p-3 bg-white/5 rounded-xl">
                 <span className="text-white/60 font-medium">Total Revenue</span>
-                <span className="font-black price-inline text-lg">${parseFloat(product.revenue || 0).toFixed(2)}</span>
+                <span className="font-black price-inline text-lg">₹{parseFloat(product.revenue || 0).toFixed(2)}</span>
               </div>
               <div className="flex justify-between items-center p-3 bg-white/5 rounded-xl">
                 <span className="text-white/60 font-medium">Inventory Level</span>
@@ -153,18 +153,18 @@ export default function ProductDetails() {
           <div className="space-y-6">
             <h3 className="text-xl font-black flex items-center gap-3 text-white border-b border-white/10 pb-4">
               <div className="p-2 bg-green-500/20 rounded-xl">
-                <DollarSign className="w-5 h-5 text-green-400" />
+                <IndianRupee className="w-5 h-5 text-green-400" />
               </div>
               Pricing Details
             </h3>
             <div className="space-y-4">
               <div className="flex justify-between items-center p-3 bg-white/5 rounded-xl">
                 <span className="text-white/60 font-medium">Base Price</span>
-                <span className="font-black price-inline text-lg"><span className="text-xs opacity-50 line-through mr-1 font-normal"></span>${parseFloat(product.base_price || 0).toFixed(2)}</span>
+                <span className="font-black price-inline text-lg"><span className="text-xs opacity-50 line-through mr-1 font-normal"></span>₹{parseFloat(product.base_price || 0).toFixed(2)}</span>
               </div>
               <div className="flex justify-between items-center p-3 bg-white/5 rounded-xl">
                 <span className="text-white/60 font-medium">Discount %</span>
-                <span className="font-bold text-accent-400 text-lg">{product.discount_pct}%</span>
+                <span className="font-bold text-accent-400 text-lg">{product.discount_pct != null ? Number(product.discount_pct).toFixed(2) : "0.00"}%</span>
               </div>
               <div className="flex justify-between items-center p-3 bg-white/5 rounded-xl">
                 <span className="text-white/60 font-medium">Promotion Type</span>
@@ -173,7 +173,7 @@ export default function ProductDetails() {
               <div className="flex justify-between items-center p-3 bg-white/5 rounded-xl">
                 <span className="text-white/60 font-medium">Price Change %</span>
                 <span className={`font-bold text-lg ${product.price_change_pct > 0 ? "text-green-400" : product.price_change_pct < 0 ? "text-red-400" : "text-white/90"}`}>
-                  {product.price_change_pct > 0 ? "+" : ""}{product.price_change_pct}%
+                  {product.price_change_pct > 0 ? "+" : ""}{product.price_change_pct != null ? Number(product.price_change_pct).toFixed(2) : "0.00"}%
                 </span>
               </div>
             </div>

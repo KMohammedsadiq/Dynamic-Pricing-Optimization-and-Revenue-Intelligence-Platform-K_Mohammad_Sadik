@@ -76,7 +76,17 @@ export default function ProductFormModal({ isOpen, onClose, onSave, product = nu
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validate()) {
-      onSave(formData);
+      const payload = {
+        ...formData,
+        base_price: parseFloat(formData.base_price),
+        cost_price: formData.cost_price ? parseFloat(formData.cost_price) : null,
+        initial_inventory: formData.initial_inventory ? parseInt(formData.initial_inventory, 10) : 0,
+        category: formData.category || null,
+        brand: formData.brand || null,
+        description: formData.description || null,
+        product_id: formData.product_id || null, // Allow backend to generate SKU if null
+      };
+      onSave(payload);
     }
   };
 
@@ -192,7 +202,7 @@ export default function ProductFormModal({ isOpen, onClose, onSave, product = nu
                 <div>
                   <label className="block text-sm font-medium text-white/70 mb-1">Base Price *</label>
                   <div className="relative">
-                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40">$</span>
+                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40">₹</span>
                     <input
                       type="number"
                       step="0.01"
@@ -209,7 +219,7 @@ export default function ProductFormModal({ isOpen, onClose, onSave, product = nu
                 <div>
                   <label className="block text-sm font-medium text-white/70 mb-1">Cost Price</label>
                   <div className="relative">
-                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40">$</span>
+                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40">₹</span>
                     <input
                       type="number"
                       step="0.01"
