@@ -1,33 +1,28 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { UploadCloud, CheckCircle, AlertCircle, Loader2 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
 import api from "../services/api";
 
 export default function Upload() {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
-  const [error, setError] = useState(null);
+  const [uploadError, setUploadError] = useState(null);
 
   const handleFileChange = (e) => {
-    const selectedFile = e.target.files[0];
-    if (selectedFile && selectedFile.name.endsWith(".csv")) {
-      setFile(selectedFile);
-      setError(null);
+    const f = e.target.files[0];
+    if (f && f.name.endsWith(".csv")) {
+      setFile(f);
+      setUploadError(null);
     } else {
       setFile(null);
-      setError("Please select a valid CSV file.");
+      setUploadError("Please select a valid .csv file.");
     }
   };
 
-  const navigate = useNavigate();
-
   const handleUpload = async () => {
     if (!file) return;
-    
     setLoading(true);
-    setError(null);
+    setUploadError(null);
     setResult(null);
 
     const formData = new FormData();
@@ -35,123 +30,109 @@ export default function Upload() {
 
     try {
       const response = await api.post("/products/upload", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-        timeout: 120000, // Increase timeout to 120 seconds for large dataset uploads
+        headers: { "Content-Type": "multipart/form-data" },
+        timeout: 120000,
       });
       setResult(response.data);
-      
-      // Automatic redirect after short delay for better UX
-      setTimeout(() => {
-        navigate("/products", { state: { uploadSuccess: response.data } });
-      }, 2500);
-
+      setFile(null);
     } catch (err) {
-      setError(err.response?.data?.detail || "An error occurred during upload.");
+      setUploadError(err.response?.data?.detail || "An error occurred during upload.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <motion.div 
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="max-w-4xl mx-auto py-8"
-    >
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-extrabold text-white tracking-tight">Dataset Upload</h1>
-      </div>
-      
-      <motion.div 
-        initial={{ y: 20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.1 }}
-        className="glass-panel p-8 md:p-12 rounded-[2rem] border border-white/10 relative overflow-hidden"
-      >
-        {/* Decorative background glow */}
-        <div className="absolute -top-32 -right-32 w-96 h-96 bg-brand-500/20 rounded-full blur-[100px] pointer-events-none"></div>
-
-        <p className="text-white/70 mb-8 text-lg font-medium relative z-10">
-          Upload the Kaggle Retail Price Optimization CSV dataset here. The system will automatically validate, clean, and insert the rows into PostgreSQL.
+    <div className="w-full max-w-[800px] mx-auto pb-12">
+      <div className="mb-6">
+        <h1 className="text-xl font-bold text-gray-50">Upload Dataset</h1>
+        <p className="text-xs text-gray-400 mt-0.5">
+          Import CSV pricing records into the system database.
         </p>
+      </div>
 
-        <div className="relative z-10 flex flex-col items-center justify-center p-12 border-2 border-dashed border-white/20 rounded-[2rem] bg-black/20 hover:bg-white/5 transition-all duration-300 group">
-          <div className="p-4 bg-brand-500/20 rounded-full mb-6 group-hover:scale-110 transition-transform duration-300">
-            <UploadCloud className="w-12 h-12 text-brand-400" />
-          </div>
-          
-          <input
-            type="file"
-            accept=".csv"
-            onChange={handleFileChange}
-            className="hidden"
-            id="csv-upload"
-          />
+      <div className="flex flex-col gap-5">
+        <div className="ent-panel p-8">
+          <p className="text-sm text-gray-400 mb-6 leading-relaxed">
+            Upload the Kaggle Retail Pricing CSV dataset. The system will
+            validate, clean, and insert new rows into PostgreSQL. Duplicate
+            rows are automatically skipped.
+          </p>
+
           <label
             htmlFor="csv-upload"
-            className="cursor-pointer bg-white/10 text-white px-8 py-3 rounded-xl hover:bg-white/20 transition-all font-bold tracking-wide border border-white/10 shadow-lg hover:shadow-brand-500/20 hover:border-brand-500/50"
+            className="flex flex-col items-center justify-center p-12 border-2 border-dashed border-[#374151] rounded-xl cursor-pointer hover:border-blue-500 hover:bg-blue-500/5 transition-all"
           >
-            Select CSV File
+            <UploadCloud className="w-10 h-10 text-gray-500 mb-4" />
+            <p className="text-base font-semibold text-gray-300">
+              {file ? file.name : "Click to select a CSV file"}
+            </p>
+            {file && (
+              <p className="text-sm text-gray-500 mt-2">
+                {(file.size / 1024 / 1024).toFixed(2)} MB
+              </p>
+            )}
+            <input
+              id="csv-upload"
+              type="file"
+              accept=".csv"
+              onChange={handleFileChange}
+              className="hidden"
+            />
           </label>
-          
-          {file && (
-            <motion.p 
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="mt-6 text-sm text-brand-300 font-bold bg-brand-500/10 px-4 py-2 rounded-lg border border-brand-500/20"
-            >
-              Selected: {file.name} ({(file.size / 1024 / 1024).toFixed(2)} MB)
-            </motion.p>
-          )}
-        </div>
 
-        <AnimatePresence>
-          {error && (
-            <motion.div 
-              initial={{ opacity: 0, height: 0, marginTop: 0 }}
-              animate={{ opacity: 1, height: 'auto', marginTop: 24 }}
-              exit={{ opacity: 0, height: 0, marginTop: 0 }}
-              className="p-4 bg-red-500/10 text-red-400 rounded-xl flex items-start gap-3 border border-red-500/20 shadow-lg relative z-10"
-            >
-              <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
-              <p className="font-bold">{error}</p>
-            </motion.div>
+          {uploadError && (
+            <div className="flex items-start gap-2 p-4 mt-6 bg-red-500/10 border border-red-500/20 rounded-lg">
+              <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0" />
+              <p className="text-sm font-medium text-red-400">{uploadError}</p>
+            </div>
           )}
 
           {result && (
-            <motion.div 
-              initial={{ opacity: 0, height: 0, marginTop: 0 }}
-              animate={{ opacity: 1, height: 'auto', marginTop: 24 }}
-              exit={{ opacity: 0, height: 0, marginTop: 0 }}
-              className="p-6 bg-green-500/10 text-green-400 rounded-xl flex items-start gap-4 border border-green-500/20 shadow-lg relative z-10"
-            >
-              <CheckCircle className="w-6 h-6 flex-shrink-0 mt-0.5" />
-              <div>
-                <p className="font-black text-lg mb-2">{result.message}</p>
-                <ul className="list-none space-y-2 text-sm text-green-200/80 font-medium">
-                  <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-green-400"></div> Total rows processed: <span className="text-white font-bold">{result.total_processed}</span></li>
-                  <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-green-400"></div> Rows successfully imported: <span className="text-white font-bold">{result.rows_imported}</span></li>
-                  <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-green-400"></div> Rows skipped (duplicates/errors): <span className="text-white font-bold">{result.rows_skipped}</span></li>
-                </ul>
+            <div className="p-5 mt-6 bg-green-500/10 border border-green-500/20 rounded-lg">
+              <div className="flex items-center gap-2 mb-3">
+                <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+                <p className="text-base font-bold text-green-400">{result.message}</p>
               </div>
-            </motion.div>
+              <div className="text-sm text-green-500/80 space-y-1">
+                <p>Total processed: <strong className="text-green-400">{result.total_processed}</strong></p>
+                <p>Imported: <strong className="text-green-400">{result.rows_imported}</strong></p>
+                <p>Skipped: <strong className="text-green-400">{result.rows_skipped}</strong></p>
+              </div>
+            </div>
           )}
-        </AnimatePresence>
 
-        <div className="mt-10 flex justify-end relative z-10">
           <button
             onClick={handleUpload}
             disabled={!file || loading}
-            className={`flex items-center gap-3 px-8 py-3.5 rounded-xl font-black tracking-wide text-white transition-all shadow-xl
-              ${!file || loading ? "bg-white/5 text-white/30 cursor-not-allowed border border-white/10" : "bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-400 hover:to-emerald-400 border border-green-400/50 hover:shadow-green-500/25 hover:-translate-y-1"}`}
+            className={`w-full mt-6 flex items-center justify-center gap-2 px-6 py-3 rounded-lg text-sm font-bold text-white transition-all ${
+              !file || loading
+                ? "bg-[#374151] text-gray-500 cursor-not-allowed border border-[#4B5563]"
+                : "bg-blue-600 hover:bg-blue-700"
+            }`}
           >
-            {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <UploadCloud className="w-5 h-5" />}
-            {loading ? "Processing Upload..." : "Upload and Import Dataset"}
+            {loading ? (
+              <Loader2 className="w-5 h-5 animate-spin" />
+            ) : (
+              <UploadCloud className="w-5 h-5" />
+            )}
+            {loading ? "Processing..." : "Upload and Import"}
           </button>
         </div>
-      </motion.div>
-    </motion.div>
+
+        <div className="ent-panel p-6">
+          <p className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-4">
+            Expected CSV Format
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {["product_id", "brand", "category", "region", "channel", "season", "current_price", "base_price", "discount_pct", "units_sold", "revenue", "inventory_level", "demand_index", "promotion_type", "date"].map((col) => (
+              <span key={col} className="text-xs font-mono px-2.5 py-1 rounded-md bg-[#111827] text-gray-400 border border-[#374151]">
+                {col}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
