@@ -10,7 +10,7 @@ import ProductDetails from "./pages/ProductDetails";
 import Landing from "./pages/Landing";
 import Users from "./pages/Users";
 import Analytics from "./pages/Analytics";
-import Predictions from "./pages/Predictions";
+import PricePrediction from "./pages/PricePrediction";
 import Forecasts from "./pages/Forecasts";
 import Competitors from "./pages/Competitors";
 import RevenueOptimization from "./pages/RevenueOptimization";
@@ -44,7 +44,7 @@ export default function App() {
             <Route element={<ProtectedRoute allowedRoles={["Admin", "Pricing Manager"]} />}>
               <Route path="products" element={<Products />} />
               <Route path="products/:id" element={<ProductDetails />} />
-              <Route path="predictions" element={<Predictions />} />
+              <Route path="predictions" element={<PricePrediction />} />
               <Route path="revenue-optimization" element={<RevenueOptimization />} />
             </Route>
 
