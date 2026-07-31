@@ -26,7 +26,7 @@ export default function AnalyticsFilters({ filters, onApply, onReset, isFilterin
   };
 
   const SelectInput = ({ label, id, options, value, onChange }) => (
-    <div className="flex flex-col gap-1.5 flex-1 min-w-[140px]">
+    <div className="flex flex-col gap-1.5 flex-1 min-w-[130px]">
       <label htmlFor={id} className="text-[10px] uppercase tracking-widest font-bold text-white/40">{label}</label>
       <select
         id={id}
@@ -45,7 +45,7 @@ export default function AnalyticsFilters({ filters, onApply, onReset, isFilterin
       <div className="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-brand-400 to-accent-400"></div>
       
       <div className="flex flex-col lg:flex-row gap-6 items-end">
-        <div className="flex-1 w-full grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4">
+        <div className="flex-1 w-full flex flex-wrap gap-4">
           
           <SelectInput 
             label="Date Range" id="dateRange" value={localFilters.dateRange} onChange={(val) => handleChange('dateRange', val)}

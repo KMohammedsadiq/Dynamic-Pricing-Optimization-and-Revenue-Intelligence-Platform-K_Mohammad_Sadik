@@ -28,7 +28,7 @@ export default function Input({ label, type = "text", value, onChange, placehold
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute inset-y-0 right-0 pr-4 flex items-center text-sm font-medium text-white/50 hover:text-white transition-colors focus:outline-none"
+            className="absolute inset-y-0 right-2 my-auto h-8 px-3 flex items-center bg-slate-800 hover:bg-slate-700 text-white rounded-lg text-xs font-bold transition-colors focus:outline-none z-10"
           >
             {showPassword ? "Hide" : "Show"}
           </button>

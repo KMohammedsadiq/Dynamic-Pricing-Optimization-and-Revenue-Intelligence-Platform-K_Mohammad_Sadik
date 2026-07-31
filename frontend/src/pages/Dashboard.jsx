@@ -260,7 +260,7 @@ export default function Dashboard() {
         <div className="absolute bottom-0 left-0 w-64 h-64 bg-accent-500/10 rounded-full blur-[80px] -z-10"></div>
         
         <h1 className="text-3xl md:text-5xl font-black text-white leading-tight tracking-tight mb-4 z-10 relative">
-          Good morning! Your store is tracking at{' '}
+          Your store is tracking at{' '}
           <span className="price-text text-4xl md:text-6xl">
             ${formatCompact(totalRev)}
           </span>{' '}in total sales.

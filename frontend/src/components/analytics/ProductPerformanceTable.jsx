@@ -1,31 +1,39 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { ArrowUpRight, ArrowDownRight, ArrowRight, TrendingUp, TrendingDown, Minus } from 'lucide-react';
+import api from '../../services/api';
 
 export default function ProductPerformanceTable({ filters }) {
   const [sortField, setSortField] = useState('revenue');
   const [sortOrder, setSortOrder] = useState('desc');
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  // Generate mock tabular data
-  const data = useMemo(() => {
-    const products = [
-      { id: 'P-1001', name: 'Wireless Noise-Canceling Headphones', category: 'Electronics', brand: 'Sony', price: 299.99, revenue: 145000, margin: 42.5, stock: 1240, velocity: 'High' },
-      { id: 'P-1002', name: 'Ultra HD Smart TV 65"', category: 'Electronics', brand: 'Samsung', price: 899.00, revenue: 310000, margin: 28.0, stock: 350, velocity: 'Medium' },
-      { id: 'P-1003', name: 'Running Shoes Pro X', category: 'Apparel', brand: 'Nike', price: 129.99, revenue: 85000, margin: 55.2, stock: 85, velocity: 'Critical' },
-      { id: 'P-1004', name: 'MacBook Pro M2', category: 'Electronics', brand: 'Apple', price: 1499.00, revenue: 520000, margin: 22.5, stock: 110, velocity: 'High' },
-      { id: 'P-1005', name: 'Ergonomic Office Chair', category: 'Home Goods', brand: 'Herman Miller', price: 799.00, revenue: 64000, margin: 35.0, stock: 420, velocity: 'Low' },
-      { id: 'P-1006', name: 'Hydrating Face Serum', category: 'Beauty', brand: 'L\'Oreal', price: 34.50, revenue: 12000, margin: 78.4, stock: 3500, velocity: 'Medium' },
-      { id: 'P-1007', name: 'PlayStation 5 Console', category: 'Electronics', brand: 'Sony', price: 499.99, revenue: 410000, margin: 15.0, stock: 0, velocity: 'Stockout' },
-      { id: 'P-1008', name: 'Yoga Mat Premium', category: 'Apparel', brand: 'Lululemon', price: 88.00, revenue: 24000, margin: 62.0, stock: 890, velocity: 'Low' },
-    ];
-    
-    // Simulate filtering
-    let filtered = products;
-    if (filters.category !== 'all') {
-      filtered = filtered.filter(p => p.category.toLowerCase().includes(filters.category.toLowerCase()) || filters.category.toLowerCase().includes(p.category.toLowerCase().split(' ')[0]));
-    }
-    
-    // Sort
-    return filtered.sort((a, b) => {
+  // Fetch real data from the PostgreSQL database
+  useEffect(() => {
+    const fetchProductData = async () => {
+      setLoading(true);
+      try {
+        const response = await api.get('/dashboard/product-performance', {
+          params: {
+            category: filters.category,
+            brand: filters.brand
+          }
+        });
+        setData(response.data);
+      } catch (error) {
+        console.error("Failed to fetch product performance data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProductData();
+  }, [filters]);
+
+  // Handle client-side sorting of the fetched data
+  const sortedData = useMemo(() => {
+    let sorted = [...data];
+    return sorted.sort((a, b) => {
       let valA = a[sortField];
       let valB = b[sortField];
       if (typeof valA === 'string') valA = valA.toLowerCase();
@@ -35,7 +43,7 @@ export default function ProductPerformanceTable({ filters }) {
       if (valA > valB) return sortOrder === 'asc' ? 1 : -1;
       return 0;
     });
-  }, [filters, sortField, sortOrder]);
+  }, [data, sortField, sortOrder]);
 
   const handleSort = (field) => {
     if (sortField === field) {
@@ -88,7 +96,16 @@ export default function ProductPerformanceTable({ filters }) {
           </tr>
         </thead>
         <tbody>
-          {data.length > 0 ? data.map((item, idx) => (
+          {loading ? (
+            <tr>
+              <td colSpan="6" className="p-8 text-center text-white/40 font-semibold">
+                <div className="flex flex-col items-center justify-center gap-3">
+                  <div className="w-6 h-6 border-2 border-brand-500 border-t-transparent rounded-full animate-spin"></div>
+                  <span>Crunching data...</span>
+                </div>
+              </td>
+            </tr>
+          ) : sortedData.length > 0 ? sortedData.map((item, idx) => (
             <tr key={item.id} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors group">
               <td className="p-4">
                 <p className="font-bold text-sm text-white group-hover:text-brand-300 transition-colors">{item.name}</p>
