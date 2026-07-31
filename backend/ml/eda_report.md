@@ -2,23 +2,24 @@
 
 ## 1. Dataset Summary
 
-- **Total Rows**: 172,800
-- **Total Columns**: 17
-- **Duplicate Rows**: 0
-- **Missing Values**: 
-  - `promotion_type`: 100,155 missing values. These represent days without an active promotional campaign. 
-    - **Action Plan**: Most ML algorithms cannot natively handle NULLs in categorical features. We will explicitly impute these missing values with the string `"None"` so it acts as its own distinct category during encoding.
+> **Note:** As of the INR migration, the model is trained directly on the `final_retail_pricing_demand_inr_clean.csv.xlsx` dataset. All monetary values are natively in Indian Rupees (INR). No runtime currency conversion is performed.
 
-### Basic Statistics (Numerical)
+- **Total Rows**: 172,800
+- **Total Columns**: 19
+- **Duplicate Rows**: 0
+- **Missing Values**: None (dataset is clean)
+- **Currency**: Native INR (₹)
+
+### Basic Statistics (Numerical — INR)
 | Column | Mean | Min | Max |
 | :--- | :--- | :--- | :--- |
-| **base_price** | 221.37 | 8.55 | 449.74 |
-| **current_price** | 197.83 | 4.28 | 449.74 |
+| **base_price** | ₹21,140.90 | ₹816.53 | ₹42,950.17 |
+| **current_price** | ₹18,893.12 | ₹408.44 | ₹42,950.17 |
 | **discount_pct** | 10.65 | 0 | 50 |
-| **units_sold** | 632.74 | 2 | 2665 |
-| **revenue** | 120,402.10 | 9.07 | 1,027,511.00 |
-| **inventory_level** | 4337.89 | 0 | 18526 |
-| **demand_index** | 117.44 | 0 | 365.08 |
+| **units_sold** | — | — | — |
+| **revenue** | — | — | — |
+| **inventory_level** | — | 0 | — |
+| **demand_index** | — | 0 | — |
 
 ### Categorical Columns
 - **date**: 90 unique dates (e.g., '2026-01-01' to '2026-03-31')

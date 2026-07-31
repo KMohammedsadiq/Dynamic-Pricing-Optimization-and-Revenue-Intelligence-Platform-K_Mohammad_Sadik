@@ -7,7 +7,7 @@ logger = logging.getLogger("HistoricalPriceService")
 
 # Build absolute paths relative to backend root
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-DATA_PATH = os.path.join(BASE_DIR, "ml", "data", "retail_pricing_demand_100k.csv")
+DATA_PATH = os.path.join(BASE_DIR, "ml", "data", "final_retail_pricing_demand_inr_clean.csv.xlsx")
 
 class HistoricalPriceService:
     def __init__(self):
@@ -16,11 +16,16 @@ class HistoricalPriceService:
 
     def _load_data(self):
         try:
-            logger.info("Loading historical pricing dataset into memory...")
-            self.df = pd.read_csv(DATA_PATH)
+            logger.info("Loading historical INR pricing dataset into memory...")
+            self.df = pd.read_excel(DATA_PATH)
+
+            # Normalize column name: new dataset uses 'sales_channel', code expects 'channel'
+            if 'sales_channel' in self.df.columns and 'channel' not in self.df.columns:
+                self.df.rename(columns={'sales_channel': 'channel'}, inplace=True)
+
             # Impute promotion_type just as we did for ML
             self.df['promotion_type'] = self.df['promotion_type'].fillna("No Promotion")
-            logger.info(f"Historical dataset loaded successfully. {len(self.df)} records.")
+            logger.info(f"Historical INR dataset loaded successfully. {len(self.df)} records.")
         except Exception as e:
             logger.error(f"Failed to load historical dataset: {e}")
 
@@ -31,7 +36,7 @@ class HistoricalPriceService:
         # Calculate price band (+/- 10%)
         min_price = base_price * 0.90
         max_price = base_price * 1.10
-        
+
         # Base filter (Price Band + Category)
         base_subset = self.df[
             (self.df['base_price'] >= min_price) &
@@ -63,7 +68,7 @@ class HistoricalPriceService:
                 "message": "No similar historical products found."
             }
 
-        # Compute statistics
+        # Compute statistics — prices are natively in INR, no conversion needed
         stats = {
             "matching_records": len(subset),
             "match_level": match_level,
