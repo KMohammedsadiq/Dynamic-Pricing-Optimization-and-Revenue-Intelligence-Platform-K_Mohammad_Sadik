@@ -17,8 +17,26 @@ export default function ProductDetails() {
 
   const fetchProductDetails = async () => {
     try {
-      const response = await api.get(`/products/${id}`);
-      setProduct(response.data);
+      // 1. Fetch Catalog Data (Name, Category, Brand, Base Price)
+      const catalogRes = await api.get(`/products/${id}`);
+      const catalogData = catalogRes.data;
+      
+      // 2. Fetch Historical Analytics Data using SKU (product_id)
+      let analyticsData = {};
+      if (catalogData.product_id) {
+        try {
+          const analyticsRes = await api.get(`/dashboard/product-analytics/${catalogData.product_id}`);
+          analyticsData = analyticsRes.data;
+        } catch (analyticsErr) {
+          console.warn("Could not fetch analytics for this SKU. It may be a newly created product.", analyticsErr);
+        }
+      }
+
+      // Merge them together for the dashboard view
+      setProduct({
+        ...catalogData,
+        ...analyticsData
+      });
     } catch (err) {
       setError("Product not found or an error occurred.");
     } finally {
@@ -93,7 +111,7 @@ export default function ProductDetails() {
           <div className="text-left md:text-right z-10 p-6 bg-white/5 rounded-2xl border border-white/10 shadow-inner">
             <p className="text-xs font-bold text-white/50 uppercase tracking-widest mb-1">Current Price</p>
             <p className="price-text text-5xl">
-              ${parseFloat(product.current_price || 0).toFixed(2)}
+              ${parseFloat(product.current_price || product.base_price || 0).toFixed(2)}
             </p>
           </div>
         </div>
@@ -120,7 +138,7 @@ export default function ProductDetails() {
               </div>
               <div className="flex justify-between items-center p-3 bg-white/5 rounded-xl">
                 <span className="text-white/60 font-medium">Inventory Level</span>
-                <span className="font-bold text-white text-lg">{product.inventory_level}</span>
+                <span className="font-bold text-white text-lg">{product.inventory_level || product.initial_inventory || 0}</span>
               </div>
               <div className="flex justify-between items-center p-3 bg-white/5 rounded-xl">
                 <span className="text-white/60 font-medium">Stockout Flag</span>

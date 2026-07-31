@@ -11,6 +11,13 @@ class Product(Base):
     # Core Product Info (Persists across both datasets)
     product_id = Column(String, index=True, nullable=False)
     
+    # --- PRODUCT CATALOG FIELDS ---
+    product_name = Column(String, index=True, nullable=True)
+    description = Column(String, nullable=True)
+    cost_price = Column(Numeric(10, 2), nullable=True)
+    status = Column(String, default="Active", index=True)
+    is_deleted = Column(Boolean, default=False, index=True)
+    
     # --- OLD DATASET COLUMNS (Temporarily Retained for Backward Compatibility) ---
     # TODO: Deprecate and remove these in a future cleanup migration
     product_category_name = Column(String, index=True, nullable=True)

@@ -109,6 +109,60 @@ def get_inventory_overview(
         ]
     }
 
+@router.get("/product-analytics/{sku}")
+def get_product_analytics(
+    sku: str,
+    token_payload: Annotated[dict, Depends(get_current_user_token)],
+    db: Session = Depends(get_db)
+):
+    """
+    Returns aggregated historical analytics for a specific SKU.
+    """
+    result = db.query(
+        func.sum(Product.revenue).label("total_revenue"),
+        func.sum(Product.units_sold).label("total_units"),
+        func.avg(Product.current_price).label("avg_current_price"),
+        func.avg(Product.discount_pct).label("avg_discount"),
+        func.avg(Product.demand_index).label("avg_demand"),
+        func.avg(Product.price_change_pct).label("avg_price_change"),
+        func.sum(Product.inventory_level).label("total_inventory"),
+    ).filter(Product.product_id == sku).first()
+
+    # Get the latest snapshot for categorical data (region, channel, season, promotion)
+    latest = db.query(Product).filter(Product.product_id == sku).order_by(desc(Product.date)).first()
+
+    if not result or not result.total_revenue:
+        return {
+            "revenue": 0,
+            "units_sold": 0,
+            "current_price": 0,
+            "discount_pct": 0,
+            "demand_index": 0,
+            "price_change_pct": 0,
+            "inventory_level": 0,
+            "stockout_flag": False,
+            "promotion_type": "None",
+            "region": "N/A",
+            "channel": "N/A",
+            "season": "N/A"
+        }
+
+    return {
+        "revenue": float(result.total_revenue or 0),
+        "units_sold": int(result.total_units or 0),
+        "current_price": float(result.avg_current_price or 0),
+        "discount_pct": float(result.avg_discount or 0),
+        "demand_index": float(result.avg_demand or 0),
+        "price_change_pct": float(result.avg_price_change or 0),
+        "inventory_level": int(result.total_inventory or 0),
+        "stockout_flag": bool(result.total_inventory == 0),
+        "promotion_type": latest.promotion_type if latest else "None",
+        "region": latest.region if latest else "N/A",
+        "channel": latest.channel if latest else "N/A",
+        "season": latest.season if latest else "N/A",
+        "date": latest.date.isoformat() if latest and latest.date else None
+    }
+
 @router.get("/promotion-analysis")
 def get_promotion_analysis(
     token_payload: Annotated[dict, Depends(get_current_user_token)],

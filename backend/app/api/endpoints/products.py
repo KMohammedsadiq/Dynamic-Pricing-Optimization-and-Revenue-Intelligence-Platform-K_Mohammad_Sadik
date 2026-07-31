@@ -9,6 +9,7 @@ import math
 from app.db.session import get_db
 from app.api.deps import require_admin
 from app.models.product import Product
+from app.models.product_catalog import ProductCatalog
 from app.models.dataset_upload import DatasetUpload
 
 router = APIRouter()
@@ -28,6 +29,9 @@ async def upload_dataset(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Only .csv files are allowed."
         )
+
+    # We no longer block by filename. Instead, we use a smart anti-join below 
+    # to only insert brand new rows from the CSV and ignore rows that already exist in the database!
 
     try:
         contents = await file.read()
@@ -93,8 +97,30 @@ async def upload_dataset(
     # 5. Handle duplicate records
     df = df.drop_duplicates()
 
-    # 6. Final Cleaning: Replace remaining NaN with None for SQLAlchemy compatibility
-    df = df.where(pd.notnull(df), None)
+    # 6. Smart Anti-Join to prevent duplicating records already in the database
+    if is_new_dataset:
+        # High-performance Core execution (bypasses slow ORM object creation)
+        query = db.query(Product.product_id, Product.date, Product.region, Product.channel).statement
+        existing_rows = db.execute(query).fetchall()
+        df_existing = pd.DataFrame(existing_rows, columns=['product_id', 'date', 'region', 'channel'])
+        
+        if not df_existing.empty:
+            df['date'] = pd.to_datetime(df['date'], errors='coerce')
+            df_existing['date'] = pd.to_datetime(df_existing['date'], errors='coerce')
+            
+            # Drop timezone info if present to allow merging
+            if df['date'].dt.tz is not None:
+                df['date'] = df['date'].dt.tz_localize(None)
+            if df_existing['date'].dt.tz is not None:
+                df_existing['date'] = df_existing['date'].dt.tz_localize(None)
+            
+            # Merge and keep only new rows
+            merged = df.merge(df_existing, on=['product_id', 'date', 'region', 'channel'], how='left', indicator=True)
+            df = merged[merged['_merge'] == 'left_only'].drop(columns=['_merge'])
+
+    # 7. Final Cleaning: Replace remaining NaN with None for SQLAlchemy compatibility
+    # Cast to object first so pandas doesn't silently coerce None back into NaT for datetime columns
+    df = df.astype(object).where(pd.notnull(df), None)
 
     records = df.to_dict(orient="records")
     rows_imported = len(records)
@@ -104,8 +130,35 @@ async def upload_dataset(
 
     if rows_imported > 0:
         try:
-            # High-performance bulk insert
+            # High-performance bulk insert into Historical Data
             db.execute(insert(Product), records)
+            
+            # --- AUTO-SYNC TO CATALOG ---
+            # Automatically create entries in the manual Product Catalog for brand new SKUs discovered in the CSV
+            if is_new_dataset:
+                # Extract unique products from the dataframe
+                unique_products_df = df.drop_duplicates(subset=['product_id']).where(pd.notnull(df), None)
+                unique_products = unique_products_df.to_dict(orient="records")
+                
+                # Fetch existing catalog SKUs
+                existing_catalog = db.query(ProductCatalog.product_id).all()
+                existing_skus = {row[0] for row in existing_catalog}
+                
+                new_catalog_entries = []
+                for p in unique_products:
+                    if p['product_id'] not in existing_skus:
+                        new_catalog_entries.append({
+                            "product_id": p['product_id'],
+                            "product_name": p['product_id'], # Default to SKU
+                            "category": p.get('category'),
+                            "brand": p.get('brand'),
+                            "base_price": float(p.get('base_price') or 0),
+                            "initial_inventory": int(p.get('inventory_level') or 0),
+                            "status": "Active"
+                        })
+                
+                if new_catalog_entries:
+                    db.execute(insert(ProductCatalog), new_catalog_entries)
             
             # Record Audit Log
             audit_log = DatasetUpload(
@@ -153,8 +206,9 @@ async def upload_dataset(
     }
 
 from typing import Optional
-from app.crud.crud_product import get_products, get_product
+from app.crud.crud_product import get_products, get_product, create_product, update_product, soft_delete_product
 from app.api.deps import get_current_user_token
+from app.schemas.product_catalog import ProductCatalogCreate, ProductCatalogUpdate, ProductCatalogOut
 
 @router.get("")
 def read_products(
@@ -162,6 +216,8 @@ def read_products(
     limit: int = 20,
     search: Optional[str] = None,
     category: Optional[str] = None,
+    brand: Optional[str] = None,
+    status: Optional[str] = None,
     sort_by: Optional[str] = None,
     sort_desc: bool = False,
     db: Session = Depends(get_db),
@@ -172,7 +228,8 @@ def read_products(
     """
     products, total_count = get_products(
         db, skip=skip, limit=limit, search=search, 
-        category=category, sort_by=sort_by, sort_desc=sort_desc
+        category=category, brand=brand, status=status, 
+        sort_by=sort_by, sort_desc=sort_desc
     )
     
     # Return both the paginated data and the total count for the frontend pager
@@ -183,8 +240,19 @@ def read_products(
         "total_pages": math.ceil(total_count / limit) if limit > 0 else 1
     }
 
-@router.get("/{id}")
-def read_product(
+@router.post("", response_model=ProductCatalogOut)
+def create_new_product(
+    product_in: ProductCatalogCreate,
+    db: Session = Depends(get_db),
+    current_user: dict = Depends(require_admin)
+):
+    """
+    Create a new product. Only accessible by Admins.
+    """
+    return create_product(db=db, product_in=product_in)
+
+@router.get("/{id}", response_model=ProductCatalogOut)
+def read_product_by_id(
     id: int, 
     db: Session = Depends(get_db),
     current_user: dict = Depends(get_current_user_token)
@@ -196,3 +264,34 @@ def read_product(
     if not product:
         raise HTTPException(status_code=404, detail="Product not found")
     return product
+
+@router.put("/{id}", response_model=ProductCatalogOut)
+def update_existing_product(
+    id: int,
+    product_in: ProductCatalogUpdate,
+    db: Session = Depends(get_db),
+    current_user: dict = Depends(require_admin)
+):
+    """
+    Update an existing product. Only accessible by Admins.
+    """
+    product = get_product(db, product_id=id)
+    if not product:
+        raise HTTPException(status_code=404, detail="Product not found")
+    
+    return update_product(db=db, db_obj=product, product_in=product_in)
+
+@router.delete("/{id}", response_model=ProductCatalogOut)
+def delete_existing_product(
+    id: int,
+    db: Session = Depends(get_db),
+    current_user: dict = Depends(require_admin)
+):
+    """
+    Soft delete a product by its ID. Only accessible by Admins.
+    """
+    product = get_product(db, product_id=id)
+    if not product:
+        raise HTTPException(status_code=404, detail="Product not found")
+    
+    return soft_delete_product(db=db, db_obj=product)
