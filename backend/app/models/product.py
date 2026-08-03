@@ -62,6 +62,18 @@ class Product(Base):
     stockout_flag = Column(Integer, nullable=True)
     demand_index = Column(Numeric(10, 2), nullable=True)
     
+    # New Business Attributes (retail_pricing_demand_final)
+    product_model = Column(String, nullable=True)
+    launch_year = Column(Integer, nullable=True)
+    days_since_launch = Column(Integer, nullable=True)
+    product_lifecycle = Column(String, nullable=True)
+    competitor_price = Column(Numeric(10, 2), nullable=True)
+    average_rating = Column(Numeric(3, 2), nullable=True)
+    review_count = Column(Integer, nullable=True)
+    historical_sales = Column(Integer, nullable=True)
+    profit_margin = Column(Numeric(10, 2), nullable=True)
+    supplier_name = Column(String, nullable=True)
+    
     # Audit
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())

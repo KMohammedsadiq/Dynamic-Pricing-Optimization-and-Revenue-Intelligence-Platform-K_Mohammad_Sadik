@@ -13,6 +13,18 @@ class ProductBase(BaseModel):
     cost_price: Optional[Decimal] = Field(None, title="Cost Price")
     inventory_level: int = Field(0, title="Inventory Level")
     
+    # New Business Attributes
+    product_model: Optional[str] = Field(None, title="Product Model")
+    launch_year: Optional[int] = Field(None, title="Launch Year")
+    days_since_launch: Optional[int] = Field(None, title="Days Since Launch")
+    product_lifecycle: Optional[str] = Field(None, title="Product Lifecycle")
+    competitor_price: Optional[Decimal] = Field(None, title="Competitor Price")
+    average_rating: Optional[Decimal] = Field(None, title="Average Rating")
+    review_count: Optional[int] = Field(None, title="Review Count")
+    historical_sales: Optional[int] = Field(None, title="Historical Sales")
+    profit_margin: Optional[Decimal] = Field(None, title="Profit Margin")
+    supplier_name: Optional[str] = Field(None, title="Supplier Name")
+    
     status: Optional[str] = Field("Active", title="Status")
 
     @validator("status", pre=True)
@@ -51,6 +63,18 @@ class ProductUpdate(BaseModel):
     base_price: Optional[Decimal] = Field(None)
     cost_price: Optional[Decimal] = Field(None)
     inventory_level: Optional[int] = Field(None)
+    
+    product_model: Optional[str] = Field(None)
+    launch_year: Optional[int] = Field(None)
+    days_since_launch: Optional[int] = Field(None)
+    product_lifecycle: Optional[str] = Field(None)
+    competitor_price: Optional[Decimal] = Field(None)
+    average_rating: Optional[Decimal] = Field(None)
+    review_count: Optional[int] = Field(None)
+    historical_sales: Optional[int] = Field(None)
+    profit_margin: Optional[Decimal] = Field(None)
+    supplier_name: Optional[str] = Field(None)
+    
     status: Optional[str] = Field(None)
 
     @validator("base_price")

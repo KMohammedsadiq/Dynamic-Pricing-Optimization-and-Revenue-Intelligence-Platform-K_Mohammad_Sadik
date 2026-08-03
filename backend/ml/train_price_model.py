@@ -36,8 +36,15 @@ def evaluate_model(model, X_test, y_test):
     
     return mae, rmse, r2
 
-def save_model(model, preprocessor, model_path="backend/ml/models/price_model.joblib", preprocessor_path="backend/ml/models/preprocessor.joblib"):
+def save_model(model, preprocessor, model_path=None, preprocessor_path=None):
     """Save the trained model and preprocessor to disk."""
+    import os
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    if model_path is None:
+        model_path = os.path.join(base_dir, "models", "price_model.joblib")
+    if preprocessor_path is None:
+        preprocessor_path = os.path.join(base_dir, "models", "preprocessor.joblib")
+        
     print(f"\nSaving model to {model_path}...")
     joblib.dump(model, model_path)
     

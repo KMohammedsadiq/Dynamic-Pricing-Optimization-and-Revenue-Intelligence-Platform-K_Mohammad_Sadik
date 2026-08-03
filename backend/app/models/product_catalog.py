@@ -21,6 +21,18 @@ class ProductCatalog(Base):
     cost_price = Column(Numeric(10, 2), nullable=True)
     initial_inventory = Column(Integer, default=0, nullable=False)
     
+    # New Business Attributes (retail_pricing_demand_final)
+    product_model = Column(String, nullable=True)
+    launch_year = Column(Integer, nullable=True)
+    days_since_launch = Column(Integer, nullable=True)
+    product_lifecycle = Column(String, nullable=True)
+    competitor_price = Column(Numeric(10, 2), nullable=True)
+    average_rating = Column(Numeric(3, 2), nullable=True)
+    review_count = Column(Integer, nullable=True)
+    historical_sales = Column(Integer, nullable=True)
+    profit_margin = Column(Numeric(10, 2), nullable=True)
+    supplier_name = Column(String, nullable=True)
+    
     # State Management
     status = Column(String, default="Active", index=True)
     is_deleted = Column(Boolean, default=False, index=True)

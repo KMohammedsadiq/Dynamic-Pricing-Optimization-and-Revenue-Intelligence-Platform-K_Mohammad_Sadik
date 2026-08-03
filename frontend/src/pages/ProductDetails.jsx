@@ -105,7 +105,9 @@ export default function ProductDetails() {
                 </span>
               )}
             </div>
-            <h1 className="text-4xl md:text-5xl font-mono font-black text-white tracking-tight">{product.product_id}</h1>
+            <h1 className="text-4xl md:text-5xl font-mono font-black text-white tracking-tight">
+              {product.product_name || product.product_id}
+            </h1>
           </div>
           
           <div className="text-left md:text-right z-10 p-6 bg-white/5 rounded-2xl border border-white/10 shadow-inner">

@@ -149,7 +149,7 @@ async def upload_dataset(
                     if p['product_id'] not in existing_skus:
                         new_catalog_entries.append({
                             "product_id": p['product_id'],
-                            "product_name": p['product_id'], # Default to SKU
+                            "product_name": p.get('product_name') or p['product_id'],
                             "category": p.get('category'),
                             "brand": p.get('brand'),
                             "base_price": float(p.get('base_price') or 0),

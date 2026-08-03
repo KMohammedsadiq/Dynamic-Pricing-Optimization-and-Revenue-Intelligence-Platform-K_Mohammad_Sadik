@@ -21,7 +21,6 @@ def get_products(
     if search:
         query = query.filter(
             or_(
-                ProductCatalog.product_id.ilike(f"%{search}%"),
                 ProductCatalog.product_name.ilike(f"%{search}%"),
                 ProductCatalog.category.ilike(f"%{search}%"),
                 ProductCatalog.brand.ilike(f"%{search}%")
@@ -65,23 +64,14 @@ def create_product(db: Session, product_in: ProductCatalogCreate):
     import random
     import string
     
+    product_data = product_in.dict(exclude_unset=True)
+    
     # Generate SKU if not provided
-    sku = product_in.product_id
-    if not sku:
+    if "product_id" not in product_data or not product_data["product_id"]:
         random_suffix = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
-        sku = f"SKU-{random_suffix}"
+        product_data["product_id"] = f"SKU-{random_suffix}"
         
-    db_obj = ProductCatalog(
-        product_id=sku,
-        product_name=product_in.product_name,
-        category=product_in.category,
-        brand=product_in.brand,
-        description=product_in.description,
-        base_price=product_in.base_price,
-        cost_price=product_in.cost_price,
-        initial_inventory=product_in.initial_inventory,
-        status=product_in.status
-    )
+    db_obj = ProductCatalog(**product_data)
     db.add(db_obj)
     db.commit()
     db.refresh(db_obj)

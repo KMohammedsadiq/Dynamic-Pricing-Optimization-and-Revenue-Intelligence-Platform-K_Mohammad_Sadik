@@ -7,7 +7,7 @@ logger = logging.getLogger("HistoricalPriceService")
 
 # Build absolute paths relative to backend root
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-DATA_PATH = os.path.join(BASE_DIR, "ml", "data", "final_retail_pricing_demand_inr_clean.csv.xlsx")
+DATA_PATH = os.path.join(BASE_DIR, "ml", "data", "retail_pricing_demand_final.csv")
 
 class HistoricalPriceService:
     def __init__(self):
@@ -16,20 +16,22 @@ class HistoricalPriceService:
 
     def _load_data(self):
         try:
-            logger.info("Loading historical INR pricing dataset into memory...")
-            self.df = pd.read_excel(DATA_PATH)
+            logger.info("Loading historical pricing dataset into memory...")
+            self.df = pd.read_csv(DATA_PATH)
 
-            # Normalize column name: new dataset uses 'sales_channel', code expects 'channel'
+            # Normalize column name
             if 'sales_channel' in self.df.columns and 'channel' not in self.df.columns:
                 self.df.rename(columns={'sales_channel': 'channel'}, inplace=True)
 
             # Impute promotion_type just as we did for ML
-            self.df['promotion_type'] = self.df['promotion_type'].fillna("No Promotion")
-            logger.info(f"Historical INR dataset loaded successfully. {len(self.df)} records.")
+            if 'promotion_type' in self.df.columns:
+                self.df['promotion_type'] = self.df['promotion_type'].fillna("No Promotion")
+            
+            logger.info(f"Historical dataset loaded successfully. {len(self.df)} records.")
         except Exception as e:
             logger.error(f"Failed to load historical dataset: {e}")
 
-    def analyze(self, category: str, brand: str, region: str, season: str, base_price: float) -> dict:
+    def analyze(self, product_name: str, product_model: str, category: str, brand: str, region: str, season: str, base_price: float) -> dict:
         if self.df is None:
             return {"matching_records": 0, "message": "Historical data is unavailable."}
 
@@ -37,27 +39,46 @@ class HistoricalPriceService:
         min_price = base_price * 0.90
         max_price = base_price * 1.10
 
-        # Base filter (Price Band + Category)
+        # Base filter (Category + Price Band)
         base_subset = self.df[
             (self.df['base_price'] >= min_price) &
             (self.df['base_price'] <= max_price) &
             (self.df['category'] == category)
         ]
 
-        # Level 1: Strict Match (Category + Brand + Region + Season + Price Band)
+        # Level 1: Strict Match
         subset = base_subset[
+            (base_subset['product_name'] == product_name) &
+            (base_subset['product_model'] == product_model) &
             (base_subset['brand'] == brand) &
             (base_subset['region'] == region) &
             (base_subset['season'] == season)
         ]
-        match_level = "Strict (Category + Brand + Region + Season + Price Band)"
+        match_level = "Strict (Name + Model + Brand + Category + Price Band + Region + Season)"
 
-        # Level 2: Relaxed Match (Category + Brand + Price Band)
+        # Level 2: High Match
+        if len(subset) < 20:
+            subset = base_subset[
+                (base_subset['product_name'] == product_name) &
+                (base_subset['product_model'] == product_model) &
+                (base_subset['brand'] == brand)
+            ]
+            match_level = "High (Name + Model + Brand + Category + Price Band)"
+
+        # Level 3: Medium Match
+        if len(subset) < 20:
+            subset = base_subset[
+                (base_subset['product_name'] == product_name) &
+                (base_subset['brand'] == brand)
+            ]
+            match_level = "Medium (Name + Brand + Category + Price Band)"
+
+        # Level 4: Relaxed Match
         if len(subset) < 20:
             subset = base_subset[base_subset['brand'] == brand]
-            match_level = "Relaxed (Category + Brand + Price Band)"
+            match_level = "Relaxed (Brand + Category + Price Band)"
 
-        # Level 3: Broad Match (Category + Price Band)
+        # Level 5: Broad Match
         if len(subset) < 20:
             subset = base_subset
             match_level = "Broad (Category + Price Band)"

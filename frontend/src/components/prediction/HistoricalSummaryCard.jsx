@@ -1,40 +1,47 @@
 import React from 'react';
 
-const StatRow = ({ label, value, highlight = false }) => (
-  <div className="flex justify-between items-center py-2 border-b border-gray-50 last:border-0">
+const formatINR = (val) => {
+  if (val === null || val === undefined) return '—';
+  return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 2 }).format(val);
+};
+
+const Row = ({ label, value, accent }) => (
+  <div className="flex justify-between items-center py-2.5 border-b border-gray-100 last:border-0">
     <span className="text-sm text-gray-500">{label}</span>
-    <span className={`text-sm font-medium ${highlight ? 'text-gray-900' : 'text-gray-700'}`}>{value}</span>
+    <span className={`text-sm font-bold ${accent ? 'text-black' : 'text-gray-700'}`}>{value}</span>
   </div>
 );
 
-const formatCurrency = (value, currency) => {
-  if (value === null || value === undefined) return 'N/A';
-  return new Intl.NumberFormat('en-IN', { style: 'currency', currency: currency || 'INR' }).format(value);
-};
-
 const HistoricalSummaryCard = ({ summary, currency }) => {
-  if (!summary) {
-    return (
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex items-center justify-center h-full">
-        <p className="text-sm text-gray-500 italic">No historical data available for comparison.</p>
-      </div>
-    );
-  }
+  if (!summary) return (
+    <div className="bg-white rounded-2xl border border-gray-200 p-6 flex items-center justify-center">
+      <p className="text-sm text-gray-400 italic">No historical data available.</p>
+    </div>
+  );
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="text-sm font-semibold text-gray-800">Historical Market Context</h3>
-        <span className="bg-blue-50 text-blue-700 text-xs font-semibold px-2.5 py-1 rounded-full">
-          {summary.matching_records || 0} Matches
-        </span>
+    <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+      {/* Header strip */}
+      <div className="bg-gray-50 border-b border-gray-200 px-5 py-4 flex items-center justify-between">
+        <div>
+          <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">Historical Market</p>
+          <p className="text-sm font-bold text-gray-900 mt-0.5">Comparable Transactions</p>
+        </div>
+        <div className="bg-black text-white text-xs font-bold px-3 py-1.5 rounded-full">
+          {summary.matching_records} matches
+        </div>
       </div>
-      
-      <div className="space-y-1 mt-4">
-        <StatRow label="Average Price" value={formatCurrency(summary.average_price, currency)} highlight />
-        <StatRow label="Highest Price" value={formatCurrency(summary.highest_price, currency)} />
-        <StatRow label="Lowest Price" value={formatCurrency(summary.lowest_price, currency)} />
-        <StatRow label="Median Price" value={formatCurrency(summary.median_price || summary.average_price, currency)} />
+
+      {/* Stats */}
+      <div className="px-5 py-3">
+        <Row label="Average Price" value={formatINR(summary.average_price)} accent />
+        <Row label="Highest Price" value={formatINR(summary.highest_price)} />
+        <Row label="Lowest Price"  value={formatINR(summary.lowest_price)} />
+        <Row label="Median Price"  value={formatINR(summary.median_price || summary.average_price)} />
+      </div>
+
+      <div className="px-5 pb-4">
+        <p className="text-xs text-gray-400">All values in native {currency || 'INR'} · Model trained on INR dataset</p>
       </div>
     </div>
   );

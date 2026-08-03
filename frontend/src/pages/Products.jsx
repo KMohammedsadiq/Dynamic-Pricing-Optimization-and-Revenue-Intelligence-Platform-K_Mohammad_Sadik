@@ -81,11 +81,16 @@ export default function Products() {
     setToastType(type);
   };
 
-  const handleSearchSubmit = (e) => {
-    e.preventDefault();
-    setPage(1);
-    setSearch(searchInput);
-  };
+  // Debounce search input
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (search !== searchInput) {
+        setSearch(searchInput);
+        setPage(1);
+      }
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [searchInput, search]);
 
   const handleSort = (column) => {
     if (sortBy === column) {
@@ -216,7 +221,7 @@ export default function Products() {
         
         {/* Toolbar */}
         <div className="p-4 border-b border-[#374151] flex flex-col md:flex-row gap-4 items-center bg-[#1F2937]">
-          <form onSubmit={handleSearchSubmit} className="relative w-full md:w-auto flex-1 max-w-sm">
+          <div className="relative w-full md:w-auto flex-1 max-w-sm">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 w-4 h-4" />
             <input
               type="text"
@@ -225,7 +230,7 @@ export default function Products() {
               onChange={(e) => setSearchInput(e.target.value)}
               className="ent-input w-full pl-9"
             />
-          </form>
+          </div>
 
           <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
             <Filter className="text-gray-500 w-4 h-4 hidden md:block" />
@@ -265,13 +270,23 @@ export default function Products() {
           <table className="w-full text-left border-collapse">
             <thead className="ent-table-header">
               <tr className="text-gray-400 text-xs font-bold uppercase tracking-wider">
-                <th className="p-4 w-64">Product Info</th>
-                <th className="p-4">Category & Brand</th>
+                <th className="p-4 cursor-pointer hover:text-gray-200 transition-colors" onClick={() => handleSort("product_name")}>
+                  Product Name <SortIcon column="product_name" />
+                </th>
+                <th className="p-4 cursor-pointer hover:text-gray-200 transition-colors" onClick={() => handleSort("brand")}>
+                  Brand <SortIcon column="brand" />
+                </th>
+                <th className="p-4 cursor-pointer hover:text-gray-200 transition-colors" onClick={() => handleSort("category")}>
+                  Category <SortIcon column="category" />
+                </th>
                 <th className="p-4 cursor-pointer hover:text-gray-200 transition-colors" onClick={() => handleSort("base_price")}>
-                  Pricing <SortIcon column="base_price" />
+                  Current Price <SortIcon column="base_price" />
                 </th>
                 <th className="p-4 cursor-pointer hover:text-gray-200 transition-colors" onClick={() => handleSort("initial_inventory")}>
-                  Stock <SortIcon column="initial_inventory" />
+                  Inventory <SortIcon column="initial_inventory" />
+                </th>
+                <th className="p-4 cursor-pointer hover:text-gray-200 transition-colors" onClick={() => handleSort("status")}>
+                  Status <SortIcon column="status" />
                 </th>
                 <th className="p-4 text-right">Actions</th>
               </tr>
@@ -279,7 +294,7 @@ export default function Products() {
             <tbody className="divide-y divide-[#374151]">
               {loading ? (
                 <tr>
-                  <td colSpan="5" className="p-12 text-center text-gray-500 font-medium">
+                  <td colSpan="7" className="p-12 text-center text-gray-500 font-medium">
                     <div className="flex items-center justify-center gap-2">
                       <svg className="animate-spin h-5 w-5 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                       Loading catalog...
@@ -288,7 +303,7 @@ export default function Products() {
                 </tr>
               ) : products.length === 0 ? (
                 <tr>
-                  <td colSpan="5" className="p-12 text-center text-gray-500">
+                  <td colSpan="7" className="p-12 text-center text-gray-500">
                     <div className="flex flex-col items-center justify-center gap-3">
                       <Package className="w-12 h-12 text-gray-700" />
                       <p>No products found in the catalog.</p>
@@ -301,41 +316,34 @@ export default function Products() {
                     <tr 
                       key={product.id} 
                       onClick={(e) => handleRowClick(product.id, e)}
-                      className="ent-table-row cursor-pointer group"
+                      className="ent-table-row cursor-pointer group hover:bg-[#374151]/50 transition-colors"
                     >
                       <td className="p-4">
-                        <div className="font-bold text-gray-50 group-hover:text-blue-400 transition-colors">
-                          {product.product_name || product.product_id}
+                        <div className="font-bold text-gray-50 group-hover:text-blue-400 transition-colors whitespace-nowrap">
+                          {product.product_name}
                         </div>
-                        {product.product_name && (
-                          <div className="text-xs text-gray-500 font-mono mt-1">
-                            {product.product_id}
-                          </div>
-                        )}
+                      </td>
+                      <td className="p-4">
+                        <div className="text-sm text-gray-300 font-medium uppercase tracking-wide">
+                          {product.brand || "—"}
+                        </div>
                       </td>
                       <td className="p-4">
                         <div className="text-sm text-gray-300 capitalize">
                           {product.category?.replace("_", " ") || "—"}
                         </div>
-                        <div className="text-xs text-gray-500 font-bold mt-1 uppercase">
-                          {product.brand || "—"}
-                        </div>
                       </td>
                       <td className="p-4">
                         <div className="text-sm font-bold text-gray-100">
-                          ₹{parseFloat(product.base_price || 0).toFixed(2)}
+                          ₹{parseFloat(product.base_price || 0).toLocaleString('en-IN', { maximumFractionDigits: 2 })}
                         </div>
-                        {product.cost_price !== null && product.cost_price !== undefined && (
-                          <div className="text-xs text-gray-500 font-bold mt-1">
-                            Cost: ₹{parseFloat(product.cost_price).toFixed(2)}
-                          </div>
-                        )}
                       </td>
                       <td className="p-4">
-                        <div className="flex items-center gap-2 mb-1">
-                          <div className={`w-2 h-2 rounded-full ${product.initial_inventory > 50 ? 'bg-green-500' : product.initial_inventory > 10 ? 'bg-yellow-500' : 'bg-red-500'}`}></div>
-                          <span className="text-sm font-bold text-gray-300">{product.initial_inventory || 0}</span>
+                        <div className="text-sm font-bold text-gray-300">
+                          {product.initial_inventory || 0}
                         </div>
+                      </td>
+                      <td className="p-4">
                         <span className={`px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-md border ${product.status === 'Active' ? 'bg-green-500/10 text-green-500 border-green-500/20' : 'bg-[#111827] text-gray-500 border-[#374151]'}`}>
                           {product.status || "Active"}
                         </span>

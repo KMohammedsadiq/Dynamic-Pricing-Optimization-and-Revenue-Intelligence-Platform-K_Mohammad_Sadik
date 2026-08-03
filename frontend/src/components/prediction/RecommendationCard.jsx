@@ -1,43 +1,56 @@
 import React from 'react';
 import ReasonList from './ReasonList';
 
-const RecommendationCard = ({ recommendation, priceDifference, currency, reasons }) => {
-  const status = recommendation || "Maintain Current Pricing"; 
-  
-  // Logic for colored badges based on the user's prompt requirements
-  const getBadgeStyle = (rec) => {
-    switch (rec) {
-      case 'Increase Price': return 'bg-green-100 text-green-800 border-green-200';
-      case 'Maintain Current Pricing': return 'bg-blue-100 text-blue-800 border-blue-200';
-      case 'Reduce Price': return 'bg-orange-100 text-orange-800 border-orange-200';
-      case 'Trust ML Prediction': return 'bg-purple-100 text-purple-800 border-purple-200';
-      default: return 'bg-gray-100 text-gray-800 border-gray-200';
-    }
-  };
+const formatINR = (val) => {
+  if (val === null || val === undefined) return '—';
+  return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 2 }).format(val);
+};
 
-  const formattedDifference = priceDifference !== null && priceDifference !== undefined
-    ? new Intl.NumberFormat('en-IN', { style: 'currency', currency: currency || 'INR' }).format(priceDifference)
-    : 'N/A';
+const CONFIG = {
+  'Increase Price':          { icon: '↑', label: 'Increase Price',         border: 'border-black',    bg: 'bg-black',    text: 'text-white', badge: 'bg-white text-black' },
+  'Reduce Price':            { icon: '↓', label: 'Reduce Price',           border: 'border-gray-300', bg: 'bg-gray-800', text: 'text-white', badge: 'bg-white text-gray-800' },
+  'Maintain Current Pricing':{ icon: '=', label: 'Maintain Pricing',       border: 'border-gray-200', bg: 'bg-gray-100', text: 'text-gray-900', badge: 'bg-black text-white' },
+  'Trust ML Prediction':     { icon: '◆', label: 'Trust ML Prediction',    border: 'border-gray-200', bg: 'bg-gray-50',  text: 'text-gray-900', badge: 'bg-black text-white' },
+};
+const DEFAULT = CONFIG['Trust ML Prediction'];
+
+const RecommendationCard = ({ recommendation, priceDifference, currency, reasons }) => {
+  const cfg = CONFIG[recommendation] || DEFAULT;
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:col-span-2">
-      <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
-        <div>
-          <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2">Business Strategy</h3>
-          <div className={`inline-flex px-4 py-2 rounded-lg font-bold border ${getBadgeStyle(status)}`}>
-            {status}
+    <div className={`md:col-span-2 rounded-2xl border-2 overflow-hidden shadow-sm ${cfg.border}`}>
+      {/* Colored header */}
+      <div className={`${cfg.bg} px-6 py-5 flex flex-wrap items-center justify-between gap-4`}>
+        <div className="flex items-center gap-3">
+          <span className={`text-2xl font-black ${cfg.text} leading-none`}>{cfg.icon}</span>
+          <div>
+            <p className={`text-xs font-bold uppercase tracking-widest opacity-60 ${cfg.text}`}>Strategy</p>
+            <p className={`text-lg font-extrabold ${cfg.text}`}>{cfg.label}</p>
           </div>
         </div>
-        <div className="text-right">
-          <p className="text-sm text-gray-500 mb-1">Difference</p>
-          <p className="text-lg font-bold text-gray-800">{formattedDifference}</p>
+
+        <div className="flex items-center gap-3">
+          {priceDifference !== null && priceDifference !== undefined && (
+            <div className="text-right">
+              <p className={`text-xs opacity-60 ${cfg.text}`}>Gap vs Historical</p>
+              <p className={`text-xl font-extrabold ${cfg.text}`}>
+                {priceDifference >= 0 ? '+' : ''}{formatINR(priceDifference)}
+              </p>
+            </div>
+          )}
+          <span className={`text-xs font-bold px-3 py-1.5 rounded-full ${cfg.badge}`}>
+            {recommendation || 'Analysis'}
+          </span>
         </div>
       </div>
-      
-      <div className="bg-gray-50 rounded-xl p-5 border border-gray-100">
-        <h4 className="text-sm font-semibold text-gray-700 mb-3">Reasoning Engine</h4>
-        <ReasonList reasons={reasons} />
-      </div>
+
+      {/* Reasons */}
+      {reasons && reasons.length > 0 && (
+        <div className="bg-white px-6 py-5">
+          <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Supporting Insights</p>
+          <ReasonList reasons={reasons} />
+        </div>
+      )}
     </div>
   );
 };

@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import List, Optional, Dict, Any
 
 class HistoricalSummary(BaseModel):
     matching_records: int
@@ -16,3 +16,4 @@ class RecommendationResponse(BaseModel):
     recommendation: str
     reasons: List[str]
     historical_summary: Optional[HistoricalSummary] = None
+    explanation: Optional[Dict[str, Any]] = None
