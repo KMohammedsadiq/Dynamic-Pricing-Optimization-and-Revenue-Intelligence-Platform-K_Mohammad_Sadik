@@ -6,12 +6,14 @@ from decimal import Decimal
 class ProductCatalogBase(BaseModel):
     product_name: str = Field(..., title="Product Name")
     category: Optional[str] = Field(None, title="Category")
-    brand: Optional[str] = Field(None, title="Brand")
-    description: Optional[str] = Field(None, title="Description")
+    brand: Optional[str] = None
+    description: Optional[str] = None
     
-    base_price: Decimal = Field(..., title="Base Price")
-    cost_price: Optional[Decimal] = Field(None, title="Cost Price")
-    initial_inventory: int = Field(0, title="Initial Inventory")
+    # Pricing & Inventory
+    base_price: Decimal = Field(..., description="Original Base Price")
+    current_price: Optional[Decimal] = Field(None, description="Current Selling Price")
+    cost_price: Optional[Decimal] = Field(None, description="Cost of Goods Sold")
+    initial_inventory: int = Field(0, description="Initial Stock Level")
     
     # New Business Attributes
     product_model: Optional[str] = Field(None, title="Product Model")

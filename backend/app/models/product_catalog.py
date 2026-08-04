@@ -18,6 +18,7 @@ class ProductCatalog(Base):
     
     # Pricing & Inventory
     base_price = Column(Numeric(10, 2), nullable=False)
+    current_price = Column(Numeric(10, 2), nullable=True)
     cost_price = Column(Numeric(10, 2), nullable=True)
     initial_inventory = Column(Integer, default=0, nullable=False)
     
