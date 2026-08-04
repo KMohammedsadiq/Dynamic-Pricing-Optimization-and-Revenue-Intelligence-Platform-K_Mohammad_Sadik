@@ -8,7 +8,8 @@ from app.db.session import get_db
 app = FastAPI(
     title="Dynamic Pricing Optimization and Revenue Intelligence System ",
     description="Backend API for Dynamic Pricing Optimization and Revenue Intelligence System",
-    version="1.0.0"
+    version="1.0.0",
+    debug=True
 )
 
 # Set up CORS (Cross-Origin Resource Sharing)
@@ -43,7 +44,7 @@ async def test_db_connection(db: Session = Depends(get_db)):
         return {"status": "error", "message": f"Database connection failed: {str(e)}"}
 
 # Import and include the Authentication router
-from app.api.endpoints import auth, dashboard, products, users, analytics, predictions, historical, recommendation
+from app.api.endpoints import auth, dashboard, products, users, analytics, predictions, historical
 
 app.include_router(
     auth.router,
@@ -87,8 +88,3 @@ app.include_router(
     tags=["Historical Analysis"]
 )
 
-app.include_router(
-    recommendation.router,
-    prefix="/api/v1",
-    tags=["Business Recommendations"]
-)

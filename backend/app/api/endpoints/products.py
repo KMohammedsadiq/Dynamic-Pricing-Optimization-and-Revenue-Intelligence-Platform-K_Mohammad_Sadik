@@ -153,6 +153,7 @@ async def upload_dataset(
                             "category": p.get('category'),
                             "brand": p.get('brand'),
                             "base_price": float(p.get('base_price') or 0),
+                            "current_price": float(p.get('current_price')) if pd.notnull(p.get('current_price')) else None,
                             "initial_inventory": int(p.get('inventory_level') or 0),
                             "status": "Active"
                         })

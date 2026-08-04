@@ -17,3 +17,4 @@ class RecommendationResponse(BaseModel):
     reasons: List[str]
     historical_summary: Optional[HistoricalSummary] = None
     explanation: Optional[Dict[str, Any]] = None
+    input: Optional[Dict[str, Any]] = None
