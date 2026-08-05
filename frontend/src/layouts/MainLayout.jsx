@@ -124,7 +124,7 @@ export default function MainLayout() {
 
         {/* Page Content */}
         <main className="flex-1 overflow-auto custom-scrollbar relative w-full">
-          <div className="p-4 md:p-8 h-full">
+          <div className={location.pathname === '/predictions' ? "h-full" : "p-4 md:p-8 h-full"}>
             <Outlet />
           </div>
         </main>
