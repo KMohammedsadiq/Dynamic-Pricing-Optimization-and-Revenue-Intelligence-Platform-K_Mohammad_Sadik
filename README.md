@@ -4,43 +4,55 @@ Welcome to the **PricePilot AI** repository. This is an AI-powered dynamic prici
 
 ---
 
-## 🎯 Milestone 1 Completion (Project Initialization, Design & Core Setup)
+## 🚀 Milestone 2 Completion (Machine Learning & Enterprise AI)
 
-We have successfully completed **Milestone 1**, laying an enterprise-grade foundation for the application. Here is a breakdown of what has been implemented so far:
+We have successfully completed **Milestone 2**, bringing intelligent predictive capabilities and a professional enterprise design to the platform. 
+
+### 1. AI Price Prediction Engine (XGBoost)
+*   Replaced the legacy Random Forest prototype with a production-ready **XGBoost** regression pipeline.
+*   The model predicts optimal price multipliers based on 12 critical business features (Demand, Inventory, Competitor Price, Ratings, Seasonality, etc.).
+*   Engineered a highly optimized inference pipeline using serialized models (`optimal_price_pipeline.pkl`) that operates entirely independently of database bottlenecks when needed.
+
+### 2. Intelligent Factor Analysis & Explainability
+*   Built a custom **Business Recommendation Engine** that wraps around the ML model outputs.
+*   Instead of acting as a "black box," the AI provides a granular **12-factor analysis table** explaining exactly *why* a price should increase, decrease, or remain neutral.
+*   Human-readable impact labels, color-coded badges, and clear business reasoning make this a true **Decision Support System** for Pricing Managers.
+
+### 3. Dual-Workflow Prediction System
+*   **Existing Products**: Pricing managers can instantly select any product from the catalog (via intelligent autocomplete). The system auto-fills current database metrics and predicts the best price adjustment.
+*   **New Products**: Added a completely standalone workflow allowing managers to manually enter data for brand-new products (Cost, Lifecycle, Brand, Category). The backend dynamically bypasses database lookups, applies smart defaults (e.g., 0 historical sales, 0 reviews), and generates an instant optimal launch price.
+
+### 4. Enterprise-Grade Dashboard UI
+*   Completely redesigned the frontend into a professional, minimal, and highly scannable **Enterprise Dark Mode Dashboard**.
+*   Removed overly flashy elements (glassmorphism, gradients) in favor of a clean, data-first approach similar to Amazon Seller Central or Microsoft Admin Center.
+*   Implemented a seamless tabbed interface for switching between the New and Existing product prediction workflows.
+
+---
+
+## 🎯 Milestone 1 Completion (Project Initialization & Core Setup)
+
+Our enterprise-grade foundation established in Milestone 1 remains fully operational:
 
 ### 1. Modern Full-Stack Architecture
-*   **Frontend**: React + Vite + Tailwind CSS + Recharts (Clean, Enterprise Dark Theme)
+*   **Frontend**: React + Vite + Tailwind CSS + Recharts
 *   **Backend**: FastAPI + Python (High-performance API)
-*   **Database**: PostgreSQL
+*   **Database**: PostgreSQL / SQLite
 *   **ORM**: SQLAlchemy
 *   **Migrations**: Alembic
 
-### 2. Enterprise Authentication & Role-Based Access Control (RBAC)
-*   Implemented **JWT (JSON Web Token)** based secure authentication.
-*   Built **Role-Based Access Control (RBAC)** restricting endpoints and frontend routes based on specific roles:
-    *   **Admin**: Full access, user management, and dataset uploads.
-    *   **Pricing Manager**: Access to pricing predictions, products, and competitor data.
-    *   **Business Analyst**: Access to revenue forecasts and analytics dashboards.
-*   Automatic session expiration, secure password hashing (bcrypt), and unauthorized redirect handling.
+### 2. Authentication & Role-Based Access Control (RBAC)
+*   Implemented **JWT** based secure authentication with Role-Based Access Control (Admin, Pricing Manager, Business Analyst).
+*   Automatic session expiration and secure password hashing (bcrypt).
 
-### 3. Data Engineering & Migration
-*   Engineered a highly optimized CSV Upload pipeline using **Pandas** and SQLAlchemy bulk inserts, capable of handling large files seamlessly.
-*   Implemented an **Anti-Join Algorithm** during dataset uploads to auto-sync new products without duplicating existing database records.
-*   The database currently houses over **345,600** individual product records with rich dimensions like region, seasonality, promotion types, and stockout flags.
+### 3. Data Engineering & Pipeline
+*   Engineered a highly optimized CSV Upload pipeline using **Pandas** and SQLAlchemy bulk inserts.
+*   Implemented an **Anti-Join Algorithm** to auto-sync new products without duplicating existing database records.
+*   The database currently houses over **345,600** individual product records (localized to Indian Rupees `₹`).
 
-### 4. Product & Pricing Data Module
-*   **Products Data Grid**: A responsive, paginated table displaying SKUs, brands, base prices, revenue, and inventory levels.
-*   **Product Details Dashboard**: A dedicated view for each product, breaking down sales metrics, promotional history, and regional context (fully localized to Indian Rupees `₹`).
-*   **Full CRUD Operations**: Admins can Create, Read, Update, and Soft-Delete products. Includes robust SQLAlchemy `IntegrityError` handling to prevent duplicate SKUs.
-
-### 5. Business Intelligence (BI) Analytics Dashboard
-Built a comprehensive executive dashboard capable of analyzing large datasets in milliseconds using optimized **SQLAlchemy aggregate functions**.
-
+### 4. Business Intelligence (BI) Analytics Dashboard
 *   **Real-time KPI Cards**: Total Revenue, Average Selling Price, Total Products, Average Demand Score.
 *   **Revenue Analysis**: Horizontal Bar charts breaking down revenue by Category and top Brands.
 *   **Inventory Overview**: Donut chart tracking Stockout, Low, Medium, and High inventory levels.
-*   **Promotion Analysis**: Composed chart analyzing the correlation between Promotion Types, Revenue, and Average Discount.
-*   **Business Alerts Workflows**: Actionable insights for Low Inventory, High Discount, and Low Margin products.
 
 ---
 
@@ -54,50 +66,34 @@ PricePilot_AI/
 ├── frontend/                 # 1. Presentation Layer (React + Vite)
 │   ├── public/               # Static web assets
 │   ├── src/                  # React source code
-│   │   ├── components/       # Reusable UI elements (Charts, Layouts, Modals)
-│   │   ├── pages/            # View routes (Dashboard, Products, Analytics, etc.)
+│   │   ├── components/       # Reusable UI elements (Charts, Layouts, Prediction Cards)
+│   │   ├── pages/            # View routes (Dashboard, PricePrediction, Products, etc.)
 │   │   └── services/         # Axios API integration & Auth management
-│   ├── package.json          # Node dependencies
-│   └── vite.config.js        # Vite bundler configuration
+│   └── package.json          # Node dependencies
 │
 ├── backend/                  # 2. Application Logic & Data Layer (FastAPI + Python)
-│   ├── app/                  # Main server logic
-│   │   ├── api/              # HTTP Endpoints (Auth, Dashboard, Products)
-│   │   ├── crud/             # Database queries and transactions
-│   │   ├── models/           # SQLAlchemy Data models
-│   │   └── schemas/          # Pydantic validation schemas
+│   ├── app/                  # Main server logic (API endpoints, CRUD, Schemas)
+│   ├── ml/                   # Machine Learning Engine
+│   │   ├── models/           # Serialized XGBoost pipelines (.pkl)
+│   │   ├── training/         # Training scripts (train_xgboost.py)
+│   │   ├── predictor.py      # ML Inference logic
+│   │   └── recommendation.py # Business rules & explainability engine
 │   ├── requirements.txt      # Python dependencies
 │   └── main.py               # Server entry point
-│
-├── docs/                     # Comprehensive System Documentation
-│   ├── 02_System_Architecture.md
-│   ├── 03_UI_Wireframes.md
-│   ├── 04_Workflow_Planning.md
-│   └── ...
 │
 └── README.md                 # Project documentation
 ```
 
 ---
 
-## 🔮 Future Plans: Milestone 2 & Beyond (Machine Learning)
+## 🔮 Future Plans
 
-With the core infrastructure, database pipelines, and BI analytics fully operational, our next major steps involve the integration of predictive intelligence.
+With the ML Prediction Engine fully operational, our upcoming roadmap includes:
 
 ### 1. Demand Forecasting Module
-*   **Goal**: Predict future product demand (Short, Medium, and Long term) using historical sales, pricing, inventory, and seasonal trends.
-*   **Technologies**: We will integrate Time-Series models (Prophet, ARIMA) and Machine Learning Regressors (XGBoost, Random Forest).
-*   **Outputs**: Predicted units sold, Demand Trend Classification (Increasing/Stable/Decreasing), and Forecast Confidence Scores.
+*   **Goal**: Predict future product demand (Short, Medium, and Long term) using historical sales, pricing, inventory, and seasonal trends using Time-Series models (Prophet, ARIMA).
 
-### 2. Price Prediction & Optimization Module
-*   **Goal**: Recommend the mathematically optimal price point for a product to maximize revenue without triggering a massive drop in demand (price elasticity).
-*   **Implementation**: Develop endpoints that simulate revenue outcomes across various price points and provide intelligent pricing recommendations.
-
-### 3. Competitor Analysis Module
-*   **Goal**: Allow pricing managers to track market positioning against competitors, identifying pricing opportunities or vulnerabilities.
-*   **Features**: Market comparison charts, competitive positioning matrices, and automated alerts for underpriced/overpriced items.
-
-### 4. Advanced Revenue Simulation
+### 2. Advanced Revenue Simulation
 *   **Goal**: Interactive "What-If" analysis tools allowing analysts to tweak discount percentages or base prices on the dashboard and instantly see the simulated impact on total projected revenue and profit margins.
 
 ---
