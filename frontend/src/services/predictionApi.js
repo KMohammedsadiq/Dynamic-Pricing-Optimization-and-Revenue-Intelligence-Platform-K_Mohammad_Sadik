@@ -9,7 +9,7 @@ import api from './api';
  */
 export const predictOptimalPrice = async (data) => {
   try {
-    const response = await api.post('/business-recommendation', data);
+    const response = await api.post('/predictions/predict-price', data);
     return response.data;
   } catch (error) {
     if (error.response) {
