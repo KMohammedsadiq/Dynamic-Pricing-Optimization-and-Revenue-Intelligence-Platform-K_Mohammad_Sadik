@@ -39,17 +39,17 @@ const PricePrediction = () => {
             </p>
           </div>
           <span className="text-xs text-gray-500 font-mono bg-gray-800 border border-gray-700 px-2 py-1 rounded">
-            XGBoost v3.0-XGB
+            XGBoost v4.0-XGB-Improved
           </span>
         </div>
       </div>
 
       {/* ── Main Two-Column Layout ── */}
-      <div className="flex-1 overflow-hidden">
-        <div className="max-w-screen-2xl mx-auto h-full flex flex-col xl:flex-row gap-0 divide-y xl:divide-y-0 xl:divide-x divide-gray-800">
+      <div className="flex-1 xl:overflow-hidden overflow-y-auto">
+        <div className="max-w-screen-2xl mx-auto xl:h-full flex flex-col xl:flex-row gap-0 divide-y xl:divide-y-0 xl:divide-x divide-gray-800">
 
           {/* Left — Input Form */}
-          <div className="xl:w-[420px] flex-shrink-0 overflow-y-auto">
+          <div className="xl:w-[420px] flex-shrink-0 xl:overflow-y-auto xl:h-full">
             <PredictionForm
               onSubmit={handlePredict}
               onReset={handleReset}
@@ -58,7 +58,7 @@ const PricePrediction = () => {
           </div>
 
           {/* Right — Results */}
-          <div className="flex-1 overflow-y-auto bg-gray-950">
+          <div className="flex-1 xl:overflow-y-auto bg-gray-950 xl:h-full">
             {isLoading && (
               <div className="flex items-center justify-center h-full min-h-[300px]">
                 <div className="text-center">

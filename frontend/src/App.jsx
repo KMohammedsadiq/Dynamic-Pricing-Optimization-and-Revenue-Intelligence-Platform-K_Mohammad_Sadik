@@ -11,6 +11,7 @@ import Landing from "./pages/Landing";
 import Users from "./pages/Users";
 import Analytics from "./pages/Analytics";
 import PricePrediction from "./pages/PricePrediction";
+import AmazonApiTest from "./pages/AmazonApiTest";
 import Forecasts from "./pages/Forecasts";
 import Competitors from "./pages/Competitors";
 import RevenueOptimization from "./pages/RevenueOptimization";
@@ -38,6 +39,7 @@ export default function App() {
               <Route path="upload" element={<Upload />} />
               <Route path="competitors" element={<Competitors />} />
               <Route path="users" element={<Users />} />
+              <Route path="amazon-test" element={<AmazonApiTest />} />
             </Route>
 
             {/* Pricing Manager and Admin Routes */}

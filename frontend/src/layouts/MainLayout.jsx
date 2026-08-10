@@ -53,6 +53,7 @@ export default function MainLayout() {
             { path: '/revenue-optimization', label: 'Revenue Optimization', icon: TrendingUp, role: ['Admin', 'Pricing Manager'] },
             { path: '/analytics', label: 'Analytics', icon: BarChart3, role: ['Admin', 'Business Analyst'] },
             { path: '/upload', label: 'Upload Data', icon: UploadCloud, role: 'Admin' },
+            { path: '/amazon-test', label: 'Amazon API Test', icon: UploadCloud, role: 'Admin' },
             { path: '/users', label: 'User Mgmt', icon: Shield, role: 'Admin' },
           ].map((item) => {
             const roles = Array.isArray(item.role) ? item.role : [item.role];

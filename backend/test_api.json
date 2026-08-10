@@ -1,0 +1,147 @@
+{
+  "is_new_product": true,
+  "product_name": "Test Phone",
+  "current_price": 60000.0,
+  "optimal_price": 62057.38306045532,
+  "predicted_multiplier": 1.0342897176742554,
+  "recommendation": "Maintain Current Price",
+  "recommendation_reason": "The AI recommends maintaining the current price. The AI evaluated all pricing factors. There are competing pressures: high demand pushes the price up, while poor sentiment pulls it down. These factors balance out, resulting in no significant price change.",
+  "overall_decision_summary": "The AI evaluated all pricing factors. There are competing pressures: high demand pushes the price up, while poor sentiment pulls it down. These factors balance out, resulting in no significant price change.",
+  "factors_increasing": [
+    {
+      "title": "High Demand",
+      "label": "Demand Index = High",
+      "description": "Strong customer demand supports a higher selling price.",
+      "impact_level": null,
+      "impact_stars": null
+    },
+    {
+      "title": "Competitor Price Higher",
+      "label": "Competitor Price = \u20b965,000",
+      "description": "We can safely increase our price while staying competitive.",
+      "impact_level": null,
+      "impact_stars": null
+    },
+    {
+      "title": "Premium Brand",
+      "label": "Brand = Samsung",
+      "description": "Premium brand positioning allows sustained premium pricing.",
+      "impact_level": null,
+      "impact_stars": null
+    }
+  ],
+  "factors_reducing": [
+    {
+      "title": "Poor Sentiment",
+      "label": "Average Rating = 0.0/5",
+      "description": "Lowering price to offset poor reviews.",
+      "impact_level": null,
+      "impact_stars": null
+    }
+  ],
+  "neutral_factors": [
+    {
+      "title": "No Promotion Active",
+      "label": "Neutral",
+      "description": "No promotional campaign is currently running for this product.",
+      "impact_level": "Neutral",
+      "impact_stars": "\u2605\u2606\u2606\u2606\u2606"
+    }
+  ],
+  "pricing_factors": [
+    {
+      "feature": "Brand",
+      "value": "Samsung",
+      "effect": "positive",
+      "effect_label": "Positive (+)",
+      "reason": "Samsung is a recognized premium brand. Customers are generally willing to pay a higher price, supporting sustained premium pricing."
+    },
+    {
+      "feature": "Category",
+      "value": "Electronics",
+      "effect": "positive",
+      "effect_label": "Positive (+)",
+      "reason": "Electronics products typically command premium pricing due to higher perceived value and technology investment."
+    },
+    {
+      "feature": "Cost Price",
+      "value": "\u20b950,000",
+      "effect": "reference",
+      "effect_label": "Reference",
+      "reason": "The AI-recommended price is 24.1% above the product cost, ensuring profitability on every unit sold."
+    },
+    {
+      "feature": "Current Selling Price",
+      "value": "\u20b960,000",
+      "effect": "reference",
+      "effect_label": "Reference",
+      "reason": "Acts as the primary pricing baseline. The AI recommendation is calculated as a multiplier applied to this price."
+    },
+    {
+      "feature": "Competitor Price",
+      "value": "\u20b965,000 (8.3% Higher)",
+      "effect": "positive",
+      "effect_label": "Positive (+)",
+      "reason": "Competitors are selling at \u20b95,000 more than our current price. There is room to increase our price while remaining competitive."
+    },
+    {
+      "feature": "Demand",
+      "value": "High",
+      "effect": "positive",
+      "effect_label": "Positive (+)",
+      "reason": "High customer demand (High) allows premium pricing. Products in high demand have strong selling power."
+    },
+    {
+      "feature": "Inventory",
+      "value": "100 Units (Normal)",
+      "effect": "neutral",
+      "effect_label": "Neutral",
+      "reason": "Inventory levels are within a normal range (100 units). No significant upward or downward pricing pressure from stock levels."
+    },
+    {
+      "feature": "Promotion",
+      "value": "No Promotion",
+      "effect": "reference",
+      "effect_label": "Reference",
+      "reason": "No promotional campaign is active. Pricing is based purely on market conditions."
+    },
+    {
+      "feature": "Historical Sales",
+      "value": "Not Available",
+      "effect": "neutral",
+      "effect_label": "Neutral",
+      "reason": "New product has no historical sales yet."
+    },
+    {
+      "feature": "Average Rating",
+      "value": "Not Available",
+      "effect": "neutral",
+      "effect_label": "Neutral",
+      "reason": "No customer reviews yet."
+    },
+    {
+      "feature": "Product Lifecycle",
+      "value": "New Launch",
+      "effect": "neutral",
+      "effect_label": "Neutral",
+      "reason": "Lifecycle stage 'New Launch' has a neutral pricing impact."
+    },
+    {
+      "feature": "Season",
+      "value": "Summer",
+      "effect": "neutral",
+      "effect_label": "Neutral",
+      "reason": "The current Summer season does not have a significant directional impact on pricing for this product category."
+    }
+  ],
+  "current_revenue": 6000000.0,
+  "expected_revenue": 6205738.306045532,
+  "revenue_impact": 205738.30604553223,
+  "prediction_stability": 85.69999694824219,
+  "currency": "INR",
+  "model": {
+    "name": "XGBoost Pipeline",
+    "version": "v3.0-XGB"
+  },
+  "prediction_time": "2026-08-06T14:48:33.416228"
+}

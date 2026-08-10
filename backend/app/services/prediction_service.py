@@ -133,6 +133,7 @@ class PredictionService:
             "current_revenue": rec_result["current_revenue"],
             "expected_revenue": rec_result["expected_revenue"],
             "revenue_impact": rec_result["revenue_impact"],
+            "total_inventory_cost": rec_result.get("total_inventory_cost"),
             "prediction_stability": prediction_result["prediction_stability"],
             "currency": "INR",
             "model": prediction_result["model"],

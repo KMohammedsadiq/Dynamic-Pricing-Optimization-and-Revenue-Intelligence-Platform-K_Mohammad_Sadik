@@ -161,7 +161,7 @@ const PredictionForm = ({ onSubmit, onReset, isSubmitting }) => {
   const isSubmitDisabled = isSubmitting || (activeTab === 'existing' && !selectedProduct);
 
   return (
-    <div className="flex flex-col h-full bg-gray-900 border-r border-gray-800">
+    <div className="flex flex-col xl:h-full bg-gray-900">
       
       {/* ── Tabs ── */}
       <div className="flex border-b border-gray-800 flex-shrink-0">
@@ -185,9 +185,9 @@ const PredictionForm = ({ onSubmit, onReset, isSubmitting }) => {
         </button>
       </div>
 
-      <form onSubmit={handleSubmit} className="flex flex-col flex-1 overflow-hidden">
+      <form onSubmit={handleSubmit} className="flex flex-col flex-1 xl:overflow-hidden">
         
-        <div className="flex-1 overflow-y-auto custom-scrollbar">
+        <div className="flex-1 xl:overflow-y-auto custom-scrollbar">
           {activeTab === 'existing' ? (
             /* ── EXISTING PRODUCT FLOW ── */
             <>
@@ -232,7 +232,7 @@ const PredictionForm = ({ onSubmit, onReset, isSubmitting }) => {
                       </tr>
                       <tr>
                         <td className="py-1.5 text-xs text-gray-500">Current Selling Price</td>
-                        <td className="py-1.5 text-xs font-semibold text-blue-400 text-right">{formatINR(selectedProduct.current_price)}</td>
+                        <td className="py-1.5 text-xs font-semibold text-blue-400 text-right">{formatINR(selectedProduct.current_price || selectedProduct.base_price * 0.95 || 0)}</td>
                       </tr>
                     </tbody>
                   </table>

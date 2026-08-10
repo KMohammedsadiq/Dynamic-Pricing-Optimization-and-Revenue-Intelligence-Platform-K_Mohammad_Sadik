@@ -4,7 +4,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MODEL_PATH = os.path.join(BASE_DIR, "ml", "models", "optimal_price_pipeline.pkl")
 
-PIPELINE_VERSION = "v3.0-XGB"
+PIPELINE_VERSION = "v4.0-XGB-Improved"
 
 # The 17 features expected by the Random Forest Pipeline in this exact order
 FEATURE_COLUMNS = [
