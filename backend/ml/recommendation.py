@@ -278,18 +278,7 @@ class RecommendationEngine:
         season     = feature_dict.get("season", "Unknown")
         category_s = str(category)
 
-        # ── 1. Brand ──────────────────────────────────────────────────────────
-        PREMIUM_BRANDS = ["apple", "samsung", "sony", "louis vuitton", "gucci",
-                          "coach", "bose", "nike", "adidas", "fossil", "armani"]
-        brand_lower = str(brand).lower()
-        if any(pb in brand_lower for pb in PREMIUM_BRANDS):
-            factors.append({"feature": "Brand", "value": brand, "effect": "positive",
-                "effect_label": "Positive (+)",
-                "reason": "Premium brand allows a higher price."})
-        else:
-            factors.append({"feature": "Brand", "value": brand, "effect": "neutral",
-                "effect_label": "Neutral",
-                "reason": "Brand has no significant directional impact in this prediction."})
+
 
         # ── 2. Category ───────────────────────────────────────────────────────
         PREMIUM_CATS = ["electronics", "luxury", "furniture", "jewellery"]

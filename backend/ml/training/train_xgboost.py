@@ -11,7 +11,7 @@ import os
 
 # Base paths
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DATA_PATH = os.path.join(BASE_DIR, "data", "retail_price_optimization_dataset_cleaned_expanded.csv")
+DATA_PATH = os.path.join(BASE_DIR, "data", "retail_price_optimization_dataset_improved.csv")
 MODEL_PATH = os.path.join(BASE_DIR, "models", "optimal_price_pipeline.pkl")
 
 print(f"Loading data from {DATA_PATH}...")
