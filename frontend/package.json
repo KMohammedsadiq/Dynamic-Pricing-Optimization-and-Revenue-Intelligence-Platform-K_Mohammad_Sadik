@@ -22,6 +22,7 @@
     "axios": "^1.18.1",
     "framer-motion": "^12.43.0",
     "lucide-react": "^1.27.0",
+    "puppeteer": "^25.6.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "react-router-dom": "^7.18.1",
