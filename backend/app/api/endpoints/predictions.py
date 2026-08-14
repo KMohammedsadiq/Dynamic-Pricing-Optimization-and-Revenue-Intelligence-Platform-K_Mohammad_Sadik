@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, Query, HTTPException
 from sqlalchemy.orm import Session
 from app.db.session import get_db
-from app.schemas.prediction import PredictionRequest, PredictionResponse, ProjectionResponse
+from app.schemas.prediction import PredictionRequest, PredictionResponse
 from app.services.prediction_service import prediction_service
 
 from ml.demand_predictor import demand_predictor
