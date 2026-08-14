@@ -1,0 +1,349 @@
+{
+  "baseline_metrics": {
+    "7d": {
+      "mae": 27.3,
+      "rmse": 48.4,
+      "r2": 0.96,
+      "smape": 10.8
+    },
+    "14d": {
+      "mae": 47.0,
+      "rmse": 80.0,
+      "r2": 0.972,
+      "smape": 9.1
+    },
+    "30d": {
+      "mae": 85.9,
+      "rmse": 141.6,
+      "r2": 0.978,
+      "smape": 8.6
+    },
+    "90d": {
+      "mae": 1809.6,
+      "rmse": 2463.2,
+      "r2": 0.349,
+      "smape": 38.9
+    },
+    "180d": {
+      "mae": 2257.5,
+      "rmse": 2808.6,
+      "r2": 0.14,
+      "smape": 18.6
+    }
+  },
+  "dev_metrics": {
+    "7d": {
+      "mae": 84.35,
+      "rmse": 135.05,
+      "r2": 0.664,
+      "smape": 29.25,
+      "n_train": 89498,
+      "n_val": 21767
+    },
+    "14d": {
+      "mae": 168.92,
+      "rmse": 273.9,
+      "r2": 0.6422,
+      "smape": 28.21,
+      "n_train": 89498,
+      "n_val": 21022
+    },
+    "30d": {
+      "mae": 281.63,
+      "rmse": 505.4,
+      "r2": 0.688,
+      "smape": 23.19,
+      "n_train": 89498,
+      "n_val": 19532
+    },
+    "90d": {
+      "mae": 955.37,
+      "rmse": 1488.98,
+      "r2": 0.7225,
+      "smape": 24.65,
+      "n_train": 89498,
+      "n_val": 12876
+    },
+    "180d": {
+      "mae": 1785.77,
+      "rmse": 3099.33,
+      "r2": 0.6869,
+      "smape": 22.59,
+      "n_train": 89454,
+      "n_val": 3461
+    }
+  },
+  "baseline_trends": {
+    "7d": {
+      "Increasing": 10.2,
+      "Stable": 17.7,
+      "Decreasing": 72.1
+    },
+    "14d": {
+      "Increasing": 7.1,
+      "Stable": 1.6,
+      "Decreasing": 91.3
+    },
+    "30d": {
+      "Increasing": 8.1,
+      "Stable": 3.5,
+      "Decreasing": 88.5
+    },
+    "90d": {
+      "Increasing": 21.5,
+      "Stable": 5.8,
+      "Decreasing": 72.8
+    },
+    "180d": {
+      "Increasing": 14.5,
+      "Stable": 21.5,
+      "Decreasing": 64.0
+    }
+  },
+  "dev_trends": {
+    "7d": {
+      "Increasing": 94.8,
+      "Stable": 0.7,
+      "Decreasing": 4.6
+    },
+    "14d": {
+      "Increasing": 95.7,
+      "Stable": 0.5,
+      "Decreasing": 3.8
+    },
+    "30d": {
+      "Increasing": 95.4,
+      "Stable": 0.7,
+      "Decreasing": 3.9
+    },
+    "90d": {
+      "Increasing": 95.6,
+      "Stable": 0.8,
+      "Decreasing": 3.6
+    },
+    "180d": {
+      "Increasing": 96.1,
+      "Stable": 0.7,
+      "Decreasing": 3.2
+    }
+  },
+  "repr_products": {
+    "ACC001": {
+      "latest_date": "2026-08-01",
+      "rolling_4w": 20.2,
+      "horizons": {
+        "7d": {
+          "predicted": 181.3,
+          "weekly": 181.3,
+          "trend": "Increasing"
+        },
+        "14d": {
+          "predicted": 477.2,
+          "weekly": 238.6,
+          "trend": "Increasing"
+        },
+        "30d": {
+          "predicted": 542.6,
+          "weekly": 135.7,
+          "trend": "Increasing"
+        },
+        "90d": {
+          "predicted": 1716.4,
+          "weekly": 132.0,
+          "trend": "Increasing"
+        },
+        "180d": {
+          "predicted": 3116.3,
+          "weekly": 119.9,
+          "trend": "Increasing"
+        }
+      }
+    },
+    "ACC002": {
+      "latest_date": "2026-08-05",
+      "rolling_4w": 188.8,
+      "horizons": {
+        "7d": {
+          "predicted": 233.5,
+          "weekly": 233.5,
+          "trend": "Increasing"
+        },
+        "14d": {
+          "predicted": 459.0,
+          "weekly": 229.5,
+          "trend": "Increasing"
+        },
+        "30d": {
+          "predicted": 921.9,
+          "weekly": 230.5,
+          "trend": "Increasing"
+        },
+        "90d": {
+          "predicted": 2937.9,
+          "weekly": 226.0,
+          "trend": "Increasing"
+        },
+        "180d": {
+          "predicted": 5632.6,
+          "weekly": 216.6,
+          "trend": "Increasing"
+        }
+      }
+    },
+    "BOK501": {
+      "latest_date": "2026-08-05",
+      "rolling_4w": 1085.0,
+      "horizons": {
+        "7d": {
+          "predicted": 946.7,
+          "weekly": 946.7,
+          "trend": "Decreasing"
+        },
+        "14d": {
+          "predicted": 1711.6,
+          "weekly": 855.8,
+          "trend": "Decreasing"
+        },
+        "30d": {
+          "predicted": 3567.4,
+          "weekly": 891.9,
+          "trend": "Decreasing"
+        },
+        "90d": {
+          "predicted": 11111.6,
+          "weekly": 854.7,
+          "trend": "Decreasing"
+        },
+        "180d": {
+          "predicted": 24477.0,
+          "weekly": 941.4,
+          "trend": "Decreasing"
+        }
+      }
+    },
+    "ELE509": {
+      "latest_date": "2026-08-05",
+      "rolling_4w": 22.5,
+      "horizons": {
+        "7d": {
+          "predicted": 78.8,
+          "weekly": 78.8,
+          "trend": "Increasing"
+        },
+        "14d": {
+          "predicted": 147.8,
+          "weekly": 73.9,
+          "trend": "Increasing"
+        },
+        "30d": {
+          "predicted": 238.6,
+          "weekly": 59.7,
+          "trend": "Increasing"
+        },
+        "90d": {
+          "predicted": 824.6,
+          "weekly": 63.4,
+          "trend": "Increasing"
+        },
+        "180d": {
+          "predicted": 1778.5,
+          "weekly": 68.4,
+          "trend": "Increasing"
+        }
+      }
+    },
+    "ACC014": {
+      "latest_date": "2026-08-05",
+      "rolling_4w": 316.5,
+      "horizons": {
+        "7d": {
+          "predicted": 415.8,
+          "weekly": 415.8,
+          "trend": "Increasing"
+        },
+        "14d": {
+          "predicted": 851.3,
+          "weekly": 425.6,
+          "trend": "Increasing"
+        },
+        "30d": {
+          "predicted": 1585.0,
+          "weekly": 396.3,
+          "trend": "Increasing"
+        },
+        "90d": {
+          "predicted": 5222.4,
+          "weekly": 401.7,
+          "trend": "Increasing"
+        },
+        "180d": {
+          "predicted": 10764.7,
+          "weekly": 414.0,
+          "trend": "Increasing"
+        }
+      }
+    },
+    "TOY507": {
+      "latest_date": "2026-08-05",
+      "rolling_4w": 1277.8,
+      "horizons": {
+        "7d": {
+          "predicted": 909.3,
+          "weekly": 909.3,
+          "trend": "Decreasing"
+        },
+        "14d": {
+          "predicted": 1727.0,
+          "weekly": 863.5,
+          "trend": "Decreasing"
+        },
+        "30d": {
+          "predicted": 3435.9,
+          "weekly": 859.0,
+          "trend": "Decreasing"
+        },
+        "90d": {
+          "predicted": 11311.7,
+          "weekly": 870.1,
+          "trend": "Decreasing"
+        },
+        "180d": {
+          "predicted": 24525.5,
+          "weekly": 943.3,
+          "trend": "Decreasing"
+        }
+      }
+    },
+    "OFF503": {
+      "latest_date": "2026-08-05",
+      "rolling_4w": 1151.8,
+      "horizons": {
+        "7d": {
+          "predicted": 921.0,
+          "weekly": 921.0,
+          "trend": "Decreasing"
+        },
+        "14d": {
+          "predicted": 1794.6,
+          "weekly": 897.3,
+          "trend": "Decreasing"
+        },
+        "30d": {
+          "predicted": 3487.8,
+          "weekly": 871.9,
+          "trend": "Decreasing"
+        },
+        "90d": {
+          "predicted": 11931.2,
+          "weekly": 917.8,
+          "trend": "Decreasing"
+        },
+        "180d": {
+          "predicted": 22983.6,
+          "weekly": 884.0,
+          "trend": "Decreasing"
+        }
+      }
+    }
+  }
+}

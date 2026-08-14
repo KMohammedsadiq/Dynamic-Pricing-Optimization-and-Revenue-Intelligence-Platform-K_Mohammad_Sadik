@@ -1,0 +1,274 @@
+{
+  "target_analysis": {
+    "7d": {
+      "synthetic_historical_mean": 395.3370801582158,
+      "genuine_historical_mean": 322.77101417426655,
+      "synthetic_count": 89498,
+      "genuine_count": 9101
+    },
+    "14d": {
+      "synthetic_historical_mean": 792.5407048202195,
+      "genuine_historical_mean": 648.650469288345,
+      "synthetic_count": 89498,
+      "genuine_count": 8417
+    },
+    "30d": {
+      "synthetic_historical_mean": 1592.0314532168316,
+      "genuine_historical_mean": 1298.1841544796252,
+      "synthetic_count": 89498,
+      "genuine_count": 7043
+    },
+    "90d": {
+      "synthetic_historical_mean": 5249.887684640998,
+      "genuine_historical_mean": 4768.239361702128,
+      "synthetic_count": 89498,
+      "genuine_count": 564
+    },
+    "180d": {
+      "synthetic_historical_mean": 10702.790253527419,
+      "genuine_historical_mean": 10409.365853658537,
+      "synthetic_count": 80583,
+      "genuine_count": 41
+    },
+    "365d": {
+      "synthetic_historical_mean": 21854.412063871354,
+      "genuine_historical_mean": null,
+      "synthetic_count": 61937,
+      "genuine_count": 0
+    }
+  },
+  "sales_trend": {
+    "synthetic": {
+      "Increasing": 77.90055248618785,
+      "Stable": 13.950276243093922,
+      "Decreasing": 8.149171270718233,
+      "median_growth": 0.26265816995658864
+    },
+    "genuine": {
+      "Increasing": 2.197802197802198,
+      "Stable": 33.791208791208796,
+      "Decreasing": 64.01098901098901,
+      "median_growth": -0.06312498899553298
+    }
+  },
+  "dist_shift": {
+    "units_sold": {
+      "synthetic_mean": 393.4159534291269,
+      "genuine_mean": 325.0717424629535,
+      "diff_pct": -17.37199784870581
+    },
+    "rolling_4w_sales_mean": {
+      "synthetic_mean": 386.2957966753406,
+      "genuine_mean": 378.1322395140097,
+      "diff_pct": -2.113291739540183
+    },
+    "rolling_8w_sales_mean": {
+      "synthetic_mean": 380.75571883460447,
+      "genuine_mean": 398.33113960030613,
+      "diff_pct": 4.615930870190346
+    },
+    "rolling_12w_sales_mean": {
+      "synthetic_mean": 375.03903010743,
+      "genuine_mean": 420.71229992889147,
+      "diff_pct": 12.178271101111358
+    },
+    "sales_growth_4w": {
+      "synthetic_mean": 0.1353114687153328,
+      "genuine_mean": -0.06145804747413916,
+      "diff_pct": -145.41968841047327
+    },
+    "demand_index": {
+      "synthetic_mean": 130.8396636796353,
+      "genuine_mean": 199.69469800715382,
+      "diff_pct": 52.625505440087395
+    },
+    "current_price": {
+      "synthetic_mean": 12676.543649578762,
+      "genuine_mean": 13786.916668369953,
+      "diff_pct": 8.759272633657432
+    },
+    "inventory_level": {
+      "synthetic_mean": 884.1697915037207,
+      "genuine_mean": 785.178334184977,
+      "diff_pct": -11.19597822386439
+    },
+    "discount_pct": {
+      "synthetic_mean": 5.4516133321415,
+      "genuine_mean": 12.55210321921308,
+      "diff_pct": 130.2456622374274
+    }
+  },
+  "pred_bias": {
+    "mean": 1.326084852218628,
+    "median": 1.314426064491272,
+    "p10": 1.125717830657959,
+    "p25": 1.2243356704711914,
+    "p50": 1.314426064491272,
+    "p75": 1.398642897605896,
+    "p90": 1.4964246511459351,
+    "p95": 1.607627177238464,
+    "max": 3.36214280128479
+  },
+  "products": {
+    "BEA035": {
+      "rolling_4w": 417.25,
+      "pred_weekly": 558.8373413085938,
+      "diff_pct": 33.933455076954765,
+      "predicted_trend": "Increasing",
+      "historical_trend": "Increasing",
+      "latest_provenance": "synthetic_feature_fill"
+    },
+    "BEA506": {
+      "rolling_4w": 876.5,
+      "pred_weekly": 604.69677734375,
+      "diff_pct": -31.010065334426695,
+      "predicted_trend": "Decreasing",
+      "historical_trend": "Increasing",
+      "latest_provenance": "synthetic_feature_fill"
+    },
+    "APP014": {
+      "rolling_4w": 442.25,
+      "pred_weekly": 608.6397705078125,
+      "diff_pct": 37.62346421883833,
+      "predicted_trend": "Increasing",
+      "historical_trend": "Increasing",
+      "latest_provenance": "synthetic_feature_fill"
+    },
+    "APP065": {
+      "rolling_4w": 409.0,
+      "pred_weekly": 563.01708984375,
+      "diff_pct": 37.65699018184597,
+      "predicted_trend": "Increasing",
+      "historical_trend": "Increasing",
+      "latest_provenance": "synthetic_feature_fill"
+    },
+    "FUR020": {
+      "rolling_4w": 155.75,
+      "pred_weekly": 196.3056640625,
+      "diff_pct": 26.0389496388443,
+      "predicted_trend": "Increasing",
+      "historical_trend": "Increasing",
+      "latest_provenance": "synthetic_feature_fill"
+    },
+    "GRO021": {
+      "rolling_4w": 441.75,
+      "pred_weekly": 613.8604736328125,
+      "diff_pct": 38.96105798139502,
+      "predicted_trend": "Increasing",
+      "historical_trend": "Increasing",
+      "latest_provenance": "synthetic_feature_fill"
+    },
+    "BEA061": {
+      "rolling_4w": 288.5,
+      "pred_weekly": 390.3028564453125,
+      "diff_pct": 35.28695197411179,
+      "predicted_trend": "Increasing",
+      "historical_trend": "Increasing",
+      "latest_provenance": "synthetic_feature_fill"
+    },
+    "BEA008": {
+      "rolling_4w": 183.75,
+      "pred_weekly": 224.18167114257812,
+      "diff_pct": 22.003630553784014,
+      "predicted_trend": "Increasing",
+      "historical_trend": "Increasing",
+      "latest_provenance": "synthetic_feature_fill"
+    },
+    "SHO045": {
+      "rolling_4w": 268.5,
+      "pred_weekly": 322.77783203125,
+      "diff_pct": 20.215207460428307,
+      "predicted_trend": "Increasing",
+      "historical_trend": "Decreasing",
+      "latest_provenance": "synthetic_feature_fill"
+    },
+    "ELE517": {
+      "rolling_4w": 62.0,
+      "pred_weekly": 157.69921875,
+      "diff_pct": 154.35357862903226,
+      "predicted_trend": "Increasing",
+      "historical_trend": "Increasing",
+      "latest_provenance": "synthetic_feature_fill"
+    },
+    "BEA507": {
+      "rolling_4w": 953.0,
+      "pred_weekly": 509.8913879394531,
+      "diff_pct": -46.496181748221076,
+      "predicted_trend": "Decreasing",
+      "historical_trend": "Increasing",
+      "latest_provenance": "synthetic_feature_fill"
+    },
+    "ELE518": {
+      "rolling_4w": 28.0,
+      "pred_weekly": 94.13999938964844,
+      "diff_pct": 236.21428353445873,
+      "predicted_trend": "Increasing",
+      "historical_trend": "Increasing",
+      "latest_provenance": "synthetic_feature_fill"
+    },
+    "FUR076": {
+      "rolling_4w": 301.0,
+      "pred_weekly": 354.1903076171875,
+      "diff_pct": 17.671198543916113,
+      "predicted_trend": "Increasing",
+      "historical_trend": "Increasing",
+      "latest_provenance": "synthetic_feature_fill"
+    },
+    "FUR021": {
+      "rolling_4w": 289.5,
+      "pred_weekly": 322.7674255371094,
+      "diff_pct": 11.491338700210491,
+      "predicted_trend": "Increasing",
+      "historical_trend": "Stable",
+      "latest_provenance": "synthetic_feature_fill"
+    },
+    "ELE501": {
+      "rolling_4w": 286.0,
+      "pred_weekly": 359.516357421875,
+      "diff_pct": 25.705020077578673,
+      "predicted_trend": "Increasing",
+      "historical_trend": "Decreasing",
+      "latest_provenance": "synthetic_feature_fill"
+    },
+    "ACC078": {
+      "rolling_4w": 326.5,
+      "pred_weekly": 396.4428405761719,
+      "diff_pct": 21.42200323925632,
+      "predicted_trend": "Increasing",
+      "historical_trend": "Decreasing",
+      "latest_provenance": "synthetic_feature_fill"
+    },
+    "SHO048": {
+      "rolling_4w": 549.75,
+      "pred_weekly": 651.635009765625,
+      "diff_pct": 18.5329713079809,
+      "predicted_trend": "Increasing",
+      "historical_trend": "Decreasing",
+      "latest_provenance": "synthetic_feature_fill"
+    },
+    "FUR045": {
+      "rolling_4w": 409.75,
+      "pred_weekly": 553.7413330078125,
+      "diff_pct": 35.14126491953935,
+      "predicted_trend": "Increasing",
+      "historical_trend": "Increasing",
+      "latest_provenance": "synthetic_feature_fill"
+    },
+    "BEA001": {
+      "rolling_4w": 189.5,
+      "pred_weekly": 218.26271057128906,
+      "diff_pct": 15.178211383265996,
+      "predicted_trend": "Increasing",
+      "historical_trend": "Increasing",
+      "latest_provenance": "synthetic_feature_fill"
+    },
+    "TOY505": {
+      "rolling_4w": 608.5,
+      "pred_weekly": 564.9134521484375,
+      "diff_pct": -7.16294952367502,
+      "predicted_trend": "Decreasing",
+      "historical_trend": "Stable",
+      "latest_provenance": "synthetic_feature_fill"
+    }
+  }
+}

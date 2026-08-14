@@ -1,0 +1,360 @@
+{
+  "7d": {
+    "status": "OK",
+    "val_count": 228,
+    "val_products": 61,
+    "val_date_min": "2026-06-01",
+    "val_date_max": "2026-08-01",
+    "prod_metrics": {
+      "MAE": 63.05262193345187,
+      "RMSE": 94.45555087518403,
+      "R2": 0.7867875618641942,
+      "sMAPE": 23.712318948692904
+    },
+    "dev_metrics": {
+      "MAE": 54.157507511607385,
+      "RMSE": 97.14173645618081,
+      "R2": 0.7744881899096105,
+      "sMAPE": 14.534012379902368
+    },
+    "prod_bias": {
+      "bias_median": 1.2981687784194946,
+      "bias_p10": 1.12736234664917,
+      "bias_p50": 1.2981687784194946,
+      "bias_p90": 1.4663463592529298,
+      "pct_increasing": 93.55704697986577,
+      "pct_stable": 1.8791946308724832,
+      "pct_decreasing": 4.563758389261745
+    },
+    "dev_bias": {
+      "bias_median": 1.1506235599517822,
+      "bias_p10": 1.0324472904205322,
+      "bias_p50": 1.1506235599517822,
+      "bias_p90": 1.2532352209091187,
+      "pct_increasing": 87.24832214765101,
+      "pct_stable": 9.798657718120806,
+      "pct_decreasing": 2.953020134228188
+    },
+    "repr_products": {
+      "ACC001": {
+        "rolling_4w": 78.5,
+        "prod_pred": 76.65192413330078,
+        "prod_trend": "Stable",
+        "dev_pred": 89.68040466308594,
+        "dev_trend": "Increasing"
+      },
+      "ACC002": {
+        "rolling_4w": 262.75,
+        "prod_pred": 326.6450500488281,
+        "prod_trend": "Increasing",
+        "dev_pred": 273.9324645996094,
+        "dev_trend": "Stable"
+      },
+      "BOK501": {
+        "rolling_4w": 1266.25,
+        "prod_pred": 616.2496948242188,
+        "prod_trend": "Decreasing",
+        "dev_pred": 994.446044921875,
+        "dev_trend": "Decreasing"
+      },
+      "ELE509": {
+        "rolling_4w": 31.25,
+        "prod_pred": 55.55706787109375,
+        "prod_trend": "Increasing",
+        "dev_pred": 45.15286636352539,
+        "dev_trend": "Increasing"
+      },
+      "ACC014": {
+        "rolling_4w": 205.75,
+        "prod_pred": 227.44056701660156,
+        "prod_trend": "Increasing",
+        "dev_pred": 231.21942138671875,
+        "dev_trend": "Increasing"
+      },
+      "TOY507": {
+        "rolling_4w": 869.25,
+        "prod_pred": 477.3589172363281,
+        "prod_trend": "Decreasing",
+        "dev_pred": 897.4892578125,
+        "dev_trend": "Stable"
+      },
+      "OFF503": {
+        "rolling_4w": 919.25,
+        "prod_pred": 327.36663818359375,
+        "prod_trend": "Decreasing",
+        "dev_pred": 883.224365234375,
+        "dev_trend": "Stable"
+      }
+    }
+  },
+  "14d": {
+    "status": "OK",
+    "val_count": 228,
+    "val_products": 61,
+    "val_date_min": "2026-06-01",
+    "val_date_max": "2026-08-01",
+    "prod_metrics": {
+      "MAE": 138.08643823757507,
+      "RMSE": 202.37402946047857,
+      "R2": 0.6963054604083865,
+      "sMAPE": 26.975642525980216
+    },
+    "dev_metrics": {
+      "MAE": 119.51510044566372,
+      "RMSE": 203.20362494505443,
+      "R2": 0.6938104760677221,
+      "sMAPE": 17.66818186925816
+    },
+    "prod_bias": {
+      "bias_median": 1.3174877166748047,
+      "bias_p10": 1.1265957355499268,
+      "bias_p50": 1.3174877166748047,
+      "bias_p90": 1.4793580770492554,
+      "pct_increasing": 95.43624161073826,
+      "pct_stable": 1.476510067114094,
+      "pct_decreasing": 3.087248322147651
+    },
+    "dev_bias": {
+      "bias_median": 1.1263506412506104,
+      "bias_p10": 1.0238865852355956,
+      "bias_p50": 1.1263506412506104,
+      "bias_p90": 1.232934832572937,
+      "pct_increasing": 83.35570469798658,
+      "pct_stable": 13.154362416107382,
+      "pct_decreasing": 3.48993288590604
+    },
+    "repr_products": {
+      "ACC001": {
+        "rolling_4w": 78.5,
+        "prod_pred": 103.03096008300781,
+        "prod_trend": "Increasing",
+        "dev_pred": 97.22103118896484,
+        "dev_trend": "Increasing"
+      },
+      "ACC002": {
+        "rolling_4w": 262.75,
+        "prod_pred": 325.4490661621094,
+        "prod_trend": "Increasing",
+        "dev_pred": 273.09405517578125,
+        "dev_trend": "Stable"
+      },
+      "BOK501": {
+        "rolling_4w": 1266.25,
+        "prod_pred": 821.7904663085938,
+        "prod_trend": "Decreasing",
+        "dev_pred": 1062.8016357421875,
+        "dev_trend": "Decreasing"
+      },
+      "ELE509": {
+        "rolling_4w": 31.25,
+        "prod_pred": 65.79743194580078,
+        "prod_trend": "Increasing",
+        "dev_pred": 47.01997375488281,
+        "dev_trend": "Increasing"
+      },
+      "ACC014": {
+        "rolling_4w": 205.75,
+        "prod_pred": 236.09068298339844,
+        "prod_trend": "Increasing",
+        "dev_pred": 204.717529296875,
+        "dev_trend": "Stable"
+      },
+      "TOY507": {
+        "rolling_4w": 869.25,
+        "prod_pred": 616.6873779296875,
+        "prod_trend": "Decreasing",
+        "dev_pred": 929.2360229492188,
+        "dev_trend": "Increasing"
+      },
+      "OFF503": {
+        "rolling_4w": 919.25,
+        "prod_pred": 625.1395874023438,
+        "prod_trend": "Decreasing",
+        "dev_pred": 913.8679809570312,
+        "dev_trend": "Stable"
+      }
+    }
+  },
+  "30d": {
+    "status": "OK",
+    "val_count": 228,
+    "val_products": 61,
+    "val_date_min": "2026-06-01",
+    "val_date_max": "2026-08-01",
+    "prod_metrics": {
+      "MAE": 275.490312843992,
+      "RMSE": 403.15972823567176,
+      "R2": 0.6397665993677004,
+      "sMAPE": 28.023076344568555
+    },
+    "dev_metrics": {
+      "MAE": 271.9468928554602,
+      "RMSE": 459.7673751657202,
+      "R2": 0.5315038872222873,
+      "sMAPE": 20.67961172949715
+    },
+    "prod_bias": {
+      "bias_median": 1.314426064491272,
+      "bias_p10": 1.125717830657959,
+      "bias_p50": 1.314426064491272,
+      "bias_p90": 1.4964246511459351,
+      "pct_increasing": 94.36241610738256,
+      "pct_stable": 1.8791946308724832,
+      "pct_decreasing": 3.7583892617449663
+    },
+    "dev_bias": {
+      "bias_median": 1.070989966392517,
+      "bias_p10": 0.9774251818656922,
+      "bias_p50": 1.070989966392517,
+      "bias_p90": 1.1874085903167724,
+      "pct_increasing": 62.68456375838927,
+      "pct_stable": 31.67785234899329,
+      "pct_decreasing": 5.6375838926174495
+    },
+    "repr_products": {
+      "ACC001": {
+        "rolling_4w": 78.5,
+        "prod_pred": 89.7288589477539,
+        "prod_trend": "Increasing",
+        "dev_pred": 100.07709503173828,
+        "dev_trend": "Increasing"
+      },
+      "ACC002": {
+        "rolling_4w": 262.75,
+        "prod_pred": 332.18817138671875,
+        "prod_trend": "Increasing",
+        "dev_pred": 265.50152587890625,
+        "dev_trend": "Stable"
+      },
+      "BOK501": {
+        "rolling_4w": 1266.25,
+        "prod_pred": 499.14154052734375,
+        "prod_trend": "Decreasing",
+        "dev_pred": 1059.9046630859375,
+        "dev_trend": "Decreasing"
+      },
+      "ELE509": {
+        "rolling_4w": 31.25,
+        "prod_pred": 72.23152160644531,
+        "prod_trend": "Increasing",
+        "dev_pred": 45.33374786376953,
+        "dev_trend": "Increasing"
+      },
+      "ACC014": {
+        "rolling_4w": 205.75,
+        "prod_pred": 244.77069091796875,
+        "prod_trend": "Increasing",
+        "dev_pred": 193.7669677734375,
+        "dev_trend": "Decreasing"
+      },
+      "TOY507": {
+        "rolling_4w": 869.25,
+        "prod_pred": 507.7344055175781,
+        "prod_trend": "Decreasing",
+        "dev_pred": 922.7933349609375,
+        "dev_trend": "Increasing"
+      },
+      "OFF503": {
+        "rolling_4w": 919.25,
+        "prod_pred": 528.0962524414062,
+        "prod_trend": "Decreasing",
+        "dev_pred": 902.9639282226562,
+        "dev_trend": "Stable"
+      }
+    }
+  },
+  "90d": {
+    "status": "OK",
+    "val_count": 139,
+    "val_products": 51,
+    "val_date_min": "2026-06-01",
+    "val_date_max": "2026-07-15",
+    "prod_metrics": {
+      "MAE": 1422.3826706701045,
+      "RMSE": 1814.7583537639753,
+      "R2": 0.0013802870306839354,
+      "sMAPE": 34.15416668371867
+    },
+    "dev_metrics": {
+      "MAE": 891.8083452183565,
+      "RMSE": 1421.0638039613132,
+      "R2": 0.38766415684412636,
+      "sMAPE": 19.775007373311524
+    },
+    "prod_bias": {
+      "bias_median": 1.4297372102737427,
+      "bias_p10": 1.233455276489258,
+      "bias_p50": 1.4297372102737427,
+      "bias_p90": 1.6374216079711914,
+      "pct_increasing": 96.10738255033557,
+      "pct_stable": 0.8053691275167786,
+      "pct_decreasing": 3.087248322147651
+    },
+    "dev_bias": {
+      "bias_median": 1.0087487697601318,
+      "bias_p10": 0.9046828985214234,
+      "bias_p50": 1.0087487697601318,
+      "bias_p90": 1.1171388149261474,
+      "pct_increasing": 27.248322147651006,
+      "pct_stable": 51.40939597315436,
+      "pct_decreasing": 21.34228187919463
+    },
+    "repr_products": {
+      "ACC001": {
+        "rolling_4w": 78.5,
+        "prod_pred": 114.54316711425781,
+        "prod_trend": "Increasing",
+        "dev_pred": 96.42810821533203,
+        "dev_trend": "Increasing"
+      },
+      "ACC002": {
+        "rolling_4w": 262.75,
+        "prod_pred": 313.96124267578125,
+        "prod_trend": "Increasing",
+        "dev_pred": 261.7464599609375,
+        "dev_trend": "Stable"
+      },
+      "BOK501": {
+        "rolling_4w": 1266.25,
+        "prod_pred": 876.9110107421875,
+        "prod_trend": "Decreasing",
+        "dev_pred": 1027.699462890625,
+        "dev_trend": "Decreasing"
+      },
+      "ELE509": {
+        "rolling_4w": 31.25,
+        "prod_pred": 72.4134750366211,
+        "prod_trend": "Increasing",
+        "dev_pred": 45.06432342529297,
+        "dev_trend": "Increasing"
+      },
+      "ACC014": {
+        "rolling_4w": 205.75,
+        "prod_pred": 246.19766235351562,
+        "prod_trend": "Increasing",
+        "dev_pred": 159.53392028808594,
+        "dev_trend": "Decreasing"
+      },
+      "TOY507": {
+        "rolling_4w": 869.25,
+        "prod_pred": 637.352294921875,
+        "prod_trend": "Decreasing",
+        "dev_pred": 916.1965942382812,
+        "dev_trend": "Increasing"
+      },
+      "OFF503": {
+        "rolling_4w": 919.25,
+        "prod_pred": 872.271240234375,
+        "prod_trend": "Decreasing",
+        "dev_pred": 943.9814453125,
+        "dev_trend": "Stable"
+      }
+    }
+  },
+  "180d": {
+    "status": "Insufficient validation data"
+  },
+  "365d": {
+    "status": "Insufficient validation data"
+  }
+}
