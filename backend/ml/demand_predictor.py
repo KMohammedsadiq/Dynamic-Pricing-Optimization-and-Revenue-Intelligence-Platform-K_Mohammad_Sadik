@@ -37,22 +37,58 @@ FINAL_MODEL_FEATURES = [
 ]
 
 HORIZON_MAP = {
-    7: {"weeks": 1, "model": "target_7d_Fold_4.pkl", "readiness": "Production Ready"},
-    14: {"weeks": 2, "model": "target_14d_Fold_4.pkl", "readiness": "Production Ready"},
-    30: {"weeks": 4, "model": "target_30d_Fold_4.pkl", "readiness": "Production Ready"},
-    90: {"weeks": 13, "model": "target_90d_Fold_3.pkl", "readiness": "Limited"},
-    180: {"weeks": 26, "model": "target_180d_Fold_3.pkl", "readiness": "Not Ready / Experimental"},
-    365: {"weeks": 52, "model": "target_365d_Fold_2.pkl", "readiness": "Experimental / Historical Backtest Only"}
+    7: {"weeks": 1,  "model": "../demand_forecasting_dev/genuine_7d.pkl",  "readiness": "Production Ready"},
+    14: {"weeks": 2,  "model": "../demand_forecasting_dev/genuine_14d.pkl", "readiness": "Production Ready"},
+    30: {"weeks": 4,  "model": "../demand_forecasting_dev/genuine_30d.pkl", "readiness": "Limited / Production Candidate"},
+    90: {"weeks": 13, "model": "../demand_forecasting_dev/genuine_90d.pkl", "readiness": "Limited"},
+    180: {"weeks": 26, "model": "target_180d_Fold_3.pkl",                  "readiness": "Experimental / Not Ready"},
+    365: {"weeks": 52, "model": "target_365d_Fold_2.pkl",                  "readiness": "Unverified / Historical Backtest Only"}
 }
 
+# Genuine chronological validation metrics (June-Aug 2026, genuine_historical provenance only)
+# Source: train_final_genuine.py results. These are NOT synthetic-trained metrics.
 VALIDATION_METRICS = {
-    7: {"status": "Validated", "mae": 27.3, "rmse": 48.4, "r2": 0.960, "smape": 10.8},
-    14: {"status": "Validated", "mae": 47.0, "rmse": 80.0, "r2": 0.972, "smape": 9.1},
-    30: {"status": "Validated", "mae": 85.9, "rmse": 141.6, "r2": 0.978, "smape": 8.6},
-    90: {"status": "Validated", "mae": 1809.6, "rmse": 2463.2, "r2": 0.349, "smape": 38.9},
-    180: {"status": "Validated", "mae": 2257.5, "rmse": 2808.6, "r2": 0.140, "smape": 18.6},
-    365: {"status": "Unverified - Synthetic Only", "mae": 1620.0, "rmse": 2107.3, "r2": 0.938, "smape": 6.6}
+    7:   {"status": "Validated",   "mae": 54.2,  "rmse": 97.1,   "r2": 0.774, "smape": 14.5},
+    14:  {"status": "Validated",   "mae": 119.5, "rmse": 203.2,  "r2": 0.694, "smape": 17.7},
+    30:  {"status": "Validated",   "mae": 271.9, "rmse": 459.8,  "r2": 0.640, "smape": 20.7},
+    90:  {"status": "Validated",   "mae": 891.8, "rmse": 1421.1, "r2": 0.388, "smape": 19.8},
+    180: {"status": "Experimental - Insufficient Genuine Validation", "mae": None, "rmse": None, "r2": None, "smape": None},
+    365: {"status": "Unverified - No Genuine Historical Target Data",  "mae": None, "rmse": None, "r2": None, "smape": None}
 }
+
+def calculate_confidence_score(horizon_metrics):
+    status = horizon_metrics["status"]
+    if "Unverified" in status or "Experimental" in status or "Insufficient" in status:
+        return None
+    
+    r2 = horizon_metrics["r2"]
+    smape = horizon_metrics["smape"]
+    
+    if r2 is None or smape is None:
+        return None
+    
+    # R2 Component (0-100), bounded to 0
+    r2_score = max(0, r2 * 100)
+    
+    # sMAPE Component (0-100), assuming sMAPE > 100 is 0 score
+    smape_score = max(0, 100 - smape)
+    
+    # Objective average of scale-independent metrics (genuine validation only)
+    final_score = int(round(0.5 * r2_score + 0.5 * smape_score))
+    
+    return min(100, max(0, final_score))
+
+def get_confidence_level(horizon, score):
+    if score is None:
+        return "Unverified"
+    if horizon in [7, 14, 30]:
+        return "High"
+    elif horizon == 90:
+        return "Moderate"
+    elif horizon == 180:
+        return "Low"
+    else:
+        return "Unverified"
 
 class DemandPredictor:
     def __init__(self):
@@ -96,6 +132,80 @@ class DemandPredictor:
         # Get unique product IDs
         unique_prods = self.df['product_id'].unique().tolist()
         return sorted(unique_prods)
+
+    def _calculate_seasonal_analysis(self, hist_df, latest_row, horizon_weeks):
+        def get_season_name(m):
+            if m in [3, 4, 5]: return "Spring"
+            elif m in [6, 7, 8]: return "Summer"
+            elif m in [9, 10, 11]: return "Autumn"
+            else: return "Winter"
+            
+        hist_df = hist_df.copy()
+        hist_df['season_name'] = hist_df['date'].dt.month.apply(get_season_name)
+        hist_df['is_genuine'] = (hist_df['is_synthetic'] == 0)
+        
+        seasonal_stats = {}
+        synthetic_summary = []
+        
+        for sn in ["Spring", "Summer", "Autumn", "Winter"]:
+            season_df = hist_df[hist_df['season_name'] == sn]
+            if season_df.empty:
+                continue
+                
+            genuine_df = season_df[season_df['is_genuine']]
+            
+            gen_count = len(genuine_df)
+            syn_count = len(season_df) - gen_count
+            total_count = len(season_df)
+            
+            syn_pct = round((syn_count / total_count) * 100, 1) if total_count > 0 else 0
+            synthetic_only = bool(syn_pct >= 80.0)
+            
+            seasonal_stats[sn] = {
+                "genuine_count": gen_count,
+                "synthetic_count": syn_count,
+                "genuine_pct": round((gen_count / total_count) * 100, 1) if total_count > 0 else 0,
+                "synthetic_pct": syn_pct,
+                "genuine_avg": round(genuine_df['units_sold'].mean(), 2) if gen_count > 0 else None,
+                "dataset_avg": round(season_df['units_sold'].mean(), 2),
+                "synthetic_only": synthetic_only
+            }
+            if synthetic_only:
+                synthetic_summary.append(sn)
+            
+        if not seasonal_stats:
+            return None
+            
+        highest_season = None
+        lowest_season = None
+        diff_pct = 0.0
+        has_sufficient_genuine = False
+        
+        # Calculate trend using ONLY genuine data
+        genuine_seasons = {k: v for k, v in seasonal_stats.items() if v['genuine_count'] > 0}
+        
+        if len(genuine_seasons) >= 2:
+            sorted_seasons = sorted(genuine_seasons.items(), key=lambda x: x[1]['genuine_avg'], reverse=True)
+            highest_season = sorted_seasons[0][0]
+            lowest_season = sorted_seasons[-1][0]
+            highest_avg = sorted_seasons[0][1]['genuine_avg']
+            lowest_avg = sorted_seasons[-1][1]['genuine_avg']
+            diff_pct = round(((highest_avg - lowest_avg) / lowest_avg * 100), 1) if lowest_avg > 0 else 0
+            has_sufficient_genuine = True
+            
+        start_date = latest_row['date']
+        future_dates = [start_date + pd.Timedelta(weeks=w) for w in range(1, horizon_weeks + 1)]
+        upcoming_seasons = list(dict.fromkeys([get_season_name(d.month) for d in future_dates]))
+        
+        return {
+            "historical_seasons": seasonal_stats,
+            "has_sufficient_genuine": has_sufficient_genuine,
+            "highest_season": highest_season,
+            "lowest_season": lowest_season,
+            "seasonal_difference_pct": diff_pct,
+            "upcoming_seasons": upcoming_seasons,
+            "synthetic_seasons_warning": synthetic_summary if synthetic_summary else None
+        }
 
     def predict(self, product_id: str, horizon: int) -> dict:
         if self.df is None:
@@ -169,20 +279,54 @@ class DemandPredictor:
                 "units_sold": int(row['units_sold'])
             })
 
+        import datetime
+        from ml.calendar_config import VERIFIED_CALENDAR
+
         # 9. Extract seasonal context
-        # Convert numeric flags back to readable text if possible, or just send raw values.
-        # Original categories from ordinal encoder mapping for season: we can just use the df raw value if available
-        # Wait, the df in memory has been OrdinalEncoded. It's better to read from raw dataset?
-        # Alternatively, we just know month, year. But wait, `month` is 0-11 if encoded? No, ordinal encoder gives 0, 1, 2...
-        # It's easiest to just pass the numerical values or reconstruct them.
-        # Actually, let's just pass `month`, `quarter`, `festival_flag`, `holiday_flag`.
+        obs_date = latest_row['date']
+        horizon_end_date = obs_date + datetime.timedelta(days=horizon)
+        
+        upcoming_events = []
+        for evt in VERIFIED_CALENDAR:
+            evt_date = pd.to_datetime(evt['date'])
+            if obs_date <= evt_date <= horizon_end_date:
+                upcoming_events.append(evt['event_name'])
+                
+        # Remove duplicates while preserving chronological order
+        unique_events = []
+        for e in upcoming_events:
+            if e not in unique_events:
+                unique_events.append(e)
+
+        season_num = int(latest_row['season'])
+        season_map = {0: "Autumn", 1: "Spring", 2: "Summer", 3: "Winter"}
+        season_str = season_map.get(season_num, "Unknown")
+        
+        # Handle long horizons
+        if season_str != "Unknown":
+            chronological = ["Winter", "Spring", "Summer", "Autumn"]
+            start_idx = chronological.index(season_str)
+            
+            if horizon >= 300:
+                season_str = "All Seasons (Year)"
+            elif horizon >= 180:
+                season_str = f"{season_str} → {chronological[(start_idx + 2) % 4]}"
+            elif horizon >= 90:
+                season_str = f"{season_str} → {chronological[(start_idx + 1) % 4]}"
+        
         seasonal_context = {
             "quarter": int(latest_row['quarter']),
-            "festival_flag": bool(latest_row['festival_flag']),
-            "holiday_flag": bool(latest_row['holiday_flag'])
+            "season": season_str,
+            "upcoming_events": unique_events
         }
+        
+        seasonal_analysis = self._calculate_seasonal_analysis(hist_df, latest_row, weeks)
 
         # 10. API Response
+        val_metrics = VALIDATION_METRICS[horizon]
+        conf_score = calculate_confidence_score(val_metrics)
+        conf_level = get_confidence_level(horizon, conf_score)
+
         response = {
             "product_id": product_id,
             "horizon": horizon,
@@ -191,11 +335,14 @@ class DemandPredictor:
             "predicted_weekly_demand": round(predicted_weekly, 2),
             "demand_trend": trend,
             "readiness_status": HORIZON_MAP[horizon]["readiness"],
-            "validation": VALIDATION_METRICS[horizon],
+            "confidence_score": conf_score,
+            "confidence_level": conf_level,
+            "validation": val_metrics,
             "latest_observation_date": str(latest_row['date'].date()),
             "model_file": HORIZON_MAP[horizon]["model"],
             "historical_data": historical_data,
-            "seasonal_context": seasonal_context
+            "seasonal_context": seasonal_context,
+            "seasonal_analysis": seasonal_analysis
         }
         
         return response
