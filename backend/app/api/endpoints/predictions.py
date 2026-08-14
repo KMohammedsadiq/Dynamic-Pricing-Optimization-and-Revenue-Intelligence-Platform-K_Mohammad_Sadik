@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, Query, HTTPException
 from sqlalchemy.orm import Session
 from app.db.session import get_db
-from app.schemas.prediction import PredictionRequest, PredictionResponse
+from app.schemas.prediction import PredictionRequest, PredictionResponse, ProjectionResponse
 from app.services.prediction_service import prediction_service
 
 from ml.demand_predictor import demand_predictor
@@ -26,6 +26,8 @@ def business_recommendation_endpoint(request_data: PredictionRequest, db: Sessio
     input_dict = request_data.model_dump()
     result = prediction_service.predict(db, input_dict)
     return result
+
+
 
 @router.get("/forecast")
 def demand_forecast_endpoint(

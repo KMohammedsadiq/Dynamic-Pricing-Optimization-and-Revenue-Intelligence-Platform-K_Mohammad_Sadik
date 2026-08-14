@@ -1,4 +1,4 @@
-# PredictionService v2.1 - pricing_factors + overall_decision_summary
+# PredictionService v2.2 - with future price projection
 import logging
 import datetime
 from fastapi import HTTPException
@@ -11,16 +11,14 @@ from ml.config import DEFAULT_VALUES
 logger = logging.getLogger("PredictionService")
 
 class PredictionService:
-    def predict(self, db: Session, input_data: dict) -> dict:
+    def _build_feature_dict(self, db: Session, input_data: dict) -> dict:
         is_new_product = input_data.get("is_new_product", False)
         product_name = input_data.get("product_name")
         if not product_name:
             raise HTTPException(status_code=400, detail="product_name is required")
 
-        # Build a complete feature dictionary starting from DEFAULT_VALUES
         feature_dict = DEFAULT_VALUES.copy()
         
-        # Dynamically compute season based on current date
         current_month = datetime.datetime.now().month
         if current_month in [12, 1, 2]:
             current_season = "Winter"
@@ -33,7 +31,6 @@ class PredictionService:
             
         feature_dict["season"] = current_season
 
-        # Mode 1: New Product (Manual Entry)
         if is_new_product:
             cost_price = input_data.get("cost_price")
             if not cost_price:
@@ -49,7 +46,7 @@ class PredictionService:
             feature_dict.update({
                 "category": input_data.get("category") or DEFAULT_VALUES["category"],
                 "brand": input_data.get("brand") or DEFAULT_VALUES["brand"],
-                "base_price": float(cost_price),  # Treat cost_price as base reference
+                "base_price": float(cost_price),
                 "cost_price": float(cost_price),
                 "current_price": float(current_price),
                 "launch_year": datetime.datetime.now().year,
@@ -59,11 +56,9 @@ class PredictionService:
                 "average_rating": float(input_data.get("average_rating", 0)) if input_data.get("average_rating") is not None else 0.0,
                 "review_count": 0,
                 "historical_sales": int(input_data.get("historical_sales", 0)) if input_data.get("historical_sales") is not None else 0,
-                "profit_margin": float((current_price - cost_price) / current_price * 100) if current_price > 0 else 0,
+                "profit_margin": float((current_price - float(cost_price)) / current_price * 100) if current_price > 0 else 0,
                 "season": input_data.get("season") or current_season,
             })
-            
-        # Mode 2: Existing Product (Fetch from DB)
         else:
             product_record = db.query(ProductCatalog).filter(ProductCatalog.product_name == product_name).first()
             if product_record:
@@ -97,26 +92,27 @@ class PredictionService:
             if input_data.get("competitor_price") is not None:
                 feature_dict["competitor_price"] = input_data["competitor_price"]
 
-        # Overlay dynamic market inputs (applies to both modes)
-        feature_dict["demand_index"] = input_data.get("demand_index", feature_dict["demand_index"])
-        feature_dict["inventory_level"] = input_data.get("inventory_level", feature_dict["inventory_level"])
-        feature_dict["promotion_type"] = input_data.get("promotion_type", feature_dict["promotion_type"])
+        feature_dict["demand_index"] = input_data.get("demand_index", feature_dict.get("demand_index"))
+        feature_dict["inventory_level"] = input_data.get("inventory_level", feature_dict.get("inventory_level"))
+        feature_dict["promotion_type"] = input_data.get("promotion_type", feature_dict.get("promotion_type"))
 
-        # 3. Call ML Predictor
+        return feature_dict, is_new_product, product_name
+
+    def predict(self, db: Session, input_data: dict) -> dict:
+        feature_dict, is_new_product, product_name = self._build_feature_dict(db, input_data)
+
         try:
             prediction_result = _predictor_module.predictor.predict(feature_dict)
         except Exception as e:
             logger.error(f"Prediction failed: {e}")
             raise HTTPException(status_code=500, detail=f"Prediction failed: {e}")
 
-        # 4. Call Recommendation Engine
         rec_result = recommendation_engine.generate_recommendation(
             current_price=prediction_result["current_price"],
             predicted_price=prediction_result["predicted_price"],
             feature_dict=feature_dict
         )
 
-        # 5. Build Unified Response
         return {
             "is_new_product": is_new_product,
             "product_name": product_name,

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 const formatINR = (val) =>
   new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(val || 0);
@@ -19,7 +20,7 @@ const SectionHead = ({ children }) => (
 );
 
 /* ── PredictionResultCard ── */
-const PredictionResultCard = ({ data }) => {
+const PredictionResultCard = ({ data, demandData, isDemandLoading, demandHorizon, onDemandHorizonChange }) => {
   const [showAdvanced, setShowAdvanced] = useState(false);
 
   if (!data) return null;
@@ -245,7 +246,106 @@ const PredictionResultCard = ({ data }) => {
         </div>
       </div>
 
-      {/* ── 5. Advanced / Diagnostics ── */}
+      {/* ── 5. Demand Outlook ── */}
+      {!data.is_new_product && (
+        <div>
+          <div className="flex items-center justify-between px-5 py-3 border-b border-gray-800 bg-gray-900">
+            <p className="text-xs font-semibold text-gray-500 uppercase tracking-widest">Demand Outlook</p>
+            <div className="flex items-center gap-2">
+              {[7, 14, 30].map(h => (
+                <button
+                  key={h}
+                  onClick={() => onDemandHorizonChange(h)}
+                  className={`px-2 py-1 text-[10px] uppercase font-bold rounded border ${
+                    demandHorizon === h 
+                      ? 'bg-blue-900/50 text-blue-400 border-blue-800' 
+                      : 'bg-gray-800 text-gray-400 border-gray-700 hover:bg-gray-700'
+                  }`}
+                >
+                  {h} Days
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="px-5 py-4">
+            <div className="flex items-start gap-3 bg-gray-900/40 border border-gray-800 rounded p-3 mb-5">
+              <svg className="w-5 h-5 text-gray-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <p className="text-xs text-gray-400 leading-relaxed">
+                Demand forecast represents expected demand under current business conditions. It is not a causal estimate of demand at the recommended price.
+              </p>
+            </div>
+
+            {isDemandLoading ? (
+              <div className="py-8 flex flex-col items-center justify-center">
+                <div className="inline-block w-5 h-5 border-2 border-gray-500 border-t-transparent rounded-full animate-spin mb-2" />
+                <p className="text-xs text-gray-500">Fetching demand context...</p>
+              </div>
+            ) : demandData ? (
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-sm">
+                <div>
+                  <p className="text-xs text-gray-500 mb-0.5 uppercase tracking-wider">Next {demandHorizon} Days</p>
+                  <p className="text-xl font-bold text-gray-200">
+                    {new Intl.NumberFormat('en-IN').format(demandData.predicted_demand_units)} units
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xs text-gray-500 mb-0.5 uppercase tracking-wider">Average / Week</p>
+                  <p className="text-xl font-bold text-gray-200">
+                    {new Intl.NumberFormat('en-IN').format(demandData.predicted_weekly_demand)} units
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xs text-gray-500 mb-0.5 uppercase tracking-wider">Trend</p>
+                  <p className={`text-xl font-bold ${
+                    demandData.demand_trend === 'Increasing' ? 'text-emerald-400' :
+                    demandData.demand_trend === 'Decreasing' ? 'text-rose-400' : 'text-gray-400'
+                  }`}>
+                    {demandData.demand_trend}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-[10px] text-gray-500 mb-1 uppercase tracking-wider leading-tight">
+                    Forecast Confidence Score <br/><span className="lowercase normal-case opacity-75">(derived from validation metrics)</span>
+                  </p>
+                  
+                  {demandData.confidence_score !== null && (
+                    <div className="flex items-baseline gap-1 mt-1">
+                      <span className="text-2xl font-bold text-white">{demandData.confidence_score}</span>
+                      <span className="text-xs text-gray-400 font-medium">/ 100</span>
+                    </div>
+                  )}
+
+                  <p className={`text-base font-bold ${
+                    demandData.confidence_level === 'High' ? 'text-emerald-400' :
+                    demandData.confidence_level === 'Moderate' ? 'text-amber-400' :
+                    demandData.confidence_level === 'Low' ? 'text-rose-400' : 'text-gray-400'
+                  }`}>
+                    {demandData.confidence_level}
+                  </p>
+                  
+                  {demandData.validation && demandData.validation.r2 !== undefined && (
+                    <div className="mt-3 pt-2 border-t border-gray-800 grid grid-cols-2 gap-x-2 gap-y-1 text-[10px] text-gray-400">
+                      <div><span className="text-gray-500">R²:</span> {demandData.validation.r2}</div>
+                      <div><span className="text-gray-500">MAE:</span> {demandData.validation.mae}</div>
+                      <div><span className="text-gray-500">RMSE:</span> {demandData.validation.rmse}</div>
+                      <div><span className="text-gray-500">sMAPE:</span> {demandData.validation.smape}%</div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            ) : (
+              <div className="py-4 text-center">
+                <p className="text-xs text-gray-500">Demand data not available for this product.</p>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* ── 7. Advanced / Diagnostics ── */}
+
       <div>
         <button
           onClick={() => setShowAdvanced(!showAdvanced)}

@@ -75,3 +75,25 @@ export const getAvailableProducts = async () => {
     }
   }
 };
+
+
+
+/**
+ * Fetches the details of a specific product by its ID or name from the backend.
+ * 
+ * @param {string} productId - The product ID (e.g. 'ACC001')
+ * @returns {Promise<Object>} The product details
+ */
+export const getProductDetails = async (productId) => {
+  try {
+    const response = await api.get(`/products?search=${productId}`);
+    if (response.data && response.data.items && response.data.items.length > 0) {
+      // Return the first match
+      return response.data.items[0];
+    }
+    return null;
+  } catch (error) {
+    console.warn("Failed to fetch product details:", error);
+    return null;
+  }
+};

@@ -118,6 +118,7 @@ const PredictionForm = ({ onSubmit, onReset, isSubmitting }) => {
       const demandObj = DEMAND_OPTIONS.find(d => d.label === existingData.demand_level) || DEMAND_OPTIONS[2];
       onSubmit({
         is_new_product: false,
+        product_id:      selectedProduct.product_id,
         product_name:    selectedProduct.product_name,
         current_price:   parseFloat(selectedProduct.current_price || selectedProduct.base_price * 0.95 || 0),
         demand_index:    demandObj.value,

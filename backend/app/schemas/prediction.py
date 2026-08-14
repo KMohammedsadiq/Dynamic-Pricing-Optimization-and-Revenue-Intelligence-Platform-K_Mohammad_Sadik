@@ -62,4 +62,3 @@ class PredictionResponse(BaseModel):
     currency: str = "INR"
     model: ModelInfo
     prediction_time: str
-

@@ -1,20 +1,52 @@
 import React, { useState } from 'react';
 import PredictionForm       from '../components/prediction/PredictionForm';
 import PredictionResultCard from '../components/prediction/PredictionResultCard';
-import { predictOptimalPrice } from '../services/predictionApi';
+import { predictOptimalPrice, getDemandForecast } from '../services/predictionApi';
 
 const PricePrediction = () => {
   const [isLoading,  setIsLoading]  = useState(false);
   const [resultData, setResultData] = useState(null);
   const [errorMsg,   setErrorMsg]   = useState(null);
 
+  const [demandHorizon, setDemandHorizon] = useState(30);
+  const [demandData, setDemandData] = useState(null);
+  const [isDemandLoading, setIsDemandLoading] = useState(false);
+  const [lastProductData, setLastProductData] = useState(null);
+
+  const fetchDemand = async (product_id, horizon) => {
+    setIsDemandLoading(true);
+    try {
+      const d = await getDemandForecast(product_id, horizon);
+      setDemandData(d);
+    } catch (e) {
+      console.error(e);
+      setDemandData(null);
+    } finally {
+      setIsDemandLoading(false);
+    }
+  };
+
+  React.useEffect(() => {
+    if (lastProductData && !lastProductData.is_new_product) {
+      fetchDemand(lastProductData.product_id, demandHorizon);
+    }
+  }, [demandHorizon]);
+
   const handlePredict = async (formData) => {
     setIsLoading(true);
     setResultData(null);
+    setDemandData(null);
+    setLastProductData(null);
     setErrorMsg(null);
     try {
       const data = await predictOptimalPrice(formData);
+      
       setResultData(data);
+      setLastProductData(formData);
+      
+      if (!formData.is_new_product) {
+        fetchDemand(formData.product_id, demandHorizon);
+      }
     } catch (err) {
       setErrorMsg(err.message || 'An unexpected error occurred.');
     } finally {
@@ -22,7 +54,7 @@ const PricePrediction = () => {
     }
   };
 
-  const handleReset = () => { setResultData(null); setErrorMsg(null); setIsLoading(false); };
+  const handleReset = () => { setResultData(null); setDemandData(null); setLastProductData(null); setErrorMsg(null); setIsLoading(false); };
 
   return (
     <div className="h-full flex flex-col bg-gray-950">
@@ -83,7 +115,13 @@ const PricePrediction = () => {
             )}
 
             {!isLoading && !errorMsg && resultData && (
-              <PredictionResultCard data={resultData} />
+              <PredictionResultCard 
+                data={resultData} 
+                demandData={demandData}
+                isDemandLoading={isDemandLoading}
+                demandHorizon={demandHorizon}
+                onDemandHorizonChange={(h) => setDemandHorizon(h)}
+              />
             )}
 
             {!isLoading && !errorMsg && !resultData && (
