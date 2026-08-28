@@ -47,7 +47,8 @@ class Predictor:
                 )
 
         # 1. Build ordered feature DataFrame matching training column order
-        ordered_data = {col: feature_dict.get(col, 0) for col in FEATURE_COLUMNS}
+        from .config import DEFAULT_VALUES
+        ordered_data = {col: feature_dict.get(col, DEFAULT_VALUES.get(col, 0)) for col in FEATURE_COLUMNS}
         df = pd.DataFrame([ordered_data])
 
         # 2. Predict Multiplier via XGBoost pipeline

@@ -60,6 +60,12 @@ FINAL_FEATS = [
 enc = OrdinalEncoder(handle_unknown='use_encoded_value', unknown_value=-1)
 df[CAT_COLS] = enc.fit_transform(df[CAT_COLS].fillna('Missing'))
 
+# Save the encoder for inference
+encoder_path = os.path.join(DEV_MODELS_DIR, 'demand_encoder.pkl')
+with open(encoder_path, 'wb') as f:
+    pickle.dump(enc, f)
+print(f"Saved encoder to {encoder_path}")
+
 def smape(A, F):
     return 100/len(A) * np.sum(2 * np.abs(F - A) / (np.abs(A) + np.abs(F) + 1e-8))
 

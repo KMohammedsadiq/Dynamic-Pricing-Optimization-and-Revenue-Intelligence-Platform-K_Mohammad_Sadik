@@ -12,9 +12,11 @@ import Users from "./pages/Users";
 import Analytics from "./pages/Analytics";
 import PricePrediction from "./pages/PricePrediction";
 import AmazonApiTest from "./pages/AmazonApiTest";
+import FlipkartApiTest from "./pages/FlipkartApiTest";
 import Forecasts from "./pages/Forecasts";
 import Competitors from "./pages/Competitors";
 import RevenueOptimization from "./pages/RevenueOptimization";
+import ExecutiveBi from "./pages/ExecutiveBi";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -40,6 +42,7 @@ export default function App() {
               <Route path="competitors" element={<Competitors />} />
               <Route path="users" element={<Users />} />
               <Route path="amazon-test" element={<AmazonApiTest />} />
+              <Route path="flipkart-test" element={<FlipkartApiTest />} />
             </Route>
 
             {/* Pricing Manager and Admin Routes */}
@@ -54,6 +57,7 @@ export default function App() {
             <Route element={<ProtectedRoute allowedRoles={["Admin", "Business Analyst"]} />}>
               <Route path="forecasts" element={<Forecasts />} />
               <Route path="analytics" element={<Analytics />} />
+              <Route path="executive-bi" element={<ExecutiveBi />} />
             </Route>
           </Route>
         </Route>

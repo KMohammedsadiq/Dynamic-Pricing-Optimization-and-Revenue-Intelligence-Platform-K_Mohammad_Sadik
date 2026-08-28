@@ -13,6 +13,24 @@ class Settings(BaseSettings):
     DATABASE_URL: str
     ENVIRONMENT: str = "development"
 
+    # RapidAPI Keys (kept for reference)
+    RAPID_API_KEY: str = ""
+    AMAZON_API_HOST: str = ""
+    FLIPKART_API_HOST: str = ""
+    COMPETITOR_SYNC_COOLDOWN_SECONDS: int = 60
+
+    # SerpApi — Google Shopping competitor pricing
+    SERPAPI_API_KEY: str = ""
+
+    # Gemini
+    GEMINI_API_KEY: str = ""
+
+    # ZenRows
+    ZENROWS_API_KEY: str = ""
+
+    # Scrapingdog
+    SCRAPINGDOG_API_KEY: str = ""
+
     # Tell Pydantic to read the exact .env file in our backend folder
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
 

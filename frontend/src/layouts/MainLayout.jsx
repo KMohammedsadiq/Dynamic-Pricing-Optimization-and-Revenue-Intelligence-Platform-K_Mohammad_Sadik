@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Outlet, Link, useLocation } from "react-router-dom";
-import { LayoutDashboard, Package, TrendingUp, BarChart3, LineChart, LogOut, UploadCloud, Hexagon, Users, Shield, Menu, X } from "lucide-react";
+import { LayoutDashboard, Package, TrendingUp, BarChart3, LineChart, LogOut, UploadCloud, Hexagon, Users, Shield, Menu, X, FileBarChart2 } from "lucide-react";
 import { logout, getUser } from "../utils/auth";
 
 export default function MainLayout() {
@@ -50,10 +50,12 @@ export default function MainLayout() {
             { path: '/predictions', label: 'Price Prediction', icon: TrendingUp, role: ['Admin', 'Pricing Manager'] },
             { path: '/forecasts', label: 'Demand Forecast', icon: LineChart, role: ['Admin', 'Business Analyst'] },
             { path: '/competitors', label: 'Competitor Analysis', icon: Users, role: 'Admin' },
-            { path: '/revenue-optimization', label: 'Revenue Optimization', icon: TrendingUp, role: ['Admin', 'Pricing Manager'] },
-            { path: '/analytics', label: 'Analytics', icon: BarChart3, role: ['Admin', 'Business Analyst'] },
+            { path: '/revenue-optimization', label: 'Pricing Strategy', icon: TrendingUp, role: ['Admin', 'Pricing Manager'] },
+            { path: '/analytics', label: 'Profitability Analytics', icon: BarChart3, role: ['Admin', 'Business Analyst'] },
+            { path: '/executive-bi', label: 'Executive BI', icon: FileBarChart2, role: ['Admin', 'Business Analyst'] },
             { path: '/upload', label: 'Upload Data', icon: UploadCloud, role: 'Admin' },
             { path: '/amazon-test', label: 'Amazon API Test', icon: UploadCloud, role: 'Admin' },
+            { path: '/flipkart-test', label: 'Flipkart API Test', icon: UploadCloud, role: 'Admin' },
             { path: '/users', label: 'User Mgmt', icon: Shield, role: 'Admin' },
           ].map((item) => {
             const roles = Array.isArray(item.role) ? item.role : [item.role];

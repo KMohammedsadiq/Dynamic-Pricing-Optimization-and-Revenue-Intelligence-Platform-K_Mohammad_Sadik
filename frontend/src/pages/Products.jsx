@@ -335,12 +335,16 @@ export default function Products() {
                       </td>
                       <td className="p-4">
                         <div className="text-sm font-bold text-gray-100">
-                          ₹{parseFloat(product.base_price || 0).toLocaleString('en-IN', { maximumFractionDigits: 2 })}
+                          {!product.base_price || product.base_price <= 0 ? (
+                            <span className="text-gray-500 font-normal">Not available</span>
+                          ) : (
+                            `₹${parseFloat(product.base_price).toLocaleString('en-IN', { maximumFractionDigits: 2 })}`
+                          )}
                         </div>
                       </td>
                       <td className="p-4">
                         <div className="text-sm font-bold text-gray-300">
-                          {product.initial_inventory || 0}
+                          {product.initial_inventory != null ? product.initial_inventory : 'N/A'}
                         </div>
                       </td>
                       <td className="p-4">

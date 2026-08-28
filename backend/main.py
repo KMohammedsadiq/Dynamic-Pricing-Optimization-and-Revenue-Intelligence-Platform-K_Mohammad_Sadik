@@ -44,12 +44,18 @@ async def test_db_connection(db: Session = Depends(get_db)):
         return {"status": "error", "message": f"Database connection failed: {str(e)}"}
 
 # Import and include the Authentication router
-from app.api.endpoints import auth, dashboard, products, users, analytics, predictions, historical, amazon
+from app.api.endpoints import auth, dashboard, products, users, analytics, predictions, historical, amazon, flipkart, competitors
 
 app.include_router(
     auth.router,
     prefix="/api/v1/auth",
     tags=["Authentication"]
+)
+
+app.include_router(
+    competitors.router,
+    prefix="/api/v1/competitors",
+    tags=["Competitors"]
 )
 
 app.include_router(
@@ -92,4 +98,10 @@ app.include_router(
     amazon.router,
     prefix="/api/v1/amazon",
     tags=["Amazon"]
+)
+
+app.include_router(
+    flipkart.router,
+    prefix="/api/v1/flipkart",
+    tags=["Flipkart"]
 )

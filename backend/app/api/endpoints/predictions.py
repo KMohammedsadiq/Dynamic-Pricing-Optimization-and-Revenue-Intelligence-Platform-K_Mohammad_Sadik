@@ -69,3 +69,119 @@ def available_products_endpoint(db: Session = Depends(get_db)):
         return {"products": result}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+@router.get("/revenue-optimization/{product_id}")
+def get_revenue_optimization_recommendation(product_id: str, db: Session = Depends(get_db)):
+    """
+    Returns a unified PricePilot recommendation gathering data from:
+    - Product DB
+    - Demand Forecast
+    - Competitor Sync
+    - ML Price Predictor
+    - Recommendation Engine
+    """
+    try:
+        from app.models.product_catalog import ProductCatalog
+        from app.models.competitor_price import CompetitorPriceHistory
+        from ml.predictor import Predictor
+        from ml.recommendation import RecommendationEngine
+        
+        # 1. Product Info
+        prod = db.query(ProductCatalog).filter_by(product_id=product_id).first()
+        if not prod:
+            raise HTTPException(status_code=404, detail="Product not found in ML catalog.")
+            
+        # 2. Demand Forecast
+        try:
+            forecast_data = demand_predictor.predict(product_id, 30)
+            forecast = forecast_data.get("forecast", [])
+            history = forecast_data.get("historical_data", [])
+        except Exception:
+            forecast = []
+            history = []
+            
+        # 3. Competitor Prices
+        comps = db.query(CompetitorPriceHistory).filter_by(product_id=product_id).all()
+        amazon = next((c for c in comps if c.competitor_name == "Amazon"), None)
+        flipkart = next((c for c in comps if c.competitor_name == "Flipkart"), None)
+        
+        comp_prices = [float(c.price) for c in comps if c.price > 0]
+        market_lowest = min(comp_prices) if comp_prices else None
+        market_average = sum(comp_prices)/len(comp_prices) if comp_prices else None
+        
+        # 4. ML Optimal Price
+        base_price = float(prod.base_price) if prod.base_price else 0.0
+        cost_price = base_price * 0.8
+        
+        input_data = {
+            'product_name': prod.product_name,
+            'brand': prod.brand,
+            'category': prod.category,
+            'cost_price': cost_price,
+            'average_rating': 4.5,
+            'historical_sales': 1500,
+            'product_lifecycle': 'Mature',
+            'season': 'Winter',
+            'current_price': base_price,
+            'demand_index': 1.0,
+            'inventory_level': 50,
+            'competitor_price': market_average if market_average else base_price,
+            'promotion_type': 'No Promotion'
+        }
+        
+        p = Predictor()
+        pred_result = p.predict(input_data)
+        optimal_price = pred_result.get("predicted_price")
+        
+        # 5. Recommendation Engine
+        rec_engine = RecommendationEngine()
+        rec_data = rec_engine.generate_recommendation(
+            current_price=base_price,
+            predicted_price=optimal_price,
+            feature_dict=input_data
+        )
+        
+        # 6. Price Gap
+        price_gap_pct = ((optimal_price - market_average) / market_average * 100) if market_average else 0
+        
+        return {
+            "product": {
+                "id": prod.product_id,
+                "name": prod.product_name,
+                "brand": prod.brand,
+                "category": prod.category,
+                "current_price": base_price,
+                "cost_price": cost_price
+            },
+            "demand": {
+                "history": history[-30:] if history else [],
+                "forecast": forecast
+            },
+            "competitors": {
+                "amazon": {
+                    "price": amazon.price if amazon else None,
+                    "confidence": amazon.match_confidence if amazon else None
+                },
+                "flipkart": {
+                    "price": flipkart.price if flipkart else None,
+                    "confidence": flipkart.match_confidence if flipkart else None
+                },
+                "market_lowest": market_lowest,
+                "market_average": market_average,
+                "price_gap_pct": price_gap_pct
+            },
+            "ml": {
+                "optimal_price": optimal_price,
+                "multiplier": pred_result.get("predicted_multiplier"),
+                "stability": pred_result.get("prediction_stability")
+            },
+            "recommendation": {
+                "action": rec_data.get("recommendation"),
+                "reason": rec_data.get("recommendation_reason"),
+                "factors": rec_data.get("pricing_factors")
+            }
+        }
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=str(e))

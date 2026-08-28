@@ -7,8 +7,8 @@ const api = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
-  // If a request takes longer than 10 seconds, abort it automatically
-  timeout: 10000, 
+  // If a request takes longer than 60 seconds, abort it automatically
+  timeout: 60000, 
 });
 
 import { getToken } from "../utils/auth";

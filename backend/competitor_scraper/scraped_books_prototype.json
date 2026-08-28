@@ -1,0 +1,38 @@
+[
+    {
+        "competitor_name": "Books To Scrape",
+        "product_name": "A Light in the Attic",
+        "brand": "N/A",
+        "category": "Poetry",
+        "price": 51.77,
+        "currency": "\u00a3",
+        "availability": "In stock",
+        "product_url": "http://books.toscrape.com/catalogue/a-light-in-the-attic_1000/index.html",
+        "image_url": "http://books.toscrape.com/media/cache/fe/72/fe72f0532301ec28892ae79a629a293c.jpg",
+        "scraped_at": "2026-08-17T04:52:05.279764Z"
+    },
+    {
+        "competitor_name": "Books To Scrape",
+        "product_name": "Tipping the Velvet",
+        "brand": "N/A",
+        "category": "Historical Fiction",
+        "price": 53.74,
+        "currency": "\u00a3",
+        "availability": "In stock",
+        "product_url": "http://books.toscrape.com/catalogue/tipping-the-velvet_999/index.html",
+        "image_url": "http://books.toscrape.com/media/cache/08/e9/08e94f3731d7d6b760dfbfbc02ca5c62.jpg",
+        "scraped_at": "2026-08-17T04:52:06.526794Z"
+    },
+    {
+        "competitor_name": "Books To Scrape",
+        "product_name": "Soumission",
+        "brand": "N/A",
+        "category": "Fiction",
+        "price": 50.1,
+        "currency": "\u00a3",
+        "availability": "In stock",
+        "product_url": "http://books.toscrape.com/catalogue/soumission_998/index.html",
+        "image_url": "http://books.toscrape.com/media/cache/ee/cf/eecfe998905e455df12064dba399c075.jpg",
+        "scraped_at": "2026-08-17T04:52:07.781696Z"
+    }
+]

@@ -16,6 +16,8 @@ import {
   TrendingUp,
   Send,
   Lock,
+  Activity,
+  Briefcase
 } from "lucide-react";
 import api from "../services/api";
 import { getUser } from "../utils/auth";
@@ -242,6 +244,82 @@ export default function Dashboard() {
         </div>
       </div>
 
+
+      {/* ── 3. Quick Navigation ────────────────────────────────────────────── */}
+      <div className="mb-8 mt-8">
+        <p className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-3">Platform Modules</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+          <NavCard
+            to="/analytics"
+            icon={BarChart2}
+            label="Profitability Analytics"
+            desc="Analyze revenue, COGS, and margin health."
+            color="#3b82f6"
+            allowed={isAdmin || isPricingManager || isAnalyst}
+          />
+          <NavCard
+            to="/revenue-optimization"
+            icon={TrendingUp}
+            label="Pricing Strategy"
+            desc="AI-driven price optimization recommendations."
+            color="#22c55e"
+            allowed={isAdmin || isPricingManager}
+          />
+          <NavCard
+            to="/competitors"
+            icon={Layers}
+            label="Competitor Analysis"
+            desc="Track competitor pricing movements and market gap."
+            color="#f59e0b"
+            allowed={isAdmin || isPricingManager || isAnalyst}
+          />
+          <NavCard
+            to="/demand-forecast"
+            icon={Activity}
+            label="Demand Forecast"
+            desc="Machine learning based volume predictions."
+            color="#8b5cf6"
+            allowed={isAdmin || isPricingManager || isAnalyst}
+          />
+          <NavCard
+            to="/executive-bi"
+            icon={Briefcase}
+            label="Executive BI"
+            desc="High-level business intelligence reports."
+            color="#0ea5e9"
+            allowed={isAdmin || isPricingManager}
+          />
+          <NavCard
+            to="/upload"
+            icon={UploadCloud}
+            label="Data Management"
+            desc="Upload and sync catalog CSV datasets."
+            color="#6b7280"
+            allowed={isAdmin || isPricingManager}
+          />
+        </div>
+      </div>
+
+      {/* ── 4. System Status ─────────────────────────────────────────────── */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+        {/* User Role */}
+        <Card className="p-5 flex flex-col gap-4">
+          <div className="flex items-center gap-2">
+            <Users className="w-5 h-5 text-gray-400" />
+            <h2 className="text-sm font-bold text-gray-100">Active Session</h2>
+          </div>
+          <div className="p-4 rounded-lg bg-[#374151]/20 border border-[#374151] flex flex-col gap-1">
+            <p className="text-sm font-medium text-gray-400">Logged in as</p>
+            <p className="text-lg font-black text-white">{user?.username}</p>
+            <div className="flex items-center gap-2 mt-2">
+              <span className="px-2 py-1 rounded bg-[#3b82f6]/20 text-blue-400 text-xs font-bold uppercase tracking-wider border border-[#3b82f6]/30">
+                {role}
+              </span>
+            </div>
+          </div>
+        </Card>
+      </div>
 
     </div>
   );

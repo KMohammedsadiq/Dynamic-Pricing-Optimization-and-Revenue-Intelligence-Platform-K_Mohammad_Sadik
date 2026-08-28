@@ -1,0 +1,2642 @@
+{
+  "DEMO001": {
+    "Flipkart": {
+      "status": "cooldown",
+      "message": "Cached price — live refresh in ~60s.",
+      "price": 57900.0,
+      "url": "https://www.flipkart.com/apple-iphone-15-black-128-gb/p/itm6ac6485515ae4?pid=MOBGTAGPTB3VS24W&lid=LSTMOBGTAGPTB3VS24WKFODHL&marketplace=FLIPKART&q=Apple+iPhone+15+128GB&store=tyy%2F4io&spotlightTagId=default_BestsellerId_tyy%2F4io&srno=s_1_1&otracker=search&fm=organic&iid=476cc4a2-7a59-4719-a6c6-4d92ca0f0df7.MOBGTAGPTB3VS24W.SEARCH&ppt=None&ppn=None&ssid=luwj9vyc4g0000001787133861941&qH=fc96ce9a3f482d83&ov_redirect=true",
+      "title": "Apple iPhone 15 (Black, 128 GB)",
+      "confidence": 90,
+      "scraped_at": "2026-08-19T15:34:08.995445+05:30",
+      "last_checked_at": "2026-08-19T15:55:13.063956+05:30"
+    },
+    "Amazon": {
+      "status": "no_verified_match",
+      "message": "No verified matching product found on Amazon (confidence below threshold).",
+      "diagnostics": [
+        {
+          "candidate": "AppleiPhone 16e 128 GB: Built for Apple Intelligence, A18 Chip, Supersized Battery Life, 48MP Fusion. Camera, 15.40 cm (6.1″) Super Retina XDR Display; Black",
+          "url": "https://www.amazon.in/dp/B0DXQH1DBS",
+          "asin": "B0DXQH1DBS",
+          "confidence": 0,
+          "reasons": [
+            "ACCESSORY/EXCLUSION MISMATCH: detected {'battery'}",
+            "Storage MATCH ({'128GB'})",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "HARD REJECTION: One or more attributes explicitly mismatched."
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "MATCH",
+            "Exclusions": "MISMATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "AppleiPhone Air 256 GB: Thinnest iPhone Ever, 16.63 cm (6.5″) Display with Promotion up to 120Hz, Powerful A19 Pro Chip, Center Stage Front Camera, All-Day Battery Life; Space Black",
+          "url": "https://www.amazon.in/dp/B0FQFBDQJ1",
+          "asin": "B0FQFBDQJ1",
+          "confidence": 0,
+          "reasons": [
+            "ACCESSORY/EXCLUSION MISMATCH: detected {'battery'}",
+            "Storage MISMATCH (internal: {'128GB'}, candidate: {'256GB'})",
+            "Model Modifiers MISMATCH (candidate has extra: {'pro'})",
+            "Book Modifiers MATCH",
+            "HARD REJECTION: One or more attributes explicitly mismatched."
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "MATCH",
+            "Exclusions": "MISMATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MISMATCH",
+            "Model": "MISMATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "OnePlusNord CE6 | 8GB+128GB | Lunar Pearl | Snapdragon 7s Gen 4 | Segment's Fastest Touch Response | 8000mAh Battery | 144Hz 1.5K AMOLED Display | 50MP Main + 32MP Selfie 4K Cameras | IP66,68,69,69K",
+          "url": "https://www.amazon.in/dp/B0GWLTLNTV",
+          "asin": "B0GWLTLNTV",
+          "confidence": 0,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "ACCESSORY/EXCLUSION MISMATCH: detected {'battery'}",
+            "RAM: candidate specifies {'8GB'} but internal does not",
+            "Storage MATCH ({'128GB'})",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "HARD REJECTION: One or more attributes explicitly mismatched."
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MISMATCH",
+            "CPU": "MATCH",
+            "RAM": "UNKNOWN",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "OnePlus15 | 12GB+256GB | Sand Storm | India's First Snapdragon® 8 Elite Gen 5 | 7300mAh Battery | Personalised AI | Game-Changing 165Hz Display | Triple 50MP Camera with 4K 120fps Dolby Vision",
+          "url": "https://www.amazon.in/dp/B0FTRN7L8Q",
+          "asin": "B0FTRN7L8Q",
+          "confidence": 0,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "ACCESSORY/EXCLUSION MISMATCH: detected {'battery'}",
+            "RAM: candidate specifies {'12GB'} but internal does not",
+            "Storage MISMATCH (internal: {'128GB'}, candidate: {'12GB', '256GB'})",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "HARD REJECTION: One or more attributes explicitly mismatched."
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MISMATCH",
+            "CPU": "MATCH",
+            "RAM": "UNKNOWN",
+            "Storage": "MISMATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "OnePlus15R | 12GB+256GB | Charcoal Black | World's First Snapdragon® 8 Gen 5 | 7400mAh Battery | Personalised AI | Game-Changing 165Hz Display | IP68 IP69 IP66 & IP69K | 4K 120fps Video",
+          "url": "https://www.amazon.in/dp/B0FZSWZZW2",
+          "asin": "B0FZSWZZW2",
+          "confidence": 0,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "ACCESSORY/EXCLUSION MISMATCH: detected {'battery'}",
+            "RAM: candidate specifies {'12GB'} but internal does not",
+            "Storage MISMATCH (internal: {'128GB'}, candidate: {'12GB', '256GB'})",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "HARD REJECTION: One or more attributes explicitly mismatched."
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MISMATCH",
+            "CPU": "MATCH",
+            "RAM": "UNKNOWN",
+            "Storage": "MISMATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "SamsungGalaxy A56 5G (Awesome Violet Glow, 8GB, 128GB) | Segment Most Complete Triple Camera | AI Editing | 4nm Processor | sAMOLED Display| Gorilla Glass Victus+| 5 Gen OS Upgrades",
+          "url": "https://www.amazon.in/dp/B0H1WY55ZL",
+          "asin": "B0H1WY55ZL",
+          "confidence": 0,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "RAM: candidate specifies {'8GB'} but internal does not",
+            "Storage MATCH ({'128GB'})",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 15, iphone)",
+            "Penalty: deducted 10% for UNKNOWN attributes.",
+            "final confidence score = 0%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "UNKNOWN",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "Redmi15 5G Sandy Purple 8GB + 128GB | 7000mAh Battery, 17.53cm (6.9) Display Up to 144Hz, Snapdragon 6s Gen 3, 18W Reverse Charging, 50MP AI Dual Camera",
+          "url": "https://www.amazon.in/dp/B0FJFVYJ89",
+          "asin": "B0FJFVYJ89",
+          "confidence": 0,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "ACCESSORY/EXCLUSION MISMATCH: detected {'battery'}",
+            "RAM: candidate specifies {'8GB'} but internal does not",
+            "Storage MATCH ({'128GB'})",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "HARD REJECTION: One or more attributes explicitly mismatched."
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MISMATCH",
+            "CPU": "MATCH",
+            "RAM": "UNKNOWN",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "RedmiNote 15 5G (Black, 8GB RAM 128GB Storage) | 108MP OIS Camera | Snapdragon 6 Gen 3 | 17.2cm Tough Curved AMOLED Screen | 5520mAh Battery | 45W Fast Charging",
+          "url": "https://www.amazon.in/dp/B0G5G5C89T",
+          "asin": "B0G5G5C89T",
+          "confidence": 0,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "ACCESSORY/EXCLUSION MISMATCH: detected {'screen', 'battery'}",
+            "RAM: candidate specifies {'8GB'} but internal does not",
+            "Storage MATCH ({'128GB'})",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "HARD REJECTION: One or more attributes explicitly mismatched."
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MISMATCH",
+            "CPU": "MATCH",
+            "RAM": "UNKNOWN",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "AppleiPhone Air 512 GB: Thinnest iPhone Ever, 16.63 cm (6.5″) Display with Promotion up to 120Hz, Powerful A19 Pro Chip, Center Stage Front Camera, All-Day Battery Life; Sky Blue",
+          "url": "https://www.amazon.in/dp/B0FQFH6CV1",
+          "asin": "B0FQFH6CV1",
+          "confidence": 0,
+          "reasons": [
+            "ACCESSORY/EXCLUSION MISMATCH: detected {'battery'}",
+            "Storage MISMATCH (internal: {'128GB'}, candidate: {'512GB'})",
+            "Model Modifiers MISMATCH (candidate has extra: {'pro'})",
+            "Book Modifiers MATCH",
+            "HARD REJECTION: One or more attributes explicitly mismatched."
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "MATCH",
+            "Exclusions": "MISMATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MISMATCH",
+            "Model": "MISMATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "AppleiPhone 17 Pro 512 GB: 15.93 cm (6.3″) Display with Promotion up to 120Hz, A19 Pro Chip, Breakthrough Battery Life, Pro Fusion Camera System with Center Stage Front Camera; Silver",
+          "url": "https://www.amazon.in/dp/B0FQF2ZJWT",
+          "asin": "B0FQF2ZJWT",
+          "confidence": 0,
+          "reasons": [
+            "ACCESSORY/EXCLUSION MISMATCH: detected {'battery'}",
+            "Storage MISMATCH (internal: {'128GB'}, candidate: {'512GB'})",
+            "Model Modifiers MISMATCH (candidate has extra: {'pro'})",
+            "Book Modifiers MATCH",
+            "HARD REJECTION: One or more attributes explicitly mismatched."
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "MATCH",
+            "Exclusions": "MISMATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MISMATCH",
+            "Model": "MISMATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "SamsungGalaxy S24 5G AI Smartphone (Onyx Black, 8GB, 256GB Storage)",
+          "url": "https://www.amazon.in/dp/B0CS69QQTG",
+          "asin": "B0CS69QQTG",
+          "confidence": 0,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "RAM: candidate specifies {'8GB'} but internal does not",
+            "Storage MISMATCH (internal: {'128GB'}, candidate: {'256GB', '8GB'})",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "HARD REJECTION: One or more attributes explicitly mismatched."
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "UNKNOWN",
+            "Storage": "MISMATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "OnePlusNord 6 | 12GB+256GB | Fresh Mint | Snapdragon 8s Gen 4 | Segment's First Stable 165FPS Gaming | Segment's Largest 9000mAh Battery | Most Complete IP Rating | Personalized AI",
+          "url": "https://www.amazon.in/dp/B0GRBHNCTZ",
+          "asin": "B0GRBHNCTZ",
+          "confidence": 0,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "ACCESSORY/EXCLUSION MISMATCH: detected {'battery'}",
+            "RAM: candidate specifies {'12GB'} but internal does not",
+            "Storage MISMATCH (internal: {'128GB'}, candidate: {'12GB', '256GB'})",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "HARD REJECTION: One or more attributes explicitly mismatched."
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MISMATCH",
+            "CPU": "MATCH",
+            "RAM": "UNKNOWN",
+            "Storage": "MISMATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "AppleiPhone 17 Pro (512GB) - Silver with Protect+ with AppleCare Services",
+          "url": "https://www.amazon.in/dp/B0G6KWRZQD",
+          "asin": "B0G6KWRZQD",
+          "confidence": 0,
+          "reasons": [
+            "Storage MISMATCH (internal: {'128GB'}, candidate: {'512GB'})",
+            "Model Modifiers MISMATCH (candidate has extra: {'pro'})",
+            "Book Modifiers MATCH",
+            "HARD REJECTION: One or more attributes explicitly mismatched."
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "MATCH",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MISMATCH",
+            "Model": "MISMATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "iQOO15 (Legend, 12GB RAM, 256GB Storage) | Fastest Snapdragon 8 Elite Gen 5 Processor* | Samsung 2K M14 Lead OLED Display | Origin OS 6 with Personalized AI Features",
+          "url": "https://www.amazon.in/dp/B0FYGBSKFB",
+          "asin": "B0FYGBSKFB",
+          "confidence": 0,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "RAM: candidate specifies {'12GB'} but internal does not",
+            "Storage MISMATCH (internal: {'128GB'}, candidate: {'12GB', '256GB'})",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "HARD REJECTION: One or more attributes explicitly mismatched."
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "UNKNOWN",
+            "Storage": "MISMATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "OnePlusNord 6 | 12GB+256GB | Pitch Black | Snapdragon 8s Gen 4 | Segment's First Stable 165FPS Gaming | Segment's Largest 9000mAh Battery | Most Complete IP Rating | Personalized AI",
+          "url": "https://www.amazon.in/dp/B0GRBH61FR",
+          "asin": "B0GRBH61FR",
+          "confidence": 0,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "ACCESSORY/EXCLUSION MISMATCH: detected {'battery'}",
+            "RAM: candidate specifies {'12GB'} but internal does not",
+            "Storage MISMATCH (internal: {'128GB'}, candidate: {'12GB', '256GB'})",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "HARD REJECTION: One or more attributes explicitly mismatched."
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MISMATCH",
+            "CPU": "MATCH",
+            "RAM": "UNKNOWN",
+            "Storage": "MISMATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "OnePlus13s | Snapdragon® 8 Elite | Smarter with OnePlus AI | Lifetime Display Warranty | 12GB+256GB | Green Silk",
+          "url": "https://www.amazon.in/dp/B0F5WTG8RG",
+          "asin": "B0F5WTG8RG",
+          "confidence": 0,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "RAM: candidate specifies {'12GB'} but internal does not",
+            "Storage MISMATCH (internal: {'128GB'}, candidate: {'12GB', '256GB'})",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "HARD REJECTION: One or more attributes explicitly mismatched."
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "UNKNOWN",
+            "Storage": "MISMATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        }
+      ],
+      "metadata": {
+        "ZenRows Amazon India": {
+          "queries_run": [
+            {
+              "query": "Apple iPhone 15 128GB",
+              "credits": 0,
+              "status": 200,
+              "candidates_found": 16
+            }
+          ],
+          "total_credits_consumed": 0,
+          "total_unique_candidates": 16
+        }
+      }
+    }
+  },
+  "DEMO011": {
+    "Amazon": {
+      "status": "success",
+      "price": 120.0,
+      "url": "https://www.amazon.in/dp/B0GTTVLJ9N",
+      "title": "Tata SampannTATA Salt Vacuum Evaporated Iodised Namak, Free Flowing, 1 Kg (Shipping Cost Included)",
+      "confidence": 90,
+      "asin": "B0GTTVLJ9N",
+      "scraped_at": "2026-08-19T10:25:38.631493+00:00",
+      "last_checked_at": "2026-08-19T10:25:38.631493+00:00",
+      "diagnostics": [
+        {
+          "candidate": "tataRock Salt, 1 kg",
+          "url": "https://www.amazon.in/dp/B07WMHGBCC",
+          "asin": "B07WMHGBCC",
+          "confidence": 90,
+          "reasons": [
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "excellent text match (all internal words present)",
+            "final confidence score = 90%"
+          ],
+          "status": "ACCEPTED",
+          "detailed_diag": {
+            "Brand": "MATCH",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "Tata SampannTATA Salt Vacuum Evaporated Iodised Namak, Free Flowing, 1 Kg (Shipping Cost Included)",
+          "url": "https://www.amazon.in/dp/B0GTTVLJ9N",
+          "asin": "B0GTTVLJ9N",
+          "confidence": 90,
+          "reasons": [
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "excellent text match (all internal words present)",
+            "final confidence score = 90%"
+          ],
+          "status": "ACCEPTED",
+          "detailed_diag": {
+            "Brand": "MATCH",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "TataRock Salt, 1 Kg",
+          "url": "https://www.amazon.in/dp/B07JQB7NM1",
+          "asin": "B07JQB7NM1",
+          "confidence": 90,
+          "reasons": [
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "excellent text match (all internal words present)",
+            "final confidence score = 90%"
+          ],
+          "status": "ACCEPTED",
+          "detailed_diag": {
+            "Brand": "MATCH",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "PatanjaliIodized Namak/Salt, Pure & Natural, Everyday use, 1 Kg",
+          "url": "https://www.amazon.in/dp/B0CPVD1FLB",
+          "asin": "B0CPVD1FLB",
+          "confidence": 85,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "excellent text match (all internal words present)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 85%"
+          ],
+          "status": "ACCEPTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "AashirvaadHimalayan Pink Salt, 100% Natural Rock Salt Sourced from the Himalayan Ranges, Pure Sendha Namak with Minerals for Everyday Use, 1 Kg",
+          "url": "https://www.amazon.in/dp/B0CL6K4KGX",
+          "asin": "B0CL6K4KGX",
+          "confidence": 85,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "excellent text match (all internal words present)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 85%"
+          ],
+          "status": "ACCEPTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "NATURELAND ORGANICSHimalayan Pink Rock Salt 1 KG - Organic Rock Salt",
+          "url": "https://www.amazon.in/dp/B07W9H35C2",
+          "asin": "B07W9H35C2",
+          "confidence": 85,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "excellent text match (all internal words present)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 85%"
+          ],
+          "status": "ACCEPTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "catchRock Salt | Pink Rock Salt Premium | Sendha Namak 1 Kg",
+          "url": "https://www.amazon.in/dp/B09NW3H3CK",
+          "asin": "B09NW3H3CK",
+          "confidence": 85,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "excellent text match (all internal words present)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 85%"
+          ],
+          "status": "ACCEPTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "LUNN50% Low Sodium Thar Desert Salt 1 Kg Pouch | 84+ Natural Minerals | Unrefined Chemical-Free Salt | 50% Less Sodium for Heart Health & Hydration | Great Taste | No Preservatives | Ideal for Daily Cooking | First Time in India",
+          "url": "https://www.amazon.in/dp/B0C6Q4L8WL",
+          "asin": "B0C6Q4L8WL",
+          "confidence": 85,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "excellent text match (all internal words present)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 85%"
+          ],
+          "status": "ACCEPTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "GutsukhHimalayan Pink Salt (1 kg) | Sendha Namak | Rock Salt | 84+ Minerals | 100% Natural | No Preservatives | No Chemicals | No artificial color | Unrefined",
+          "url": "https://www.amazon.in/dp/B0F228NCY6",
+          "asin": "B0F228NCY6",
+          "confidence": 85,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "excellent text match (all internal words present)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 85%"
+          ],
+          "status": "ACCEPTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "CHEF URBANOHimalayan Pink Salt 1 kg | 100% Pure & Natural | Mineral Rich Salt | Low Sodium | Packed with 84 Minerals",
+          "url": "https://www.amazon.in/dp/B0777L8Q75",
+          "asin": "B0777L8Q75",
+          "confidence": 85,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "excellent text match (all internal words present)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 85%"
+          ],
+          "status": "ACCEPTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "GraminwayFROM THE ROOTS Sea Salt 1 Kg",
+          "url": "https://www.amazon.in/dp/B07DN955WC",
+          "asin": "B07DN955WC",
+          "confidence": 85,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "excellent text match (all internal words present)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 85%"
+          ],
+          "status": "ACCEPTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "Conscious FoodHimalayan Pink Salt | 2 kg | Mineral Rich | Natural & Unrefined | Rock Salt | Pure Sendha Namak | No Chemicals",
+          "url": "https://www.amazon.in/dp/B0DDXK732C",
+          "asin": "B0DDXK732C",
+          "confidence": 65,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "partial text match (missing words: 1)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 65%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "TataSalt, 1kg Pack",
+          "url": "https://www.amazon.in/dp/B00L141L2K",
+          "asin": "B00L141L2K",
+          "confidence": 38,
+          "reasons": [
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: salt, 1, kg)",
+            "final confidence score = 38%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "MATCH",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "Tata Salt, 1kg(Pack of 2)",
+          "url": "https://www.amazon.in/dp/B0DVPTYR8C",
+          "asin": "B0DVPTYR8C",
+          "confidence": 35,
+          "reasons": [
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "final confidence score = 35%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "MATCH",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "Tata Salt, 1kg (Pack of 3)",
+          "url": "https://www.amazon.in/dp/B0F8H5Y4R7",
+          "asin": "B0F8H5Y4R7",
+          "confidence": 35,
+          "reasons": [
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "final confidence score = 35%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "MATCH",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "Tata Salt, 1kg (Pack of 4)",
+          "url": "https://www.amazon.in/dp/B0F8H4KV85",
+          "asin": "B0F8H4KV85",
+          "confidence": 35,
+          "reasons": [
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "final confidence score = 35%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "MATCH",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "TataSalt, 1kg (Pack of 2)",
+          "url": "https://www.amazon.in/dp/B0DHST4BD5",
+          "asin": "B0DHST4BD5",
+          "confidence": 33,
+          "reasons": [
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: salt, 1, kg)",
+            "final confidence score = 33%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "MATCH",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "TATA SALTCooking Soda, 100 g",
+          "url": "https://www.amazon.in/dp/B07WMH2RXB",
+          "asin": "B07WMH2RXB",
+          "confidence": 31,
+          "reasons": [
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: salt, 1, kg)",
+            "final confidence score = 31%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "MATCH",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "TATA SALTLite, Low Sodium, 1kg",
+          "url": "https://www.amazon.in/dp/B07575J87H",
+          "asin": "B07575J87H",
+          "confidence": 30,
+          "reasons": [
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: salt, 1, kg)",
+            "final confidence score = 30%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "MATCH",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "TataSalt, 2kg Poly Pack",
+          "url": "https://www.amazon.in/dp/B01MQWE9OT",
+          "asin": "B01MQWE9OT",
+          "confidence": 30,
+          "reasons": [
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: salt, 1, kg)",
+            "final confidence score = 30%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "MATCH",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "TATA SALTLow Sodium Rock Salt, 1Kg",
+          "url": "https://www.amazon.in/dp/B0GWHHVZYV",
+          "asin": "B0GWHHVZYV",
+          "confidence": 27,
+          "reasons": [
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "final confidence score = 27%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "MATCH",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "Maharajha 5kg & TATA Salt 1kg (pack of 2) Combo pack",
+          "url": "https://www.amazon.in/dp/B0GZFHZLP2",
+          "asin": "B0GZFHZLP2",
+          "confidence": 20,
+          "reasons": [
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "final confidence score = 20%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "MATCH",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "A TATA Product - Organic India Pink Rock Salt, 1Kg Pouch",
+          "url": "https://www.amazon.in/dp/B07MH7LFWX",
+          "asin": "B07MH7LFWX",
+          "confidence": 19,
+          "reasons": [
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "final confidence score = 19%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "MATCH",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "catchSprinkles Black Salt, 200g",
+          "url": "https://www.amazon.in/dp/B00H41JFCW",
+          "asin": "B00H41JFCW",
+          "confidence": 17,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 17%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "Maharajha Ponni Boiled Rice 5kg With Tata Salt, 1kg(Pack of 2)",
+          "url": "https://www.amazon.in/dp/B0FC21K4BW",
+          "asin": "B0FC21K4BW",
+          "confidence": 17,
+          "reasons": [
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "final confidence score = 17%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "MATCH",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "A TATA Product - Organic India Pink Rock Salt, 1Kg Pouch (Pack of 3)",
+          "url": "https://www.amazon.in/dp/B0H5R6XQWQ",
+          "asin": "B0H5R6XQWQ",
+          "confidence": 16,
+          "reasons": [
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "final confidence score = 16%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "MATCH",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "AHAARLow Sodium Salt 1Kg | Iodised Namak",
+          "url": "https://www.amazon.in/dp/B09NCDPHBX",
+          "asin": "B09NCDPHBX",
+          "confidence": 16,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 16%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "catchSprinkler Pink Rock Salt, 100g",
+          "url": "https://www.amazon.in/dp/B01B7DZPQ2",
+          "asin": "B01B7DZPQ2",
+          "confidence": 15,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 15%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "Natural Tattva Himalayan Rock Salt (Sendha Namak), 1kg",
+          "url": "https://www.amazon.in/dp/B089TZ178Q",
+          "asin": "B089TZ178Q",
+          "confidence": 15,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 15%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "AashirvaadSalt,with 4-Step advantage, 1kg",
+          "url": "https://www.amazon.in/dp/B00PCCMDGA",
+          "asin": "B00PCCMDGA",
+          "confidence": 13,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: salt, 1, kg)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 13%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "DevfutureTata Salt 1kg, Iodised Table Salt, 1kg Pack, Pack of 3 (Shipping Cost Included)",
+          "url": "https://www.amazon.in/dp/B0G1KWSWRJ",
+          "asin": "B0G1KWSWRJ",
+          "confidence": 13,
+          "reasons": [
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "final confidence score = 13%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "MATCH",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "DevfutureTata Salt Low/Lite Sodium Iodised Salt, 1kg (PACK OF 3) (Shipping Cost Included)",
+          "url": "https://www.amazon.in/dp/B0G5QB1SX7",
+          "asin": "B0G5QB1SX7",
+          "confidence": 13,
+          "reasons": [
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "final confidence score = 13%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "MATCH",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "Tata SampannCoriander Powder With Natural Oils, 500g, Dhania Powder",
+          "url": "https://www.amazon.in/dp/B07BH4K3WT",
+          "asin": "B07BH4K3WT",
+          "confidence": 13,
+          "reasons": [
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: salt, 1, kg)",
+            "final confidence score = 13%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "MATCH",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "Natural Tattva Himalayan Pink Salt (Granules) - 500 gm Pouch",
+          "url": "https://www.amazon.in/dp/B07KN7L526",
+          "asin": "B07KN7L526",
+          "confidence": 12,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 12%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "catchSprinklers Iodized Table Salt, 200g",
+          "url": "https://www.amazon.in/dp/B0155ZWVEC",
+          "asin": "B0155ZWVEC",
+          "confidence": 11,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 11%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "Tata Himalayan Rock Pink Salt, 1kg Pouch, Premium Sendha Namak, With Natural Trace Minerals, Low Sodium, Crystal Salt",
+          "url": "https://www.amazon.in/dp/B086B25X6L",
+          "asin": "B086B25X6L",
+          "confidence": 10,
+          "reasons": [
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "final confidence score = 10%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "MATCH",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "SANBAG NATURE FARMHimalayan Pink Rock Salt, 1kg, No Preservatives, Chemical Free",
+          "url": "https://www.amazon.in/dp/B0FL2HRRPT",
+          "asin": "B0FL2HRRPT",
+          "confidence": 8,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 8%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "Natural Tattva Black Salt – Natural Aroma & Authentic Taste for Everyday Cooking, Perfect for Raita, Chaats & Salads (500 g)",
+          "url": "https://www.amazon.in/dp/B09MJ2NB9T",
+          "asin": "B09MJ2NB9T",
+          "confidence": 5,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 5%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "KEYAArabian Sea Salt 1kg | Namak | healthier alternative to regular iodized salt | Unrefined | Rich In Minerals | 1kg",
+          "url": "https://www.amazon.in/dp/B07NQDSSXB",
+          "asin": "B07NQDSSXB",
+          "confidence": 4,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 4%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "Amazon Brand - Vedaka Himalayan Pink Rock Salt Powder | 500 g | Rich in minerals | Unbleached and Non-refined",
+          "url": "https://www.amazon.in/dp/B07KXGH2NB",
+          "asin": "B07KXGH2NB",
+          "confidence": 3,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 3%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "VRAT SALTFree Flow Rock Salt | Sendha Namak for Fasting Recipes, Cooking, Sabudana Khichdi, Fruit Chaat, Raita, Snacks, Seasoning and Traditional Meals | Fine Crystal Salt Granules | 1kg",
+          "url": "https://www.amazon.in/dp/B0H3782WGB",
+          "asin": "B0H3782WGB",
+          "confidence": 1,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 1%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "Dhatri AgroSendha Namak (Himalayan Rock Salt) 1KG | Vrat & Upvas Fasting Salt | Saindhav/Saindhava Lavan/Sindhalun | Single-Origin Khewra Unrefined Mineral Salt for Navratri Cooking & Chaas",
+          "url": "https://www.amazon.in/dp/B0DT1NV2X8",
+          "asin": "B0DT1NV2X8",
+          "confidence": 1,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 1%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        }
+      ],
+      "metadata": {
+        "ZenRows Amazon India": {
+          "queries_run": [
+            {
+              "query": "Tata Salt 1 kg",
+              "credits": 0,
+              "status": 200,
+              "candidates_found": 42
+            }
+          ],
+          "total_credits_consumed": 0,
+          "total_unique_candidates": 42
+        },
+        "ZenRows Flipkart India": {
+          "queries_run": [
+            {
+              "query": "Tata Salt 1 kg",
+              "credits": 0,
+              "status": 200,
+              "premium_proxy": "false",
+              "candidates_found": 45
+            }
+          ],
+          "total_credits_consumed": 0,
+          "total_unique_candidates": 45
+        }
+      }
+    },
+    "Flipkart": {
+      "status": "success",
+      "price": 302.0,
+      "url": "https://www.flipkart.com/tata-salt-rock-1-kg-pack/p/itmd25cf6f41adaa?pid=SATFZ7XCXGZKKUV7&lid=LSTSATFZ7XCXGZKKUV7VLOTPH&marketplace=FLIPKART&q=Tata+Salt+1+kg&store=eat%2F5ht&spotlightTagId=default_TrendingId_eat%2F5ht&srno=s_1_2&otracker=search&fm=organic&iid=366c4e8c-8672-4ede-9674-fc6957c58422.SATFZ7XCXGZKKUV7.SEARCH&ppt=None&ppn=None&ssid=48b0cuqhwg0000001787135137428&qH=cf85b4346efb7938&ov_redirect=true&ov_redirect=true",
+      "title": "Tata salt rock salt 1 kg pack Rock Salt",
+      "confidence": 90,
+      "asin": "SATFZ7XCXGZKKUV7",
+      "scraped_at": "2026-08-19T10:25:38.640459+00:00",
+      "last_checked_at": "2026-08-19T10:25:38.640459+00:00",
+      "diagnostics": [
+        {
+          "candidate": "Tata salt rock salt 1 kg pack Rock Salt",
+          "url": "https://www.flipkart.com/tata-salt-rock-1-kg-pack/p/itmd25cf6f41adaa?pid=SATFZ7XCXGZKKUV7&lid=LSTSATFZ7XCXGZKKUV7VLOTPH&marketplace=FLIPKART&q=Tata+Salt+1+kg&store=eat%2F5ht&spotlightTagId=default_TrendingId_eat%2F5ht&srno=s_1_2&otracker=search&fm=organic&iid=366c4e8c-8672-4ede-9674-fc6957c58422.SATFZ7XCXGZKKUV7.SEARCH&ppt=None&ppn=None&ssid=48b0cuqhwg0000001787135137428&qH=cf85b4346efb7938&ov_redirect=true&ov_redirect=true",
+          "asin": "SATFZ7XCXGZKKUV7",
+          "confidence": 90,
+          "reasons": [
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "excellent text match (all internal words present)",
+            "final confidence score = 90%"
+          ],
+          "status": "ACCEPTED",
+          "detailed_diag": {
+            "Brand": "MATCH",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "1. Tata salt rock salt 1 kg pa...",
+          "url": "https://www.flipkart.com/tata-salt-rock-1-kg-pack/p/itmd25cf6f41adaa?pid=SATFZ7XCXGZKKUV7&marketplace=FLIPKART&ov_redirect=true",
+          "asin": "SATFZ7XCXGZKKUV7",
+          "confidence": 90,
+          "reasons": [
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "excellent text match (all internal words present)",
+            "final confidence score = 90%"
+          ],
+          "status": "ACCEPTED",
+          "detailed_diag": {
+            "Brand": "MATCH",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "AGRI CLUB Himalayan Black Salt 1 kg / 35.274 Black Salt",
+          "url": "https://www.flipkart.com/agri-club-himalayan-black-salt-1-kg-35-274/p/itm3f1634f452dac?pid=SATG2T4BDH7NHH6V&lid=LSTSATG2T4BDH7NHH6VPBGPY8&marketplace=FLIPKART&q=Tata+Salt+1+kg&store=eat%2F5ht&srno=s_1_13&otracker=search&fm=organic&iid=366c4e8c-8672-4ede-9674-fc6957c58422.SATG2T4BDH7NHH6V.SEARCH&ppt=None&ppn=None&ssid=48b0cuqhwg0000001787135137428&qH=cf85b4346efb7938&ov_redirect=true&ov_redirect=true",
+          "asin": "SATG2T4BDH7NHH6V",
+          "confidence": 85,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "excellent text match (all internal words present)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 85%"
+          ],
+          "status": "ACCEPTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "Farm & Farmers Pack of 1 | 900 G | Black Salt Whole/Kala Namak Black Salt",
+          "url": "https://www.flipkart.com/farm-farmers-pack-1-900-g-black-salt-whole-kala-namak/p/itmb7c89ad6c1973?pid=SATG5SWZANCUHFWA&lid=LSTSATG5SWZANCUHFWA6YOCRQ&marketplace=FLIPKART&q=Tata+Salt+1+kg&store=eat%2F5ht&srno=s_1_17&otracker=search&fm=organic&iid=en_jhouSpFDaGLjitJ29KJfqusqiU_Hq8QUpvmSSHZKoW_qDPRMDoGOuFrev9Yc-kjpToh_xsbMmAf0qXNOD4GBazXsKBw5-mViT2zEA6COlSbyGw0j-3d9ZYIu23JAeiYw&ppt=None&ppn=None&ssid=48b0cuqhwg0000001787135137428&qH=cf85b4346efb7938&ov_redirect=true&ov_redirect=true",
+          "asin": "SATG5SWZANCUHFWA",
+          "confidence": 65,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "partial text match (missing words: kg)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 65%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "Tata ROCK SALT Rock Salt",
+          "url": "https://www.flipkart.com/tata-rock-salt/p/itme31be25da396b?pid=SATGFKZZJNUZFGGV&lid=LSTSATGFKZZJNUZFGGVHJYBVQ&marketplace=FLIPKART&q=Tata+Salt+1+kg&store=eat%2F5ht&srno=s_1_4&otracker=search&fm=organic&iid=366c4e8c-8672-4ede-9674-fc6957c58422.SATGFKZZJNUZFGGV.SEARCH&ppt=None&ppn=None&ssid=48b0cuqhwg0000001787135137428&qH=cf85b4346efb7938&ov_redirect=true&ov_redirect=true",
+          "asin": "SATGFKZZJNUZFGGV",
+          "confidence": 28,
+          "reasons": [
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "final confidence score = 28%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "MATCH",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "Tata SG_TATA_ROCK_SALT_1KG Rock Salt",
+          "url": "https://www.flipkart.com/tata-sg-tata-rock-salt-1kg-rock-salt/p/itmc2fe652cabb4d?pid=SATGRHXM4BGQWUMG&lid=LSTSATGRHXM4BGQWUMGJ51F72&marketplace=FLIPKART&q=Tata+Salt+1+kg&store=eat%2F5ht&srno=s_1_3&otracker=search&fm=organic&iid=366c4e8c-8672-4ede-9674-fc6957c58422.SATGRHXM4BGQWUMG.SEARCH&ppt=None&ppn=None&ssid=48b0cuqhwg0000001787135137428&qH=cf85b4346efb7938&ov_redirect=true&ov_redirect=true",
+          "asin": "SATGRHXM4BGQWUMG",
+          "confidence": 24,
+          "reasons": [
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "final confidence score = 24%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "MATCH",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "Tata Salt Pink Salt Salt for Everyday Cooking 100% Natural Himalayan Pink Salt",
+          "url": "https://www.flipkart.com/tata-salt-pink-everyday-cooking-100-natural-himalayan/p/itmd2cf588ca12dc?pid=SATGW9F4FGTAHSDN&lid=LSTSATGW9F4FGTAHSDNWKXYNK&marketplace=FLIPKART&q=Tata+Salt+1+kg&store=eat%2F5ht&srno=s_1_1&otracker=search&fm=organic&iid=366c4e8c-8672-4ede-9674-fc6957c58422.SATGW9F4FGTAHSDN.SEARCH&ppt=None&ppn=None&ssid=48b0cuqhwg0000001787135137428&qH=cf85b4346efb7938&ov_redirect=true&ov_redirect=true",
+          "asin": "SATGW9F4FGTAHSDN",
+          "confidence": 14,
+          "reasons": [
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "final confidence score = 14%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "MATCH",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "HONEY BLACK Herbal Rock Salt Rock Salt",
+          "url": "https://www.flipkart.com/honey-black-herbal-rock-salt/p/itmea7f48de6d1fd?pid=SATHNVFZYMCKEFPW&lid=LSTSATHNVFZYMCKEFPWBEVNVD&marketplace=FLIPKART&q=Tata+Salt+1+kg&store=eat%2F5ht&srno=s_1_34&otracker=search&fm=organic&iid=366c4e8c-8672-4ede-9674-fc6957c58422.SATHNVFZYMCKEFPW.SEARCH&ppt=None&ppn=None&ssid=48b0cuqhwg0000001787135137428&qH=cf85b4346efb7938&ov_redirect=true&ov_redirect=true",
+          "asin": "SATHNVFZYMCKEFPW",
+          "confidence": 12,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 12%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "Goshudh Premium Quality Black Salt (1kg) Black Salt",
+          "url": "https://www.flipkart.com/goshudh-premium-quality-black-salt-1kg/p/itm9b8dda877e00b?pid=SATFRE4VAASKSA4C&lid=LSTSATFRE4VAASKSA4COD8GVP&marketplace=FLIPKART&q=Tata+Salt+1+kg&store=eat%2F5ht&srno=s_1_38&otracker=search&fm=organic&iid=en_jhouSpFDaGLjitJ29KJfqusqiU_Hq8QUpvmSSHZKoW8-JmZq4PFI_sZaSkKkCuCIw--a8RECb4VFjHPohQL13H4mHUc2D01457UARYu4_NwbomY8LEzs1Istcv1ZG-Y4&ppt=None&ppn=None&ssid=48b0cuqhwg0000001787135137428&qH=cf85b4346efb7938&ov_redirect=true&ov_redirect=true",
+          "asin": "SATFRE4VAASKSA4C",
+          "confidence": 12,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 12%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "Diabexy Pink Potassium Salt Himalayan Pink Salt",
+          "url": "https://www.flipkart.com/diabexy-pink-potassium-salt-himalayan/p/itm9fd1f80cb704b?pid=SATHKG48GEAHEVNF&lid=LSTSATHKG48GEAHEVNFGTHTYM&marketplace=FLIPKART&q=Tata+Salt+1+kg&store=eat%2F5ht&srno=s_1_8&otracker=search&fm=organic&iid=366c4e8c-8672-4ede-9674-fc6957c58422.SATHKG48GEAHEVNF.SEARCH&ppt=None&ppn=None&ssid=48b0cuqhwg0000001787135137428&qH=cf85b4346efb7938&ov_redirect=true&ov_redirect=true",
+          "asin": "SATHKG48GEAHEVNF",
+          "confidence": 11,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 11%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "HONEY BLACK Herbal Black Salt Black Salt",
+          "url": "https://www.flipkart.com/honey-black-herbal-salt/p/itm4dc467e5ca33e?pid=SATHNUEM5RBNSHYZ&lid=LSTSATHNUEM5RBNSHYZCAXPR7&marketplace=FLIPKART&q=Tata+Salt+1+kg&store=eat%2F5ht&srno=s_1_36&otracker=search&fm=organic&iid=366c4e8c-8672-4ede-9674-fc6957c58422.SATHNUEM5RBNSHYZ.SEARCH&ppt=None&ppn=None&ssid=48b0cuqhwg0000001787135137428&qH=cf85b4346efb7938&ov_redirect=true&ov_redirect=true",
+          "asin": "SATHNUEM5RBNSHYZ",
+          "confidence": 11,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 11%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "4. Diabexy Pink Potassium Salt...",
+          "url": "https://www.flipkart.com/diabexy-pink-potassium-salt-himalayan/p/itm9fd1f80cb704b?pid=SATHKG48GEAHEVNF&marketplace=FLIPKART&ov_redirect=true",
+          "asin": "SATHKG48GEAHEVNF",
+          "confidence": 11,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 11%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "Chef Urbano Pouch Pack Rock Salt",
+          "url": "https://www.flipkart.com/chef-urbano-pouch-pack-rock-salt/p/itmfcb7ysqky5mat?pid=SATFC8PZURGSWZQC&lid=LSTSATFC8PZURGSWZQCIK7IIU&marketplace=FLIPKART&q=Tata+Salt+1+kg&store=eat%2F5ht&srno=s_1_16&otracker=search&fm=organic&iid=366c4e8c-8672-4ede-9674-fc6957c58422.SATFC8PZURGSWZQC.SEARCH&ppt=None&ppn=None&ssid=48b0cuqhwg0000001787135137428&qH=cf85b4346efb7938&ov_redirect=true&ov_redirect=true",
+          "asin": "SATFC8PZURGSWZQC",
+          "confidence": 10,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 10%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "HUNGRY HARVEST Himalayan Black Rock Salt Black Salt",
+          "url": "https://www.flipkart.com/hungry-harvest-himalayan-black-rock-salt/p/itm47ff68f41a291?pid=SATGUMGFME2WKTGW&lid=LSTSATGUMGFME2WKTGW6DF468&marketplace=FLIPKART&q=Tata+Salt+1+kg&store=eat%2F5ht&srno=s_1_23&otracker=search&fm=organic&iid=366c4e8c-8672-4ede-9674-fc6957c58422.SATGUMGFME2WKTGW.SEARCH&ppt=None&ppn=None&ssid=48b0cuqhwg0000001787135137428&qH=cf85b4346efb7938&ov_redirect=true&ov_redirect=true",
+          "asin": "SATGUMGFME2WKTGW",
+          "confidence": 10,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 10%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "SKR GOLD HIMALAYAN CRYSTAL SALT Himalayan Pink Salt",
+          "url": "https://www.flipkart.com/skr-gold-himalayan-crystal-salt-pink/p/itm4c67cd9e39628?pid=SATHZ5GKUJ7VSWYZ&lid=LSTSATHZ5GKUJ7VSWYZLCRSJV&marketplace=FLIPKART&q=Tata+Salt+1+kg&store=eat%2F5ht&srno=s_1_30&otracker=search&fm=organic&iid=366c4e8c-8672-4ede-9674-fc6957c58422.SATHZ5GKUJ7VSWYZ.SEARCH&ppt=None&ppn=None&ssid=48b0cuqhwg0000001787135137428&qH=cf85b4346efb7938&ov_redirect=true&ov_redirect=true",
+          "asin": "SATHZ5GKUJ7VSWYZ",
+          "confidence": 10,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 10%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "3. Farm & Farmers Pack of 1 | ...",
+          "url": "https://www.flipkart.com/farm-farmers-pack-1-900-g-black-salt-whole-kala-namak/p/itmb7c89ad6c1973?pid=SATG5SWZANCUHFWA&marketplace=FLIPKART&ov_redirect=true",
+          "asin": "SATG5SWZANCUHFWA",
+          "confidence": 10,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: salt, kg)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 10%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "Divit Himalayan Pink Rock Salt Sendha Namak Himalayan Pink Salt",
+          "url": "https://www.flipkart.com/divit-himalayan-pink-rock-salt-sendha-namak/p/itm123fd74bdf375?pid=SATH57AQ8HRMMTYJ&lid=LSTSATH57AQ8HRMMTYJOVXW1Y&marketplace=FLIPKART&q=Tata+Salt+1+kg&store=eat%2F5ht&srno=s_1_19&otracker=search&fm=organic&iid=366c4e8c-8672-4ede-9674-fc6957c58422.SATH57AQ8HRMMTYJ.SEARCH&ppt=None&ppn=None&ssid=48b0cuqhwg0000001787135137428&qH=cf85b4346efb7938&ov_redirect=true&ov_redirect=true",
+          "asin": "SATH57AQ8HRMMTYJ",
+          "confidence": 9,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 9%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "soukfrill Pink Himalayan Pink Salt",
+          "url": "https://www.flipkart.com/soukfrill-pink-himalayan-salt/p/itmbd38f8df8f06c?pid=SATHMM2F76WRBBHZ&lid=LSTSATHMM2F76WRBBHZWSRQGO&marketplace=FLIPKART&q=Tata+Salt+1+kg&store=eat%2F5ht&srno=s_1_35&otracker=search&fm=organic&iid=366c4e8c-8672-4ede-9674-fc6957c58422.SATHMM2F76WRBBHZ.SEARCH&ppt=None&ppn=None&ssid=48b0cuqhwg0000001787135137428&qH=cf85b4346efb7938&ov_redirect=true&ov_redirect=true",
+          "asin": "SATHMM2F76WRBBHZ",
+          "confidence": 9,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 9%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "NAVY PINK HIMALAYAN ROCK SALT SACHET Himalayan Pink Salt",
+          "url": "https://www.flipkart.com/navy-pink-himalayan-rock-salt-sachet/p/itm0b299322ed56d?pid=SATHHS7CW8RR5ZZG&lid=LSTSATHHS7CW8RR5ZZGDBLWWQ&marketplace=FLIPKART&q=Tata+Salt+1+kg&store=eat%2F5ht&srno=s_1_37&otracker=search&fm=organic&iid=en_jhouSpFDaGLjitJ29KJfqusqiU_Hq8QUpvmSSHZKoW8aiSiKS25M_qh6C3HEC5r936OcuRJHyxxpuG14e0Wgs3np83FrNw_0o2k0VhDKoScbomY8LEzs1Istcv1ZG-Y4&ppt=None&ppn=None&ssid=48b0cuqhwg0000001787135137428&qH=cf85b4346efb7938&ov_redirect=true&ov_redirect=true",
+          "asin": "SATHHS7CW8RR5ZZG",
+          "confidence": 9,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 9%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "5. Hobby Herbs Himalayan Pink ...",
+          "url": "https://www.flipkart.com/hobby-herbs-himalayan-pink-salt-1kg-rock-powder/p/itmd7917def78912?pid=SATGBCUMMQZQUNPT&marketplace=FLIPKART&ov_redirect=true",
+          "asin": "SATGBCUMMQZQUNPT",
+          "confidence": 9,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: salt, 1, kg)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 9%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "Pure Organio Himalayan Pink Salt Powder Himalayan Pink Salt",
+          "url": "https://www.flipkart.com/pure-organio-himalayan-pink-salt-powder/p/itm45fc21de4ea5b?pid=SATH6ENGAPQ2HAZ6&lid=LSTSATH6ENGAPQ2HAZ6FYAE4R&marketplace=FLIPKART&q=Tata+Salt+1+kg&store=eat%2F5ht&srno=s_1_25&otracker=search&fm=organic&iid=366c4e8c-8672-4ede-9674-fc6957c58422.SATH6ENGAPQ2HAZ6.SEARCH&ppt=None&ppn=None&ssid=48b0cuqhwg0000001787135137428&qH=cf85b4346efb7938&ov_redirect=true&ov_redirect=true",
+          "asin": "SATH6ENGAPQ2HAZ6",
+          "confidence": 8,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 8%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "SKR GOLD HIMALAYAN ROCKSALT Himalayan Rock Salt",
+          "url": "https://www.flipkart.com/skr-gold-himalayan-rocksalt-rock-salt/p/itm671273c09f682?pid=SATHZ5GTXFZGB4ZY&lid=LSTSATHZ5GTXFZGB4ZYG6QLG0&marketplace=FLIPKART&q=Tata+Salt+1+kg&store=eat%2F5ht&srno=s_1_33&otracker=search&fm=organic&iid=366c4e8c-8672-4ede-9674-fc6957c58422.SATHZ5GTXFZGB4ZY.SEARCH&ppt=None&ppn=None&ssid=48b0cuqhwg0000001787135137428&qH=cf85b4346efb7938&ov_redirect=true&ov_redirect=true",
+          "asin": "SATHZ5GTXFZGB4ZY",
+          "confidence": 8,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 8%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "HarviTatva Sendha Namak Sabut – Rock Salt Whole Crystals Himalayan Pink Salt",
+          "url": "https://www.flipkart.com/harvitatva-sendha-namak-sabut-rock-salt-whole-crystals-himalayan-pink/p/itmc9cb19152e741?pid=SATHZG38Z79DZU88&lid=LSTSATHZG38Z79DZU88074ERA&marketplace=FLIPKART&q=Tata+Salt+1+kg&store=eat%2F5ht&srno=s_1_39&otracker=search&fm=organic&iid=366c4e8c-8672-4ede-9674-fc6957c58422.SATHZG38Z79DZU88.SEARCH&ppt=None&ppn=None&ssid=48b0cuqhwg0000001787135137428&qH=cf85b4346efb7938&ov_redirect=true&ov_redirect=true",
+          "asin": "SATHZG38Z79DZU88",
+          "confidence": 8,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 8%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "Hobby Herbs Himalayan Pink Salt 1Kg | Rock Salt Powder Himalayan Pink Salt",
+          "url": "https://www.flipkart.com/hobby-herbs-himalayan-pink-salt-1kg-rock-powder/p/itmd7917def78912?pid=SATGBCUMMQZQUNPT&lid=LSTSATGBCUMMQZQUNPTA0LTIL&marketplace=FLIPKART&q=Tata+Salt+1+kg&store=eat%2F5ht&srno=s_1_15&otracker=search&fm=organic&iid=366c4e8c-8672-4ede-9674-fc6957c58422.SATGBCUMMQZQUNPT.SEARCH&ppt=None&ppn=None&ssid=48b0cuqhwg0000001787135137428&qH=cf85b4346efb7938&ov_redirect=true&ov_redirect=true",
+          "asin": "SATGBCUMMQZQUNPT",
+          "confidence": 7,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 7%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "POTHIGAI NATURAL Himalayan Pink Salt Powder -100% Natural - for Weight Loss / Healthy Cooking Himalayan Pink Salt",
+          "url": "https://www.flipkart.com/pothigai-natural-himalayan-pink-salt-powder-100-weight-loss-healthy-cooking/p/itm1a738f08aa2dc?pid=SATGK7M7CNCMTPRB&lid=LSTSATGK7M7CNCMTPRBNMMZPD&marketplace=FLIPKART&q=Tata+Salt+1+kg&store=eat%2F5ht&srno=s_1_18&otracker=search&fm=organic&iid=en_jhouSpFDaGLjitJ29KJfqusqiU_Hq8QUpvmSSHZKoW_61fjgmV6GQLFPYb-elgDoDHwY0pfqECFRR1XVElN6lqI_9X4zM432pHC6kxDzDPAbomY8LEzs1Istcv1ZG-Y4&ppt=None&ppn=None&ssid=48b0cuqhwg0000001787135137428&qH=cf85b4346efb7938&ov_redirect=true&ov_redirect=true",
+          "asin": "SATGK7M7CNCMTPRB",
+          "confidence": 6,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 6%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "Dadhisagar Black Salt Kala Namak Powder Natural Trace Minerals Black Salt",
+          "url": "https://www.flipkart.com/dadhisagar-black-salt-kala-namak-powder-natural-trace-minerals/p/itm1e17a3ba518dd?pid=SATHC4KBY9FPJZHK&lid=LSTSATHC4KBY9FPJZHKSVPV2L&marketplace=FLIPKART&q=Tata+Salt+1+kg&store=eat%2F5ht&srno=s_1_21&otracker=search&fm=organic&iid=en_jhouSpFDaGLjitJ29KJfqusqiU_Hq8QUpvmSSHZKoW9y6tdgIcEd1OXUaVVHqtAoMqIt-RVvpfuXdv4QH5vf-2QEKwNAoWABIW5UyVXe5PXyGw0j-3d9ZYIu23JAeiYw&ppt=None&ppn=None&ssid=48b0cuqhwg0000001787135137428&qH=cf85b4346efb7938&ov_redirect=true&ov_redirect=true",
+          "asin": "SATHC4KBY9FPJZHK",
+          "confidence": 6,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 6%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "Organic One Vastu Sea Salt - 900g | Salt of Wellness | Removes Negative Energy Sea Salt",
+          "url": "https://www.flipkart.com/organic-one-vastu-sea-salt-900g-wellness-removes-negative-energy/p/itme78e15fc29cbc?pid=SATHBEZGUHKMPTBF&lid=LSTSATHBEZGUHKMPTBFTWBGTO&marketplace=FLIPKART&q=Tata+Salt+1+kg&store=eat%2F5ht&srno=s_1_7&otracker=search&fm=organic&iid=366c4e8c-8672-4ede-9674-fc6957c58422.SATHBEZGUHKMPTBF.SEARCH&ppt=None&ppn=None&ssid=48b0cuqhwg0000001787135137428&qH=cf85b4346efb7938&ov_redirect=true&ov_redirect=true",
+          "asin": "SATHBEZGUHKMPTBF",
+          "confidence": 5,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 5%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "House Of Himalayas Mint Flavoured Salt, Hand Ground Himalayan Salt Flavored Salt",
+          "url": "https://www.flipkart.com/house-himalayas-mint-flavoured-salt-hand-ground-himalayan-salt-flavored/p/itm51c10531925f7?pid=SATHMFYRRXRCY3CZ&lid=LSTSATHMFYRRXRCY3CZCMIEPY&marketplace=FLIPKART&q=Tata+Salt+1+kg&store=eat%2F5ht&srno=s_1_11&otracker=search&fm=organic&iid=en_jhouSpFDaGLjitJ29KJfqusqiU_Hq8QUpvmSSHZKoW9zyZ8qPmoHHB_27i3-2RZgCeLSyyWX3Ud-xSJioeSVqh2RYRMpRHqP0FFIb3bdvBIbomY8LEzs1Istcv1ZG-Y4&ppt=None&ppn=None&ssid=48b0cuqhwg0000001787135137428&qH=cf85b4346efb7938&ov_redirect=true&ov_redirect=true",
+          "asin": "SATHMFYRRXRCY3CZ",
+          "confidence": 5,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 5%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "Nutriorg Himalayan Pink Salt Powder 1000g | 100% Natural | Fine Grain | 80+ Minerals Himalayan Pink Salt",
+          "url": "https://www.flipkart.com/nutriorg-himalayan-pink-salt-powder-1000g-100-natural-fine-grain-80-minerals/p/itm6af90475fea1b?pid=SATGK48MBUQZARAQ&lid=LSTSATGK48MBUQZARAQG7CIVF&marketplace=FLIPKART&q=Tata+Salt+1+kg&store=eat%2F5ht&srno=s_1_12&otracker=search&fm=organic&iid=en_jhouSpFDaGLjitJ29KJfqusqiU_Hq8QUpvmSSHZKoW940p_qzIFEHRBXnRQTFdmZQ1Ifjqf9IPqljcxb3Pazv6Qu-3rfiXNS8c3yDjOBxaTyGw0j-3d9ZYIu23JAeiYw&ppt=None&ppn=None&ssid=48b0cuqhwg0000001787135137428&qH=cf85b4346efb7938&ov_redirect=true&ov_redirect=true",
+          "asin": "SATGK48MBUQZARAQ",
+          "confidence": 5,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 5%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "Hobby Herbs Himalayan Pink Salt 500gm (Sendha Namak) | Rock Salt Himalayan Pink Salt",
+          "url": "https://www.flipkart.com/hobby-herbs-himalayan-pink-salt-500gm-sendha-namak-rock/p/itme139717177353?pid=SATGAPR8G5NGWKH5&lid=LSTSATGAPR8G5NGWKH5ILHCI4&marketplace=FLIPKART&q=Tata+Salt+1+kg&store=eat%2F5ht&srno=s_1_20&otracker=search&fm=organic&iid=366c4e8c-8672-4ede-9674-fc6957c58422.SATGAPR8G5NGWKH5.SEARCH&ppt=None&ppn=None&ssid=48b0cuqhwg0000001787135137428&qH=cf85b4346efb7938&ov_redirect=true&ov_redirect=true",
+          "asin": "SATGAPR8G5NGWKH5",
+          "confidence": 5,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 5%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "OS AGROVA Himalaya Rock Salt – Extra Pure Sendha Namak |Edible Salt for Cooking & Fasting Rock Salt",
+          "url": "https://www.flipkart.com/os-agrova-himalaya-rock-salt-extra-pure-sendha-namak-edible-cooking-fasting/p/itm9bdc476cca5f4?pid=SATHGW9QZ2DVCDJG&lid=LSTSATHGW9QZ2DVCDJGIMGSZQ&marketplace=FLIPKART&q=Tata+Salt+1+kg&store=eat%2F5ht&srno=s_1_22&otracker=search&fm=organic&iid=en_jhouSpFDaGLjitJ29KJfqusqiU_Hq8QUpvmSSHZKoW_I6TGzzHYidqhZVAtGnsS5ZhWuVpJNZDSPz4jGCbqxjKpKXJqsod-CMLvGZ5UbrO3yGw0j-3d9ZYIu23JAeiYw&ppt=None&ppn=None&ssid=48b0cuqhwg0000001787135137428&qH=cf85b4346efb7938&ov_redirect=true&ov_redirect=true",
+          "asin": "SATHGW9QZ2DVCDJG",
+          "confidence": 5,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 5%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "Trinay Naturals Rock Salt | Sendha Namak | Rock Salt | Pink Crystal Salt | Natural Mineral Salt Rock Salt",
+          "url": "https://www.flipkart.com/trinay-naturals-rock-salt-sendha-namak-pink-crystal-natural-mineral/p/itm2f94720967cb4?pid=SATHPBJXCRZPW2JG&lid=LSTSATHPBJXCRZPW2JG3WDKH7&marketplace=FLIPKART&q=Tata+Salt+1+kg&store=eat%2F5ht&srno=s_1_40&otracker=search&fm=organic&iid=366c4e8c-8672-4ede-9674-fc6957c58422.SATHPBJXCRZPW2JG.SEARCH&ppt=None&ppn=None&ssid=48b0cuqhwg0000001787135137428&qH=cf85b4346efb7938&ov_redirect=true&ov_redirect=true",
+          "asin": "SATHPBJXCRZPW2JG",
+          "confidence": 5,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 5%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "Bliss of Earth Himalayan Pink Salt Fine Powder Rock Salt For Weight Management &Healthy Cooking Himalayan Pink Salt",
+          "url": "https://www.flipkart.com/bliss-earth-himalayan-pink-salt-fine-powder-rock-weight-management-healthy-cooking/p/itm59ba50e90f8ad?pid=SATHCC2BAMUAZFAN&lid=LSTSATHCC2BAMUAZFANXENYML&marketplace=FLIPKART&q=Tata+Salt+1+kg&store=eat%2F5ht&spotlightTagId=default_TrendingId_eat%2F5ht&srno=s_1_14&otracker=search&fm=organic&iid=366c4e8c-8672-4ede-9674-fc6957c58422.SATHCC2BAMUAZFAN.SEARCH&ppt=None&ppn=None&ssid=48b0cuqhwg0000001787135137428&qH=cf85b4346efb7938&ov_redirect=true&ov_redirect=true",
+          "asin": "SATHCC2BAMUAZFAN",
+          "confidence": 4,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 4%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "Pearl Organic Fresh Black Salt Kala Namak Natural Indian Mineral Salt for Chaat & Cooking Black Salt",
+          "url": "https://www.flipkart.com/pearl-organic-fresh-black-salt-kala-namak-natural-indian-mineral-chaat-cooking/p/itma464d98a2fa8c?pid=SATHHEMFGKX2PGYA&lid=LSTSATHHEMFGKX2PGYA1UKPRI&marketplace=FLIPKART&q=Tata+Salt+1+kg&store=eat%2F5ht&srno=s_1_26&otracker=search&fm=organic&iid=366c4e8c-8672-4ede-9674-fc6957c58422.SATHHEMFGKX2PGYA.SEARCH&ppt=None&ppn=None&ssid=48b0cuqhwg0000001787135137428&qH=cf85b4346efb7938&ov_redirect=true&ov_redirect=true",
+          "asin": "SATHHEMFGKX2PGYA",
+          "confidence": 4,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 4%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "OS AGROVA Himalaya Rock Salt Granules– Extra Pure Natural Salt | Mineral Rich|Multipurpose Rock Salt",
+          "url": "https://www.flipkart.com/os-agrova-himalaya-rock-salt-granules-extra-pure-natural-mineral-rich-multipurpose/p/itmdedd94b3627e0?pid=SATHKR8PGDFJSANX&lid=LSTSATHKR8PGDFJSANXFA2Y27&marketplace=FLIPKART&q=Tata+Salt+1+kg&store=eat%2F5ht&srno=s_1_27&otracker=search&fm=organic&iid=en_jhouSpFDaGLjitJ29KJfqusqiU_Hq8QUpvmSSHZKoW8VWwY4J1fkVLJz5Y_zCgJ2RHhfN9f8jwau3rqiBfXj2apKXJqsod-CMLvGZ5UbrO3yGw0j-3d9ZYIu23JAeiYw&ppt=None&ppn=None&ssid=48b0cuqhwg0000001787135137428&qH=cf85b4346efb7938&ov_redirect=true&ov_redirect=true",
+          "asin": "SATHKR8PGDFJSANX",
+          "confidence": 4,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 4%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "Pearl Organic Fresh Himalayan Rock Salt Sendha Namak Natural Crystal Vrat Salt for Cooking Rock Salt",
+          "url": "https://www.flipkart.com/pearl-organic-fresh-himalayan-rock-salt-sendha-namak-natural-crystal-vrat-cooking/p/itm6aa6ad920c266?pid=SATHHEHZH5RMYK4T&lid=LSTSATHHEHZH5RMYK4T5EPVCM&marketplace=FLIPKART&q=Tata+Salt+1+kg&store=eat%2F5ht&srno=s_1_29&otracker=search&fm=organic&iid=366c4e8c-8672-4ede-9674-fc6957c58422.SATHHEHZH5RMYK4T.SEARCH&ppt=None&ppn=None&ssid=48b0cuqhwg0000001787135137428&qH=cf85b4346efb7938&ov_redirect=true&ov_redirect=true",
+          "asin": "SATHHEHZH5RMYK4T",
+          "confidence": 4,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 4%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "2. AGRI CLUB Himalayan Black S...",
+          "url": "https://www.flipkart.com/agri-club-himalayan-black-salt-1-kg-35-274/p/itm3f1634f452dac?pid=SATG2T4BDH7NHH6V&marketplace=FLIPKART&ov_redirect=true",
+          "asin": "SATG2T4BDH7NHH6V",
+          "confidence": 4,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: salt, 1, kg)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 4%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "WILD AGRO Epsom Bath Salt - Magnesium Sulphate, relaxation, foot soak, muscle relief salt Special Purity Salt",
+          "url": "https://www.flipkart.com/wild-agro-epsom-bath-salt-magnesium-sulphate-relaxation-foot-soak-muscle-relief-special-purity/p/itm7ff59708e5c1f?pid=SATHMGJCMKHJQTKW&lid=LSTSATHMGJCMKHJQTKWL0YIHD&marketplace=FLIPKART&q=Tata+Salt+1+kg&store=eat%2F5ht&srno=s_1_5&otracker=search&fm=organic&iid=366c4e8c-8672-4ede-9674-fc6957c58422.SATHMGJCMKHJQTKW.SEARCH&ppt=None&ppn=None&ssid=48b0cuqhwg0000001787135137428&qH=cf85b4346efb7938&ov_redirect=true&ov_redirect=true",
+          "asin": "SATHMGJCMKHJQTKW",
+          "confidence": 3,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 3%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "Salt & Sip Uttarakhand Pahadi Namak | Handmad Pahadi Loon - Garlic & Herbs(100g) Flavored Salt",
+          "url": "https://www.flipkart.com/salt-sip-uttarakhand-pahadi-namak-handmad-loon-garlic-herbs-100g-flavored/p/itm3fcb3ab03c38b?pid=SATHHUYWFXGBV8D7&lid=LSTSATHHUYWFXGBV8D73NAJFY&marketplace=FLIPKART&q=Tata+Salt+1+kg&store=eat%2F5ht&srno=s_1_6&otracker=search&fm=organic&iid=en_jhouSpFDaGLjitJ29KJfqusqiU_Hq8QUpvmSSHZKoW96Vx0omNeh_mYy4M4e1Ke_bsxbNNm7aeRHgXl-5GZZRoxIXv6oyiAwJ78_bcHdoFryGw0j-3d9ZYIu23JAeiYw&ppt=None&ppn=None&ssid=48b0cuqhwg0000001787135137428&qH=cf85b4346efb7938&ov_redirect=true&ov_redirect=true",
+          "asin": "SATHHUYWFXGBV8D7",
+          "confidence": 3,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 3%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "Organic and Pure Natural Sea Salt Powder Indian / Non-Iodised /for Vastu, Body Scrub, Decoration Sea Salt",
+          "url": "https://www.flipkart.com/organic-pure-natural-sea-salt-powder-indian-non-iodised-for-vastu-body-scrub-decoration/p/itmeebc9d7dc8f99?pid=SATGMH2MWDFRWPYT&lid=LSTSATGMH2MWDFRWPYTQSJYDX&marketplace=FLIPKART&q=Tata+Salt+1+kg&store=eat%2F5ht&srno=s_1_9&otracker=search&fm=organic&iid=366c4e8c-8672-4ede-9674-fc6957c58422.SATGMH2MWDFRWPYT.SEARCH&ppt=None&ppn=None&ssid=48b0cuqhwg0000001787135137428&qH=cf85b4346efb7938&ov_redirect=true&ov_redirect=true",
+          "asin": "SATGMH2MWDFRWPYT",
+          "confidence": 3,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 3%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "Khyati Naturals Vastu Ocean Crystals | Removes Negativity & Nazar Dosh | Aura Cleansing Namak Sea Salt",
+          "url": "https://www.flipkart.com/khyati-naturals-vastu-ocean-crystals-removes-negativity-nazar-dosh-aura-cleansing-namak-sea-salt/p/itm3fed008ad0068?pid=SATHC6HUS9MZGYHW&lid=LSTSATHC6HUS9MZGYHWS2G2HU&marketplace=FLIPKART&q=Tata+Salt+1+kg&store=eat%2F5ht&srno=s_1_10&otracker=search&fm=organic&iid=366c4e8c-8672-4ede-9674-fc6957c58422.SATHC6HUS9MZGYHW.SEARCH&ppt=None&ppn=None&ssid=48b0cuqhwg0000001787135137428&qH=cf85b4346efb7938&ov_redirect=true&ov_redirect=true",
+          "asin": "SATHC6HUS9MZGYHW",
+          "confidence": 3,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 3%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "Roods Fresh Black Rock Salt Powder, [All Natural, Sulphur-Rich, Kala Namak Powder] Rock Salt",
+          "url": "https://www.flipkart.com/roods-fresh-black-rock-salt-powder-all-natural-sulphur-rich-kala-namak-powder/p/itm69958ddef91f6?pid=SATGXQA6AYYCJ8TE&lid=LSTSATGXQA6AYYCJ8TERUB0M3&marketplace=FLIPKART&q=Tata+Salt+1+kg&store=eat%2F5ht&srno=s_1_24&otracker=search&fm=organic&iid=366c4e8c-8672-4ede-9674-fc6957c58422.SATGXQA6AYYCJ8TE.SEARCH&ppt=None&ppn=None&ssid=48b0cuqhwg0000001787135137428&qH=cf85b4346efb7938&ov_redirect=true&ov_redirect=true",
+          "asin": "SATGXQA6AYYCJ8TE",
+          "confidence": 3,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 3%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "Rahul Sugar 100% Natural Rock Salt Chemical Free NON GMO| Natural Trace Minerals, Low Sodium Himalayan Rock Salt",
+          "url": "https://www.flipkart.com/rahul-sugar-100-natural-rock-salt-chemical-free-non-gmo-trace-minerals-low-sodium-himalayan/p/itm1006a16acfec6?pid=SATH9H9JWMFWHXNZ&lid=LSTSATH9H9JWMFWHXNZXTRPCS&marketplace=FLIPKART&q=Tata+Salt+1+kg&store=eat%2F5ht&srno=s_1_28&otracker=search&fm=organic&iid=en_jhouSpFDaGLjitJ29KJfqusqiU_Hq8QUpvmSSHZKoW_C-6tvh-j_af0pZcAMMphRAkpubw42SLDZEfBBzFhu-LItulqJzSO0BS9HHKLMM1YbomY8LEzs1Istcv1ZG-Y4&ppt=None&ppn=None&ssid=48b0cuqhwg0000001787135137428&qH=cf85b4346efb7938&ov_redirect=true&ov_redirect=true",
+          "asin": "SATH9H9JWMFWHXNZ",
+          "confidence": 3,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 3%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "Hobby Herbs Himalayan Pink Salt 4Kg | Rock Salt Powder | Healthy Salt for weight loss Himalayan Pink Salt",
+          "url": "https://www.flipkart.com/hobby-herbs-himalayan-pink-salt-4kg-rock-powder-healthy-weight-loss/p/itm043c8e730ffe1?pid=SATGBCVQ7ZYMYYNV&lid=LSTSATGBCVQ7ZYMYYNVAE9QKC&marketplace=FLIPKART&q=Tata+Salt+1+kg&store=eat%2F5ht&srno=s_1_31&otracker=search&fm=organic&iid=en_jhouSpFDaGLjitJ29KJfqusqiU_Hq8QUpvmSSHZKoW9XxkAkHqeKIAVMfzsW0W739asT1Je9UoPhNnnMoXcbI7IUpK8okF7bjruonhm43YLyGw0j-3d9ZYIu23JAeiYw&ppt=None&ppn=None&ssid=48b0cuqhwg0000001787135137428&qH=cf85b4346efb7938&ov_redirect=true&ov_redirect=true",
+          "asin": "SATGBCVQ7ZYMYYNV",
+          "confidence": 3,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 3%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        },
+        {
+          "candidate": "Organic and Pure Papad Khar Powder Sajji Khar Alkaline Salt Sajjige Papadio Karo Baking Soda Ref Pickling Salt",
+          "url": "https://www.flipkart.com/organic-pure-papad-khar-powder-sajji-alkaline-salt-sajjige-papadio-karo-baking-soda-ref-pickling/p/itm7212c69e230ed?pid=SATH8YXCRJM2TRYH&lid=LSTSATH8YXCRJM2TRYHBHEZQJ&marketplace=FLIPKART&q=Tata+Salt+1+kg&store=eat%2F5ht&srno=s_1_32&otracker=search&fm=organic&iid=en_jhouSpFDaGLjitJ29KJfqusqiU_Hq8QUpvmSSHZKoW-KaMh0Pj6jkLprEJOGsv2fmWO_pNg_i0zwF_0jVKR6v-WoBKqMqPF-fEqfGsMMVYzyGw0j-3d9ZYIu23JAeiYw&ppt=None&ppn=None&ssid=48b0cuqhwg0000001787135137428&qH=cf85b4346efb7938&ov_redirect=true&ov_redirect=true",
+          "asin": "SATH8YXCRJM2TRYH",
+          "confidence": 3,
+          "reasons": [
+            "Brand UNKNOWN (missing from candidate title)",
+            "Model Modifiers MATCH",
+            "Book Modifiers MATCH",
+            "poor text match (missing words: 1, kg)",
+            "Penalty: deducted 5% for UNKNOWN attributes.",
+            "final confidence score = 3%"
+          ],
+          "status": "REJECTED",
+          "detailed_diag": {
+            "Brand": "UNKNOWN",
+            "Exclusions": "MATCH",
+            "CPU": "MATCH",
+            "RAM": "MATCH",
+            "Storage": "MATCH",
+            "Model": "MATCH",
+            "Product Type": "MATCH",
+            "Book Identity": "MATCH"
+          }
+        }
+      ],
+      "metadata": {
+        "ZenRows Amazon India": {
+          "queries_run": [
+            {
+              "query": "Tata Salt 1 kg",
+              "credits": 0,
+              "status": 200,
+              "candidates_found": 42
+            }
+          ],
+          "total_credits_consumed": 0,
+          "total_unique_candidates": 42
+        },
+        "ZenRows Flipkart India": {
+          "queries_run": [
+            {
+              "query": "Tata Salt 1 kg",
+              "credits": 0,
+              "status": 200,
+              "premium_proxy": "false",
+              "candidates_found": 45
+            }
+          ],
+          "total_credits_consumed": 0,
+          "total_unique_candidates": 45
+        }
+      }
+    }
+  }
+}

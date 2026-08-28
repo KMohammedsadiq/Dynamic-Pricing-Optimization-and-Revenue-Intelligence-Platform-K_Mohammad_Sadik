@@ -99,6 +99,8 @@ class ProductUpdate(BaseModel):
 class ProductInDBBase(ProductBase):
     id: int
     product_id: str
+    catalog_source: Optional[str] = "ORIGINAL"
+    has_historical_demand: Optional[bool] = True
     is_deleted: Optional[bool] = False
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None

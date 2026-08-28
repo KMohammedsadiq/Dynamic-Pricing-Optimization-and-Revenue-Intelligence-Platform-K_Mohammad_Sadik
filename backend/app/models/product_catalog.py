@@ -34,9 +34,45 @@ class ProductCatalog(Base):
     profit_margin = Column(Numeric(10, 2), nullable=True)
     supplier_name = Column(String, nullable=True)
     
+    # ── Structured Identity Attributes ──
+    variant = Column(String, nullable=True)
+    gtin = Column(String, nullable=True)
+    upc = Column(String, nullable=True)
+    ean = Column(String, nullable=True)
+    
+    # Electronics
+    cpu = Column(String, nullable=True)
+    ram = Column(String, nullable=True)
+    storage = Column(String, nullable=True)
+    
+    # Apparel / Shoes
+    gender = Column(String, nullable=True)
+    color = Column(String, nullable=True)
+    size = Column(String, nullable=True)
+    style = Column(String, nullable=True)
+    
+    # Books
+    author = Column(String, nullable=True)
+    publisher = Column(String, nullable=True)
+    isbn = Column(String, nullable=True)
+    edition = Column(String, nullable=True)
+    
+    # Beauty / Groceries / Furniture / Accessories
+    volume = Column(String, nullable=True)
+    weight = Column(String, nullable=True)
+    pack_size = Column(String, nullable=True)
+    dimensions = Column(String, nullable=True)
+    material = Column(String, nullable=True)
+    
+    # Marketplace Integration Metadata
+    marketplace_search_name = Column(String, nullable=True)
+    marketplace_ready = Column(Boolean, default=False)
+    
     # State Management
     status = Column(String, default="Active", index=True)
     is_deleted = Column(Boolean, default=False, index=True)
+    catalog_source = Column(String, default="ORIGINAL", index=True)
+    has_historical_demand = Column(Boolean, default=True, index=True)
     
     # Timestamps
     created_at = Column(DateTime(timezone=True), server_default=func.now())

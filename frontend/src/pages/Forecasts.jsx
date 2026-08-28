@@ -341,8 +341,8 @@ export default function Forecasts() {
                         <div className="w-1.5 h-1.5 rounded-full bg-gray-400 mt-2 shrink-0"></div>
                         <p className="text-sm text-gray-300 leading-relaxed">
                           {forecast.validation.status === "Validated" 
-                            ? "This short-term forecast has strong validation support and is safe to use for active inventory and pricing decisions."
-                            : "This long-term forecast is experimental due to limited real-world history in this time scale. Use for broad directional planning only."}
+                            ? `This ${forecast.horizon}-day forecast has strong validation support and is safe to use for active inventory and pricing decisions.`
+                            : `This ${forecast.horizon}-day forecast is experimental due to limited real-world history in this time scale. Use for broad directional planning only.`}
                         </p>
                       </li>
                     </ul>
@@ -352,7 +352,7 @@ export default function Forecasts() {
                     <p className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-4 flex items-center gap-2">
                       <SunSnow className="w-4 h-4" /> Seasonal Context
                     </p>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-2 gap-4">
                       <div className="bg-[#1f2937]/50 p-3 rounded">
                         <p className="text-[10px] text-gray-500 uppercase tracking-wider mb-1">Season</p>
                         <p className="text-sm font-semibold text-gray-200">{forecast.seasonal_context.season || "Unknown"}</p>
@@ -361,17 +361,17 @@ export default function Forecasts() {
                         <p className="text-[10px] text-gray-500 uppercase tracking-wider mb-1">Quarter</p>
                         <p className="text-sm font-semibold text-gray-200">Q{forecast.seasonal_context.quarter}</p>
                       </div>
-                      <div className="bg-[#1f2937]/50 p-3 rounded">
+                      <div className="bg-[#1f2937]/50 p-3 rounded col-span-2">
                         <p className="text-[10px] text-gray-500 uppercase tracking-wider mb-1">Upcoming Events</p>
                         <div className="text-sm font-semibold text-gray-200">
                           {forecast.seasonal_context.upcoming_events?.length > 0 ? (
                             <ul className="list-disc list-inside">
                               {forecast.seasonal_context.upcoming_events.map((evt, idx) => (
-                                <li key={idx} className="truncate" title={evt}>{evt}</li>
+                                <li key={idx}>{evt}</li>
                               ))}
                             </ul>
                           ) : (
-                            <span className="text-gray-400 font-normal">No major holiday/festival detected</span>
+                            <span className="text-gray-500 font-normal italic">No major events</span>
                           )}
                         </div>
                       </div>
@@ -433,11 +433,111 @@ export default function Forecasts() {
                   </div>
                 )}
               </div>
+              {/* Holiday & Festival Demand Insights Report */}
+              {forecast.holiday_insights && forecast.holiday_insights.length > 0 && (
+                <div className="ent-panel p-5 flex flex-col gap-6 mt-6">
+                  <div>
+                    <p className="text-sm font-bold uppercase tracking-wider text-gray-400 mb-1 flex items-center gap-2">
+                      <SunSnow className="w-4 h-4" /> Holiday & Festival Demand Insights
+                    </p>
+                    <p className="text-xs text-gray-500">Observed Historical Demand Change during upcoming calendar events.</p>
+                  </div>
+                  <HolidayInsightsDashboard insights={forecast.holiday_insights} product_id={forecast.product_id} />
+                </div>
+              )}
             </>
           )}
 
         </div>
       </div>
+    </div>
+  );
+}
+
+function HolidayInsightsDashboard({ insights, product_id }) {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      {insights.map((item, idx) => {
+        const { event, insight } = item;
+        const { change_pct, insufficient_data, confounder_qualifier } = insight;
+
+        if (insufficient_data) {
+          return (
+            <div key={idx} className="bg-[#1f2937]/40 p-4 rounded border border-gray-700/30 flex flex-col">
+              <p className="text-[10px] text-gray-500 uppercase tracking-wider mb-2">
+                {event}
+                {insight.upcoming_date && (
+                  <span className="ml-1 text-gray-600 font-mono">
+                    ({new Date(insight.upcoming_date).toLocaleDateString()})
+                  </span>
+                )}
+              </p>
+              <p className="text-sm font-medium text-gray-400">Insufficient genuine data</p>
+            </div>
+          );
+        }
+
+        const hasProductLevel = insight.product_change_pct !== null && insight.product_change_pct !== undefined;
+        const main_pct = hasProductLevel ? insight.product_change_pct : change_pct;
+        
+        const isPositive = main_pct > 0;
+        const isNegative = main_pct < 0;
+        const isNeutral = main_pct === 0;
+
+        let interpretStr = "";
+        const subject = hasProductLevel ? "Demand for this product" : "Overall catalog demand";
+        
+        if (isPositive) {
+          interpretStr = `${subject} was historically higher during ${event} periods than comparable non-event periods (+${main_pct.toFixed(1)}%).`;
+        } else if (isNegative) {
+          interpretStr = `${subject} was historically lower during ${event} periods than comparable non-event periods (${main_pct.toFixed(1)}%).`;
+        } else {
+          interpretStr = `${subject} was broadly similar during ${event} periods and comparable non-event periods (0.0%).`;
+        }
+
+        return (
+          <div key={idx} className="bg-[#1f2937]/40 p-4 rounded border border-gray-700/30 flex flex-col justify-between gap-4">
+            <div>
+              <p className="text-[10px] text-gray-500 uppercase tracking-wider mb-2">
+                {event}
+                {insight.upcoming_date && (
+                  <span className="ml-1 text-gray-600 font-mono">
+                    ({new Date(insight.upcoming_date).toLocaleDateString()})
+                  </span>
+                )}
+              </p>
+              <div className="flex items-baseline gap-2">
+                <p className={`text-2xl font-semibold ${isPositive ? 'text-green-400' : isNegative ? 'text-red-400' : 'text-gray-300'}`}>
+                  {main_pct > 0 ? '+' : ''}{main_pct.toFixed(1)}%
+                </p>
+              </div>
+              <p className="text-[10px] text-gray-400 uppercase mt-1">
+                {hasProductLevel ? "Product-Level Historical Demand Change" : "Catalog-Level Historical Demand Change"}
+              </p>
+            </div>
+            
+            <div className="text-xs text-gray-300 bg-[#111827]/50 p-2 rounded">
+              {interpretStr}
+            </div>
+
+            {hasProductLevel ? (
+              <div className="text-xs text-indigo-300 bg-indigo-900/20 p-2 rounded border border-indigo-500/20">
+                <strong>Catalog Average:</strong> {change_pct > 0 ? '+' : ''}{change_pct.toFixed(1)}% across all products
+              </div>
+            ) : (
+              <div className="text-xs text-gray-500 bg-gray-900/40 p-2 rounded border border-gray-700/40">
+                <strong>Product-Level:</strong> Insufficient history for product-specific insight.
+              </div>
+            )}
+            
+            {confounder_qualifier && (
+              <div className="text-[10px] text-amber-500/80 italic border-t border-gray-700 pt-2 mt-2">
+                Note: {confounder_qualifier}
+              </div>
+            )}
+          </div>
+        );
+      })}
     </div>
   );
 }
@@ -502,10 +602,12 @@ function SeasonalTrendDashboard({ forecast }) {
              return (
                <div key={season} className="flex-1 flex flex-col items-center justify-end h-full gap-2 group relative">
                   <div className="text-xs font-mono text-gray-300 mb-1">{Math.round(avgVal)}</div>
-                  <div 
-                    className={`w-full rounded-t transition-all duration-500 ${isPeak ? 'bg-indigo-400' : isLowest ? 'bg-indigo-900/60' : 'bg-indigo-600/80'}`} 
-                    style={{height: `${heightPct}%`}}
-                  ></div>
+                  <div className="w-full flex-1 flex items-end justify-center">
+                    <div 
+                      className={`w-full rounded-t transition-all duration-500 ${isPeak ? 'bg-indigo-400' : isLowest ? 'bg-indigo-900/60' : 'bg-indigo-600/80'}`} 
+                      style={{height: `${heightPct}%`}}
+                    ></div>
+                  </div>
                   <p className={`text-[10px] uppercase tracking-wider ${isPeak ? 'text-indigo-300 font-bold' : 'text-gray-400'}`}>{season}</p>
                </div>
              );
@@ -514,7 +616,7 @@ function SeasonalTrendDashboard({ forecast }) {
         
         <div className="md:w-1/3 flex flex-col gap-4 pb-2">
            <div>
-             <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider mb-1">Forecast Horizon: {forecast.horizon_days} Days</p>
+             <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider mb-1">Upcoming Season(s)</p>
              <p className="text-sm font-semibold text-indigo-300">
                {forecast.seasonal_analysis.upcoming_seasons.join(" → ")}
              </p>

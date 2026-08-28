@@ -56,6 +56,18 @@ VALIDATION_METRICS = {
     365: {"status": "Unverified - No Genuine Historical Target Data",  "mae": None, "rmse": None, "r2": None, "smape": None}
 }
 
+# Historical Read-Only Holiday Demand Impact Analysis
+# DO NOT multiply forecasts by these numbers. They are for the reporting layer only.
+HOLIDAY_INSIGHTS = {
+    "Eid al-Fitr": {"change_pct": -1.9, "insufficient_data": False, "confounder_qualifier": None},
+    "Holi": {"change_pct": 4.3, "insufficient_data": False, "confounder_qualifier": None},
+    "Independence Day": {"change_pct": -39.3, "insufficient_data": False, "confounder_qualifier": "Interpretation is limited because promotional activity was higher during the event period."},
+    "New Year": {"change_pct": 7.3, "insufficient_data": False, "confounder_qualifier": None},
+    "Republic Day": {"change_pct": 3.2, "insufficient_data": False, "confounder_qualifier": None},
+    "Diwali": {"change_pct": None, "insufficient_data": True, "confounder_qualifier": None},
+    "Christmas": {"change_pct": None, "insufficient_data": True, "confounder_qualifier": None}
+}
+
 def calculate_confidence_score(horizon_metrics):
     status = horizon_metrics["status"]
     if "Unverified" in status or "Experimental" in status or "Insufficient" in status:
@@ -102,17 +114,23 @@ class DemandPredictor:
             df = pd.read_csv(DATA_PATH)
             df['date'] = pd.to_datetime(df['date'], format='%d-%m-%Y', errors='coerce')
             
-            # --- ORDINAL ENCODER DETERMINISM VERIFICATION ---
-            # The training script (train_demand_forecast.py) instantiated an OrdinalEncoder 
-            # and applied fit_transform() on the entire demand_forecasting_features.csv dataset.
-            # Because we are applying the exact same fit_transform on the exact same immutable CSV 
-            # here in the prediction service, the category-to-integer mappings are mathematically 
-            # and deterministically identical to the training mappings.
+            # --- ORDINAL ENCODER ARTIFACT LOADING ---
+            # Load the exact fitted OrdinalEncoder artifact generated during training
+            # to ensure category-to-integer mappings are identical and safe from data drift.
             cat_cols = ['promotion_type', 'brand', 'category', 'product_lifecycle', 'month', 'day_of_week', 'season']
-            enc = OrdinalEncoder(handle_unknown='use_encoded_value', unknown_value=-1)
-            df[cat_cols] = enc.fit_transform(df[cat_cols].fillna('Missing'))
             
-            self.df = df
+            encoder_path = os.path.join(MODELS_DIR, "../demand_forecasting_dev/demand_encoder.pkl")
+            if not os.path.exists(encoder_path):
+                raise FileNotFoundError(f"Missing encoder artifact: {encoder_path}")
+                
+            with open(encoder_path, 'rb') as f:
+                enc = pickle.load(f)
+                
+            df[cat_cols] = enc.transform(df[cat_cols].fillna('Missing'))
+            
+            # Set index for faster lookups
+            self.df = df.set_index('product_id', drop=False)
+            
             
             # Pre-load all available models
             for hz, conf in HORIZON_MAP.items():
@@ -193,7 +211,8 @@ class DemandPredictor:
             diff_pct = round(((highest_avg - lowest_avg) / lowest_avg * 100), 1) if lowest_avg > 0 else 0
             has_sufficient_genuine = True
             
-        start_date = latest_row['date']
+        import datetime
+        start_date = pd.to_datetime(datetime.datetime.now().date())
         future_dates = [start_date + pd.Timedelta(weeks=w) for w in range(1, horizon_weeks + 1)]
         upcoming_seasons = list(dict.fromkeys([get_season_name(d.month) for d in future_dates]))
         
@@ -217,8 +236,12 @@ class DemandPredictor:
         if horizon not in self.models:
             raise HTTPException(status_code=500, detail=f"Model for horizon {horizon} is missing on disk.")
             
-        # 1. Filter dataset for product
-        prod_df = self.df[self.df['product_id'] == product_id]
+        # 1. Filter dataset for product using indexed lookup
+        try:
+            prod_df = self.df.loc[[product_id]]
+        except KeyError:
+            raise HTTPException(status_code=404, detail=f"Product {product_id} not found in historical data.")
+            
         if len(prod_df) == 0:
             raise HTTPException(status_code=404, detail=f"Product {product_id} not found in historical data.")
             
@@ -275,32 +298,106 @@ class DemandPredictor:
         historical_data = []
         for _, row in recent_history.iterrows():
             historical_data.append({
-                "date": str(row['date'].date()),
-                "units_sold": int(row['units_sold'])
+                "date": row['date'].strftime("%Y-%m-%d"),
+                "units_sold": row['units_sold']
             })
+            
+        return {
+            "predicted_demand": predicted_demand,
+            "demand_trend": trend,
+            "horizon_weeks": weeks,
+            "seasonal_analysis": self._calculate_seasonal_analysis(hist_df, latest_row, weeks),
+            "historical_chart_data": historical_data
+        }
+
+    def predict_batch_trend(self, horizon: int = 30) -> dict:
+        """
+        Fast batch inference to get the demand_trend for all products at once.
+        Returns a dict: { product_id: 'Increasing' | 'Decreasing' | 'Stable' }
+        """
+        if self.df is None or horizon not in self.models:
+            return {}
+            
+        cutoff = pd.to_datetime(GENUINE_DATA_CUTOFF)
+        hist_df = self.df[self.df['date'] <= cutoff]
+        
+        if hist_df.empty:
+            return {}
+            
+        # Get the latest row for each product
+        # The index is already product_id, so we can just group by the index
+        latest_df = hist_df.sort_values('date').groupby(level=0).last()
+        
+        # Filter products with sufficient data
+        valid_df = latest_df[~latest_df['rolling_4w_sales_mean'].isna()]
+        
+        if valid_df.empty:
+            return {}
+            
+        # Ensure all required features are present
+        missing = [f for f in FINAL_MODEL_FEATURES if f not in valid_df.columns]
+        if missing:
+            return {}
+            
+        X = valid_df[FINAL_MODEL_FEATURES]
+        
+        model = self.models[horizon]
+        try:
+            preds = model.predict(X)
+        except Exception:
+            return {}
+            
+        weeks = HORIZON_MAP[horizon]["weeks"]
+        predicted_weekly = np.maximum(0.0, preds) / weeks
+        current_weekly = valid_df['rolling_4w_sales_mean'].values
+        
+        results = {}
+        for i, pid in enumerate(valid_df.index):
+            curr = current_weekly[i]
+            pred = predicted_weekly[i]
+            if curr > 0:
+                diff_pct = (pred - curr) / curr
+                if diff_pct > 0.05: trend = "Increasing"
+                elif diff_pct < -0.05: trend = "Decreasing"
+                else: trend = "Stable"
+            else:
+                trend = "Increasing" if pred > 0 else "Stable"
+            results[pid] = trend
+            
+        return results
 
         import datetime
         from ml.calendar_config import VERIFIED_CALENDAR
 
         # 9. Extract seasonal context
-        obs_date = latest_row['date']
-        horizon_end_date = obs_date + datetime.timedelta(days=horizon)
+        # Use real current date for event timeline checking instead of historical data cutoff
+        real_today = pd.to_datetime(datetime.datetime.now().date())
+        horizon_end_date = real_today + datetime.timedelta(days=horizon)
         
         upcoming_events = []
         for evt in VERIFIED_CALENDAR:
             evt_date = pd.to_datetime(evt['date'])
-            if obs_date <= evt_date <= horizon_end_date:
-                upcoming_events.append(evt['event_name'])
+            if real_today <= evt_date <= horizon_end_date:
+                upcoming_events.append({"name": evt['event_name'], "date": evt['date']})
                 
         # Remove duplicates while preserving chronological order
         unique_events = []
+        seen = set()
         for e in upcoming_events:
-            if e not in unique_events:
+            if e['name'] not in seen:
+                seen.add(e['name'])
                 unique_events.append(e)
 
-        season_num = int(latest_row['season'])
-        season_map = {0: "Autumn", 1: "Spring", 2: "Summer", 3: "Winter"}
-        season_str = season_map.get(season_num, "Unknown")
+        real_month = real_today.month
+        real_quarter = (real_month - 1) // 3 + 1
+        
+        def get_season_name_local(m):
+            if m in [3, 4, 5]: return "Spring"
+            elif m in [6, 7, 8]: return "Summer"
+            elif m in [9, 10, 11]: return "Autumn"
+            else: return "Winter"
+            
+        season_str = get_season_name_local(real_month)
         
         # Handle long horizons
         if season_str != "Unknown":
@@ -315,9 +412,9 @@ class DemandPredictor:
                 season_str = f"{season_str} → {chronological[(start_idx + 1) % 4]}"
         
         seasonal_context = {
-            "quarter": int(latest_row['quarter']),
+            "quarter": real_quarter,
             "season": season_str,
-            "upcoming_events": unique_events
+            "upcoming_events": [e['name'] for e in unique_events]
         }
         
         seasonal_analysis = self._calculate_seasonal_analysis(hist_df, latest_row, weeks)
@@ -327,6 +424,43 @@ class DemandPredictor:
         conf_score = calculate_confidence_score(val_metrics)
         conf_level = get_confidence_level(horizon, conf_score)
 
+        # Calculate product-level insights
+        holiday_insights_list = []
+        genuine_hist_df = hist_df[hist_df['is_synthetic'] == 0]
+        
+        for ev_obj in unique_events:
+            ev = ev_obj['name']
+            ev_date = ev_obj['date']
+            if ev in HOLIDAY_INSIGHTS:
+                base_insight = dict(HOLIDAY_INSIGHTS[ev]) # copy
+                base_insight['product_change_pct'] = None
+                base_insight['upcoming_date'] = ev_date
+                
+                # Calculate product-specific uplift if it's not globally insufficient
+                if not base_insight['insufficient_data'] and not genuine_hist_df.empty:
+                    # Identify event name column
+                    def _get_ev(row):
+                        f = row.get('festival_name')
+                        h = row.get('holiday_name')
+                        if pd.notna(f) and str(f).strip() not in ['', 'None', 'nan']: return str(f).strip()
+                        if pd.notna(h) and str(h).strip() not in ['', 'None', 'nan']: return str(h).strip()
+                        return None
+                    
+                    ev_series = genuine_hist_df.apply(_get_ev, axis=1)
+                    ev_df = genuine_hist_df[ev_series == ev]
+                    ctrl_df = genuine_hist_df[ev_series.isna()]
+                    
+                    if not ev_df.empty and not ctrl_df.empty:
+                        ev_mean = ev_df['units_sold'].mean()
+                        ctrl_mean = ctrl_df['units_sold'].mean()
+                        if ctrl_mean > 0:
+                            base_insight['product_change_pct'] = round(((ev_mean - ctrl_mean) / ctrl_mean * 100), 1)
+                            
+                holiday_insights_list.append({
+                    "event": ev,
+                    "insight": base_insight
+                })
+        
         response = {
             "product_id": product_id,
             "horizon": horizon,
@@ -342,7 +476,8 @@ class DemandPredictor:
             "model_file": HORIZON_MAP[horizon]["model"],
             "historical_data": historical_data,
             "seasonal_context": seasonal_context,
-            "seasonal_analysis": seasonal_analysis
+            "seasonal_analysis": seasonal_analysis,
+            "holiday_insights": holiday_insights_list
         }
         
         return response

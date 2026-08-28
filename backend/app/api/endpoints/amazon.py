@@ -3,10 +3,12 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from typing import Dict, Any
 
+from app.core.config import settings
+
 router = APIRouter()
 
-RAPID_API_KEY = "e49db6e9e2mshec7307f807db8f8p10deb8jsn5ec4e09da89b"
-RAPID_API_HOST = "real-time-amazon-data.p.rapidapi.com"
+RAPID_API_KEY = settings.RAPID_API_KEY
+RAPID_API_HOST = settings.AMAZON_API_HOST
 BASE_URL = f"https://{RAPID_API_HOST}"
 
 class AmazonTestRequest(BaseModel):
