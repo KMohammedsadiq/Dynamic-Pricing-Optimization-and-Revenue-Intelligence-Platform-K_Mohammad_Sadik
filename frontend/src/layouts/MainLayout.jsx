@@ -14,14 +14,14 @@ export default function MainLayout() {
       {/* Mobile Sidebar Overlay */}
       {isSidebarOpen && (
         <div 
-          className="fixed inset-0 bg-black/60 z-30 md:hidden backdrop-blur-sm"
+          className="fixed inset-0 bg-black/60 z-30 lg:hidden backdrop-blur-sm"
           onClick={() => setIsSidebarOpen(false)}
         />
       )}
 
       {/* Solid Enterprise Sidebar */}
       <aside 
-        className={`fixed inset-y-0 left-0 w-64 bg-[#1F2937] border-r border-[#374151] flex flex-col z-40 transform transition-transform duration-300 ease-in-out md:relative md:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 w-64 bg-[#1F2937] border-r border-[#374151] flex flex-col z-40 transform transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0 ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -34,7 +34,7 @@ export default function MainLayout() {
           </div>
           {/* Close button for mobile */}
           <button 
-            className="md:hidden text-gray-400 hover:text-white"
+            className="lg:hidden text-gray-400 hover:text-white"
             onClick={() => setIsSidebarOpen(false)}
           >
             <X size={24} />
@@ -111,7 +111,7 @@ export default function MainLayout() {
         {/* Top Header */}
         <header className="h-20 px-4 md:px-8 flex items-center border-b border-[#374151] bg-[#111827] flex-shrink-0 z-10 shadow-sm gap-4">
           <button 
-            className="md:hidden text-gray-300 hover:text-white p-2 rounded-md hover:bg-[#1F2937] transition-colors"
+            className="lg:hidden text-gray-300 hover:text-white p-2 rounded-md hover:bg-[#1F2937] transition-colors"
             onClick={() => setIsSidebarOpen(true)}
           >
             <Menu size={24} />

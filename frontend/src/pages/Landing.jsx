@@ -34,18 +34,18 @@ export default function Landing() {
     <div className="min-h-screen bg-[#111827] text-white overflow-x-hidden relative flex flex-col font-sans">
       
       {/* Navbar */}
-      <nav className="w-full relative z-50 flex items-center justify-between px-8 py-6 max-w-7xl mx-auto">
-        <div className="flex items-center gap-3">
-          <Hexagon className="text-blue-500 w-8 h-8" />
-          <span className="text-2xl font-black text-gray-50 tracking-tight">
+      <nav className="w-full relative z-50 flex items-center justify-between px-4 sm:px-8 py-4 sm:py-6 max-w-7xl mx-auto gap-4">
+        <div className="flex items-center gap-2">
+          <Hexagon className="text-blue-500 w-6 h-6 sm:w-8 sm:h-8" />
+          <span className="text-lg sm:text-2xl font-black text-gray-50 tracking-tight">
             PricePilot AI
           </span>
         </div>
-        <div className="flex items-center gap-6">
-          <Link to="/login" className="text-gray-400 hover:text-white font-medium transition-colors">
+        <div className="flex items-center gap-3 sm:gap-6">
+          <Link to="/login" className="text-gray-400 hover:text-white font-medium transition-colors text-sm sm:text-base">
             Sign In
           </Link>
-          <Link to="/dashboard" className="px-6 py-2.5 rounded-md bg-blue-600 text-white font-bold hover:bg-blue-700 transition-colors">
+          <Link to="/dashboard" className="px-4 sm:px-6 py-2 sm:py-2.5 rounded-md bg-blue-600 text-white font-bold hover:bg-blue-700 transition-colors text-sm sm:text-base">
             Dashboard
           </Link>
         </div>
@@ -61,14 +61,14 @@ export default function Landing() {
             <span className="text-xs font-bold text-gray-300 uppercase tracking-wider">Enterprise Pricing System</span>
           </div>
 
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter leading-tight mb-8 max-w-6xl mx-auto text-gray-50">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter leading-tight mb-6 sm:mb-8 max-w-6xl mx-auto text-gray-50">
             Dynamic Pricing Optimization & <br className="hidden md:block" />
             <span className="text-blue-500">
               Revenue Intelligence System
             </span>
           </h1>
 
-          <p className="text-xl md:text-2xl text-gray-400 font-medium max-w-3xl mb-12 leading-relaxed">
+          <p className="text-base sm:text-xl md:text-2xl text-gray-400 font-medium max-w-3xl mb-10 sm:mb-12 leading-relaxed">
             Maximize your revenue, improve profitability, and dominate market competitiveness with our machine learning driven demand forecasting and pricing platform.
           </p>
 
@@ -91,11 +91,11 @@ export default function Landing() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {features.map((feature, idx) => (
               <div 
                 key={idx}
-                className={`ent-panel p-10 flex flex-col justify-between transition-colors relative overflow-hidden ${feature.colSpan}`}
+                className={`ent-panel p-6 sm:p-10 flex flex-col justify-between transition-colors relative overflow-hidden col-span-1 ${feature.colSpan}`}
               >
                 <div className="mb-8">
                   <div className="w-16 h-16 rounded-xl bg-[#111827] flex items-center justify-center mb-6 border border-[#374151]">
