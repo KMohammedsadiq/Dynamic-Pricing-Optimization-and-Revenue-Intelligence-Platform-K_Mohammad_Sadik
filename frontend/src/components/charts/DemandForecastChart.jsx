@@ -41,7 +41,8 @@ export default function DemandForecastChart({ historicalData, forecastData }) {
   const forecastStartIndex = data.length - 1;
   data[forecastStartIndex].Forecast = lastHistorical.units_sold;
 
-  const weeks = parseInt(forecastData.forecast_period.split(' ')[0], 10);
+  const _fp = forecastData?.forecast_period ?? 4;
+  const weeks = typeof _fp === 'number' ? _fp : (parseInt((_fp || '').toString().split(' ')[0], 10) || 4);
   
   for (let i = 1; i <= weeks; i++) {
     const futureDate = new Date(lastDate);

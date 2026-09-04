@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { LineChart, Search, Calendar, Loader2, AlertCircle, CheckCircle2, TrendingUp, TrendingDown, Minus, Info, SunSnow } from "lucide-react";
 import { getDemandForecast, getAvailableProducts, getProductDetails } from "../services/predictionApi";
 import DemandForecastChart from "../components/charts/DemandForecastChart";
+import { ErrorBoundary } from "../components/ErrorBoundary";
 
 export default function Forecasts() {
   const [selectedTarget, setSelectedTarget] = useState("");
@@ -79,6 +80,7 @@ export default function Forecasts() {
   };
 
   const getConfidenceLevel = (status) => {
+    if (!status || typeof status !== 'string') return "Unknown";
     if (status.includes("Production Ready")) return "High";
     if (status.includes("Limited")) return "Moderate";
     if (status.includes("Not Ready")) return "Low";
@@ -100,7 +102,7 @@ export default function Forecasts() {
     return <Minus className="w-5 h-5 text-gray-400" />;
   };
 
-  return (
+  const content = (
     <div className="w-full max-w-[1200px] mx-auto pb-12">
       <div className="mb-6">
         <h1 className="text-xl font-bold text-gray-50">Demand Forecast Dashboard</h1>
@@ -269,7 +271,7 @@ export default function Forecasts() {
                     )}
 
                     <p className="text-xl font-bold mt-1">{forecast.confidence_level || getConfidenceLevel(forecast.readiness_status)}</p>
-                    <p className="text-xs mt-1 opacity-80 uppercase tracking-wider">{forecast.readiness_status}</p>
+                    <p className="text-xs mt-1 opacity-80 uppercase tracking-wider">{forecast.readiness_status || "Unknown Status"}</p>
                     
                     {forecast.validation && forecast.validation.r2 != null ? (
                       <div className="mt-4 pt-3 border-t border-gray-700/50 grid grid-cols-2 gap-x-2 gap-y-1 text-xs opacity-90">
@@ -301,7 +303,12 @@ export default function Forecasts() {
                     forecastData={{
                       horizon: forecast.horizon,
                       predicted_weekly_demand: forecast.predicted_weekly_demand,
-                      forecast_period: forecast.forecast_period
+                      forecast_period: (function() {
+                        const weeksRaw = forecast.forecast_period;
+                        return typeof weeksRaw === 'number'
+                          ? weeksRaw
+                          : parseInt((weeksRaw || '').toString().split(' ')[0], 10) || 4;
+                      })()
                     }} 
                   />
                 </div>
@@ -334,13 +341,13 @@ export default function Forecasts() {
                       <li className="flex items-start gap-3">
                         <div className="w-1.5 h-1.5 rounded-full bg-gray-400 mt-2 shrink-0"></div>
                         <p className="text-sm text-gray-300 leading-relaxed">
-                          Demand is projected to be <strong className="text-gray-100">{forecast.demand_trend.toLowerCase()}</strong> compared with recent historical averages, moving to an average of {forecast.predicted_weekly_demand} units per week.
+                          Demand is projected to be <strong className="text-gray-100">{(forecast.demand_trend || "stable").toLowerCase()}</strong> compared with recent historical averages, moving to an average of {forecast.predicted_weekly_demand} units per week.
                         </p>
                       </li>
                       <li className="flex items-start gap-3">
                         <div className="w-1.5 h-1.5 rounded-full bg-gray-400 mt-2 shrink-0"></div>
                         <p className="text-sm text-gray-300 leading-relaxed">
-                          {forecast.validation.status === "Validated" 
+                          {forecast.validation?.status === "Validated" 
                             ? `This ${forecast.horizon}-day forecast has strong validation support and is safe to use for active inventory and pricing decisions.`
                             : `This ${forecast.horizon}-day forecast is experimental due to limited real-world history in this time scale. Use for broad directional planning only.`}
                         </p>
@@ -355,16 +362,16 @@ export default function Forecasts() {
                     <div className="grid grid-cols-2 gap-4">
                       <div className="bg-[#1f2937]/50 p-3 rounded">
                         <p className="text-[10px] text-gray-500 uppercase tracking-wider mb-1">Season</p>
-                        <p className="text-sm font-semibold text-gray-200">{forecast.seasonal_context.season || "Unknown"}</p>
+                        <p className="text-sm font-semibold text-gray-200">{forecast.seasonal_context?.season || "Unknown"}</p>
                       </div>
                       <div className="bg-[#1f2937]/50 p-3 rounded">
                         <p className="text-[10px] text-gray-500 uppercase tracking-wider mb-1">Quarter</p>
-                        <p className="text-sm font-semibold text-gray-200">Q{forecast.seasonal_context.quarter}</p>
+                        <p className="text-sm font-semibold text-gray-200">{forecast.seasonal_context?.quarter ? `Q${forecast.seasonal_context.quarter}` : "—"}</p>
                       </div>
                       <div className="bg-[#1f2937]/50 p-3 rounded col-span-2">
                         <p className="text-[10px] text-gray-500 uppercase tracking-wider mb-1">Upcoming Events</p>
                         <div className="text-sm font-semibold text-gray-200">
-                          {forecast.seasonal_context.upcoming_events?.length > 0 ? (
+                          {forecast.seasonal_context?.upcoming_events?.length > 0 ? (
                             <ul className="list-disc list-inside">
                               {forecast.seasonal_context.upcoming_events.map((evt, idx) => (
                                 <li key={idx}>{evt}</li>
@@ -385,32 +392,34 @@ export default function Forecasts() {
                     Prediction Report Metrics
                   </p>
                   <div className="flex flex-col gap-4">
-                    {(forecast.validation.r2 === null || forecast.validation.r2 === undefined) && (
-                      <p className="text-xs text-amber-500/80 italic">Genuine validation not available for this horizon. Metrics below are not yet verified on real-world data.</p>
-                    )}
+              {forecast.validation && (
+                (forecast.validation.r2 === null || forecast.validation.r2 === undefined) && (
+                  <p className="text-xs text-amber-500/80 italic">Genuine validation not available for this horizon. Metrics below are not yet verified on real-world data.</p>
+                )
+              )}
                     <div className="grid grid-cols-2 gap-4">
                       <div>
                         <p className="text-xs text-gray-500 mb-1">R² (Accuracy)</p>
-                        <p className="text-sm font-mono text-gray-200">{forecast.validation.r2 != null ? forecast.validation.r2 : "—"}</p>
+                        <p className="text-sm font-mono text-gray-200">{forecast.validation?.r2 != null ? forecast.validation.r2 : "—"}</p>
                       </div>
                       <div>
                         <p className="text-xs text-gray-500 mb-1">sMAPE</p>
-                        <p className="text-sm font-mono text-gray-200">{forecast.validation.smape != null ? `${forecast.validation.smape}%` : "—"}</p>
+                        <p className="text-sm font-mono text-gray-200">{forecast.validation?.smape != null ? `${forecast.validation.smape}%` : "—"}</p>
                       </div>
                     </div>
                     <div className="grid grid-cols-2 gap-4">
                       <div>
                         <p className="text-xs text-gray-500 mb-1">MAE</p>
-                        <p className="text-sm font-mono text-gray-200">{forecast.validation.mae != null ? forecast.validation.mae : "—"}</p>
+                        <p className="text-sm font-mono text-gray-200">{forecast.validation?.mae != null ? forecast.validation.mae : "—"}</p>
                       </div>
                       <div>
                         <p className="text-xs text-gray-500 mb-1">RMSE</p>
-                        <p className="text-sm font-mono text-gray-200">{forecast.validation.rmse != null ? forecast.validation.rmse : "—"}</p>
+                        <p className="text-sm font-mono text-gray-200">{forecast.validation?.rmse != null ? forecast.validation.rmse : "—"}</p>
                       </div>
                     </div>
                     <div className="mt-2 pt-4 border-t border-[#374151]/50">
                       <p className="text-xs text-gray-500 mb-1">Model Origin File</p>
-                      <p className="text-xs font-mono text-gray-400 truncate" title={forecast.model_file}>{forecast.model_file}</p>
+                      <p className="text-xs font-mono text-gray-400 truncate" title={forecast.model_file}>{forecast.model_file || "—"}</p>
                     </div>
                   </div>
                 </div>
@@ -452,6 +461,8 @@ export default function Forecasts() {
       </div>
     </div>
   );
+
+  return <ErrorBoundary>{content}</ErrorBoundary>;
 }
 
 function HolidayInsightsDashboard({ insights, product_id }) {
@@ -544,7 +555,7 @@ function HolidayInsightsDashboard({ insights, product_id }) {
 
 function SeasonalTrendDashboard({ forecast }) {
   const seasons = ['Winter', 'Spring', 'Summer', 'Autumn'];
-  const stats = forecast.seasonal_analysis.historical_seasons;
+  const stats = forecast.seasonal_analysis?.historical_seasons || {};
   const activeSeasons = seasons.filter(s => stats[s]);
   
   if (activeSeasons.length < 2) {
@@ -618,7 +629,7 @@ function SeasonalTrendDashboard({ forecast }) {
            <div>
              <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider mb-1">Upcoming Season(s)</p>
              <p className="text-sm font-semibold text-indigo-300">
-               {forecast.seasonal_analysis.upcoming_seasons.join(" → ")}
+               {forecast.seasonal_analysis?.upcoming_seasons?.join(" → ") || "Unknown"}
              </p>
            </div>
            <p className="text-xs text-gray-400 leading-relaxed bg-[#1f2937]/30 p-3 rounded border border-gray-700/30">
