@@ -1,0 +1,69 @@
+{
+  "methodology": "Chronological Temporal Holdout (independent of training split)",
+  "temporal_cutoff": "2026-03-15",
+  "model_file": "C:\\Users\\Mohammed sadiq\\OneDrive\\Desktop\\Pricepilot_AI\\backend\\ml\\models\\optimal_price_pipeline.pkl",
+  "target_type": "Deterministic business-rules multiplier (calculate_optimal_price / current_price)",
+  "dataset": {
+    "total_rows": 200674,
+    "test_rows": 40744,
+    "test_products": 745,
+    "test_date_min": "2026-03-15",
+    "test_date_max": "2026-12-15",
+    "festival_offer_rows_in_test": 357,
+    "note_festival_offer": "357 real Festival Offer rows (not synthetic duplicates)"
+  },
+  "multiplier_metrics": {
+    "MAE": 0.017606994966213322,
+    "RMSE": 0.02228259227038332,
+    "R2": 0.8403516934213808,
+    "MAPE_pct": 1.7799514140048518
+  },
+  "price_level_metrics": {
+    "MAE_INR": 246.0171999885979,
+    "RMSE_INR": 649.0589310706133
+  },
+  "quality_checks": {
+    "prediction_coverage_pct": 100.0,
+    "nan_inf_predictions": 0,
+    "negative_price_predictions": 0,
+    "extreme_errors_gt50pct": 0
+  },
+  "per_promotion_type": {
+    "Buy One Get One": {
+      "n_rows": 2255,
+      "mae_multiplier": 0.019589864526957764,
+      "rmse_multiplier": 0.025072599809331884
+    },
+    "Clearance": {
+      "n_rows": 2776,
+      "mae_multiplier": 0.01800586160623551,
+      "rmse_multiplier": 0.02292539752397868
+    },
+    "Festival Offer": {
+      "n_rows": 357,
+      "mae_multiplier": 0.018285552392797635,
+      "rmse_multiplier": 0.021435077295975866
+    },
+    "Flash Sale": {
+      "n_rows": 3597,
+      "mae_multiplier": 0.018918491282235016,
+      "rmse_multiplier": 0.024090688557241658
+    },
+    "Member Offer": {
+      "n_rows": 2509,
+      "mae_multiplier": 0.01880596172523192,
+      "rmse_multiplier": 0.024190201733237056
+    },
+    "No Promotion": {
+      "n_rows": 22113,
+      "mae_multiplier": 0.01624667706135632,
+      "rmse_multiplier": 0.02007123416084258
+    },
+    "Percentage Discount": {
+      "n_rows": 7137,
+      "mae_multiplier": 0.01992367989398749,
+      "rmse_multiplier": 0.02573103390430333
+    }
+  },
+  "important_disclosure": "The target variable is a deterministic function of input features (calculate_optimal_price business rules). The model approximates these rules. Metrics do NOT measure prediction of real market prices."
+}

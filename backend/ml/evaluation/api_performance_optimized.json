@@ -1,0 +1,219 @@
+{
+  "environment": "Local Development (FastAPI/Uvicorn/PostgreSQL)",
+  "note": "These results are local development benchmarks and should not be interpreted as production load-test results.",
+  "sequential_results": {
+    "Executive Summary": {
+      "status": "OK",
+      "requests": 10,
+      "min": 778.73,
+      "max": 1042.41,
+      "avg": 892.38,
+      "median": 910.23,
+      "response_size_bytes": 15093
+    },
+    "Pricing Strategies (Bulk)": {
+      "status": "OK",
+      "requests": 10,
+      "min": 556.86,
+      "max": 651.68,
+      "avg": 604.78,
+      "median": 617.25,
+      "response_size_bytes": 494682
+    },
+    "Single Strategy (ACC001)": {
+      "status": "OK",
+      "requests": 10,
+      "min": 94.96,
+      "max": 183.58,
+      "avg": 110.43,
+      "median": 105.18,
+      "response_size_bytes": 485
+    },
+    "Single Strategy (BOK501)": {
+      "status": "OK",
+      "requests": 10,
+      "min": 92.12,
+      "max": 106.31,
+      "avg": 100.84,
+      "median": 102.15,
+      "response_size_bytes": 516
+    },
+    "Single Strategy (ELE509)": {
+      "status": "OK",
+      "requests": 10,
+      "min": 93.47,
+      "max": 107.34,
+      "avg": 101.41,
+      "median": 104.13,
+      "response_size_bytes": 396
+    },
+    "Profitability Analysis": {
+      "status": "OK",
+      "requests": 10,
+      "min": 258.18,
+      "max": 365.53,
+      "avg": 307.64,
+      "median": 333.83,
+      "response_size_bytes": 252509
+    }
+  },
+  "concurrent_results": {
+    "concurrency_1": {
+      "Executive Summary": {
+        "concurrent_requests": 1,
+        "avg_ms": 1022.58,
+        "max_ms": 1022.58,
+        "failed": 0
+      },
+      "Pricing Strategies (Bulk)": {
+        "concurrent_requests": 1,
+        "avg_ms": 656.71,
+        "max_ms": 656.71,
+        "failed": 0
+      },
+      "Single Strategy (ACC001)": {
+        "concurrent_requests": 1,
+        "avg_ms": 98.56,
+        "max_ms": 98.56,
+        "failed": 0
+      },
+      "Single Strategy (BOK501)": {
+        "concurrent_requests": 1,
+        "avg_ms": 87.82,
+        "max_ms": 87.82,
+        "failed": 0
+      },
+      "Single Strategy (ELE509)": {
+        "concurrent_requests": 1,
+        "avg_ms": 93.78,
+        "max_ms": 93.78,
+        "failed": 0
+      },
+      "Profitability Analysis": {
+        "concurrent_requests": 1,
+        "avg_ms": 278.98,
+        "max_ms": 278.98,
+        "failed": 0
+      }
+    },
+    "concurrency_2": {
+      "Executive Summary": {
+        "concurrent_requests": 2,
+        "avg_ms": 1212.39,
+        "max_ms": 1229.62,
+        "failed": 0
+      },
+      "Pricing Strategies (Bulk)": {
+        "concurrent_requests": 2,
+        "avg_ms": 949.3,
+        "max_ms": 950.04,
+        "failed": 0
+      },
+      "Single Strategy (ACC001)": {
+        "concurrent_requests": 2,
+        "avg_ms": 175.62,
+        "max_ms": 175.86,
+        "failed": 0
+      },
+      "Single Strategy (BOK501)": {
+        "concurrent_requests": 2,
+        "avg_ms": 160.68,
+        "max_ms": 160.74,
+        "failed": 0
+      },
+      "Single Strategy (ELE509)": {
+        "concurrent_requests": 2,
+        "avg_ms": 162.71,
+        "max_ms": 162.79,
+        "failed": 0
+      },
+      "Profitability Analysis": {
+        "concurrent_requests": 2,
+        "avg_ms": 373.03,
+        "max_ms": 375.01,
+        "failed": 0
+      }
+    },
+    "concurrency_5": {
+      "Executive Summary": {
+        "concurrent_requests": 5,
+        "avg_ms": 2409.87,
+        "max_ms": 2510.88,
+        "failed": 0
+      },
+      "Pricing Strategies (Bulk)": {
+        "concurrent_requests": 5,
+        "avg_ms": 1964.3,
+        "max_ms": 1966.81,
+        "failed": 0
+      },
+      "Single Strategy (ACC001)": {
+        "concurrent_requests": 5,
+        "avg_ms": 484.29,
+        "max_ms": 487.21,
+        "failed": 0
+      },
+      "Single Strategy (BOK501)": {
+        "concurrent_requests": 5,
+        "avg_ms": 366.56,
+        "max_ms": 369.69,
+        "failed": 0
+      },
+      "Single Strategy (ELE509)": {
+        "concurrent_requests": 5,
+        "avg_ms": 382.24,
+        "max_ms": 387.97,
+        "failed": 0
+      },
+      "Profitability Analysis": {
+        "concurrent_requests": 5,
+        "avg_ms": 537.2,
+        "max_ms": 547.85,
+        "failed": 0
+      }
+    },
+    "concurrency_10": {
+      "Executive Summary": {
+        "concurrent_requests": 10,
+        "avg_ms": 4610.91,
+        "max_ms": 4732.36,
+        "failed": 0
+      },
+      "Pricing Strategies (Bulk)": {
+        "concurrent_requests": 10,
+        "avg_ms": 4063.1,
+        "max_ms": 4294.68,
+        "failed": 0
+      },
+      "Single Strategy (ACC001)": {
+        "concurrent_requests": 10,
+        "avg_ms": 883.94,
+        "max_ms": 954.83,
+        "failed": 0
+      },
+      "Single Strategy (BOK501)": {
+        "concurrent_requests": 10,
+        "avg_ms": 708.63,
+        "max_ms": 769.11,
+        "failed": 0
+      },
+      "Single Strategy (ELE509)": {
+        "concurrent_requests": 10,
+        "avg_ms": 763.49,
+        "max_ms": 824.55,
+        "failed": 0
+      },
+      "Profitability Analysis": {
+        "concurrent_requests": 10,
+        "avg_ms": 912.41,
+        "max_ms": 934.5,
+        "failed": 0
+      }
+    }
+  },
+  "data_validation": {
+    "items_returned": 828,
+    "unique_product_ids": 828,
+    "is_correct_count": true
+  }
+}

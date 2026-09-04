@@ -50,7 +50,9 @@ HORIZON_MAP = {
 VALIDATION_METRICS = {
     7:   {"status": "Validated",   "mae": 54.2,  "rmse": 97.1,   "r2": 0.774, "smape": 14.5},
     14:  {"status": "Validated",   "mae": 119.5, "rmse": 203.2,  "r2": 0.694, "smape": 17.7},
-    30:  {"status": "Validated",   "mae": 271.9, "rmse": 459.8,  "r2": 0.640, "smape": 20.7},
+    # R2=0.532 is the genuine dev model (genuine_30d.pkl) computed on Jun-Aug 2026 holdout.
+    # (0.640 was the old production fold model — not what is currently deployed.)
+    30:  {"status": "Validated",   "mae": 271.9, "rmse": 459.8,  "r2": 0.532, "smape": 20.7},
     90:  {"status": "Validated",   "mae": 891.8, "rmse": 1421.1, "r2": 0.388, "smape": 19.8},
     180: {"status": "Experimental - Insufficient Genuine Validation", "mae": None, "rmse": None, "r2": None, "smape": None},
     365: {"status": "Unverified - No Genuine Historical Target Data",  "mae": None, "rmse": None, "r2": None, "smape": None}
@@ -302,70 +304,6 @@ class DemandPredictor:
                 "units_sold": row['units_sold']
             })
             
-        return {
-            "predicted_demand": predicted_demand,
-            "demand_trend": trend,
-            "horizon_weeks": weeks,
-            "seasonal_analysis": self._calculate_seasonal_analysis(hist_df, latest_row, weeks),
-            "historical_chart_data": historical_data
-        }
-
-    def predict_batch_trend(self, horizon: int = 30) -> dict:
-        """
-        Fast batch inference to get the demand_trend for all products at once.
-        Returns a dict: { product_id: 'Increasing' | 'Decreasing' | 'Stable' }
-        """
-        if self.df is None or horizon not in self.models:
-            return {}
-            
-        cutoff = pd.to_datetime(GENUINE_DATA_CUTOFF)
-        hist_df = self.df[self.df['date'] <= cutoff]
-        
-        if hist_df.empty:
-            return {}
-            
-        # Get the latest row for each product
-        # The index is already product_id, so we can just group by the index
-        latest_df = hist_df.sort_values('date').groupby(level=0).last()
-        
-        # Filter products with sufficient data
-        valid_df = latest_df[~latest_df['rolling_4w_sales_mean'].isna()]
-        
-        if valid_df.empty:
-            return {}
-            
-        # Ensure all required features are present
-        missing = [f for f in FINAL_MODEL_FEATURES if f not in valid_df.columns]
-        if missing:
-            return {}
-            
-        X = valid_df[FINAL_MODEL_FEATURES]
-        
-        model = self.models[horizon]
-        try:
-            preds = model.predict(X)
-        except Exception:
-            return {}
-            
-        weeks = HORIZON_MAP[horizon]["weeks"]
-        predicted_weekly = np.maximum(0.0, preds) / weeks
-        current_weekly = valid_df['rolling_4w_sales_mean'].values
-        
-        results = {}
-        for i, pid in enumerate(valid_df.index):
-            curr = current_weekly[i]
-            pred = predicted_weekly[i]
-            if curr > 0:
-                diff_pct = (pred - curr) / curr
-                if diff_pct > 0.05: trend = "Increasing"
-                elif diff_pct < -0.05: trend = "Decreasing"
-                else: trend = "Stable"
-            else:
-                trend = "Increasing" if pred > 0 else "Stable"
-            results[pid] = trend
-            
-        return results
-
         import datetime
         from ml.calendar_config import VERIFIED_CALENDAR
 
@@ -481,5 +419,61 @@ class DemandPredictor:
         }
         
         return response
+
+    def predict_batch_trend(self, horizon: int = 30) -> dict:
+        """
+        Fast batch inference to get the demand_trend for all products at once.
+        Returns a dict: { product_id: 'Increasing' | 'Decreasing' | 'Stable' }
+        """
+        if self.df is None or horizon not in self.models:
+            return {}
+            
+        cutoff = pd.to_datetime(GENUINE_DATA_CUTOFF)
+        hist_df = self.df[self.df['date'] <= cutoff]
+        
+        if hist_df.empty:
+            return {}
+            
+        # Get the latest row for each product
+        # The index is already product_id, so we can just group by the index
+        latest_df = hist_df.sort_values('date').groupby(level=0).last()
+        
+        # Filter products with sufficient data
+        valid_df = latest_df[~latest_df['rolling_4w_sales_mean'].isna()]
+        
+        if valid_df.empty:
+            return {}
+            
+        # Ensure all required features are present
+        missing = [f for f in FINAL_MODEL_FEATURES if f not in valid_df.columns]
+        if missing:
+            return {}
+            
+        X = valid_df[FINAL_MODEL_FEATURES]
+        
+        model = self.models[horizon]
+        try:
+            preds = model.predict(X)
+        except Exception:
+            return {}
+            
+        weeks = HORIZON_MAP[horizon]["weeks"]
+        predicted_weekly = np.maximum(0.0, preds) / weeks
+        current_weekly = valid_df['rolling_4w_sales_mean'].values
+        
+        results = {}
+        for i, pid in enumerate(valid_df.index):
+            curr = current_weekly[i]
+            pred = predicted_weekly[i]
+            if curr > 0:
+                diff_pct = (pred - curr) / curr
+                if diff_pct > 0.05: trend = "Increasing"
+                elif diff_pct < -0.05: trend = "Decreasing"
+                else: trend = "Stable"
+            else:
+                trend = "Increasing" if pred > 0 else "Stable"
+            results[pid] = trend
+            
+        return results
 
 demand_predictor = DemandPredictor()

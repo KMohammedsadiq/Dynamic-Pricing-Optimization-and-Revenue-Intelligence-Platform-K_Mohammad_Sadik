@@ -1,0 +1,48 @@
+{
+  "catalog_products_total": 828,
+  "catalog_unique_ids": 828,
+  "catalog_duplicate_ids": 0,
+  "strategies_returned": 828,
+  "unique_strategies": 828,
+  "duplicate_strategies": 0,
+  "missing_products": 0,
+  "extra_products": 0,
+  "missing_product_ids": [],
+  "strategy_distribution": {
+    "MAINTAIN PRICE": 223,
+    "MONITOR MARKET": 242,
+    "PROTECT MARGIN": 169,
+    "CONSIDER PRICE INCREASE": 188,
+    "CONSIDER PRICE DECREASE": 6
+  },
+  "total_evaluated": 828,
+  "invalid_strategy_categories": [],
+  "input_validation": {
+    "zero_price_products": 0,
+    "negative_cost_products": 0,
+    "monitor_market_with_valid_price": 242,
+    "invalid_margin_gt100": 0
+  },
+  "reconciliation_ok": true,
+  "summary_distribution": {
+    "CONSIDER PRICE INCREASE": 188,
+    "CONSIDER PRICE DECREASE": 6,
+    "PROTECT MARGIN": 169,
+    "MAINTAIN PRICE": 223,
+    "MONITOR MARKET": 242
+  },
+  "executive_bi_reconciliation_ok": true,
+  "executive_bi_distribution": {
+    "CONSIDER PRICE INCREASE": 188,
+    "CONSIDER PRICE DECREASE": 6,
+    "PROTECT MARGIN": 169,
+    "MAINTAIN PRICE": 223,
+    "MONITOR MARKET": 242
+  },
+  "overall_status": "PASS",
+  "execution_time_sec": {
+    "raw_strategies": 4.08,
+    "summary_distribution": 0.38,
+    "executive_summary": 0.7
+  }
+}

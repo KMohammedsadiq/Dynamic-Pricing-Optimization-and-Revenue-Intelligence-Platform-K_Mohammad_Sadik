@@ -1,0 +1,181 @@
+{
+  "methodology": "Chronological holdout \u2014 genuine_historical provenance, Jun\u2013Aug 2026",
+  "source_file": "C:\\Users\\Mohammed sadiq\\OneDrive\\Desktop\\Pricepilot_AI\\backend\\ml\\training\\final_validation_results.json",
+  "models": {
+    "7": {
+      "model_file": "genuine_7d.pkl",
+      "readiness": "Production Ready"
+    },
+    "14": {
+      "model_file": "genuine_14d.pkl",
+      "readiness": "Production Ready"
+    },
+    "30": {
+      "model_file": "genuine_30d.pkl",
+      "readiness": "Limited / Production Candidate"
+    },
+    "90": {
+      "model_file": "genuine_90d.pkl",
+      "readiness": "Limited"
+    }
+  },
+  "model_files": {
+    "genuine_7d.pkl": {
+      "exists": true,
+      "size_kb": 268
+    },
+    "genuine_14d.pkl": {
+      "exists": true,
+      "size_kb": 273
+    },
+    "genuine_30d.pkl": {
+      "exists": true,
+      "size_kb": 271
+    },
+    "genuine_90d.pkl": {
+      "exists": true,
+      "size_kb": 275
+    }
+  },
+  "horizon_results": {
+    "7d": {
+      "readiness": "Production Ready",
+      "val_count": 228,
+      "val_products": 61,
+      "val_date_range": "2026-06-01 to 2026-08-01",
+      "dev_metrics": {
+        "MAE": 54.157507511607385,
+        "RMSE": 97.14173645618081,
+        "R2": 0.7744881899096105,
+        "sMAPE": 14.534012379902368
+      },
+      "prod_metrics": {
+        "MAE": 63.05262193345187,
+        "RMSE": 94.45555087518403,
+        "R2": 0.7867875618641942,
+        "sMAPE": 23.712318948692904
+      },
+      "validation_metrics_check": "PASS"
+    },
+    "14d": {
+      "readiness": "Production Ready",
+      "val_count": 228,
+      "val_products": 61,
+      "val_date_range": "2026-06-01 to 2026-08-01",
+      "dev_metrics": {
+        "MAE": 119.51510044566372,
+        "RMSE": 203.20362494505443,
+        "R2": 0.6938104760677221,
+        "sMAPE": 17.66818186925816
+      },
+      "prod_metrics": {
+        "MAE": 138.08643823757507,
+        "RMSE": 202.37402946047857,
+        "R2": 0.6963054604083865,
+        "sMAPE": 26.975642525980216
+      },
+      "validation_metrics_check": "PASS"
+    },
+    "30d": {
+      "readiness": "Limited / Production Candidate",
+      "val_count": 228,
+      "val_products": 61,
+      "val_date_range": "2026-06-01 to 2026-08-01",
+      "dev_metrics": {
+        "MAE": 271.9468928554602,
+        "RMSE": 459.7673751657202,
+        "R2": 0.5315038872222873,
+        "sMAPE": 20.67961172949715
+      },
+      "prod_metrics": {
+        "MAE": 275.490312843992,
+        "RMSE": 403.15972823567176,
+        "R2": 0.6397665993677004,
+        "sMAPE": 28.023076344568555
+      },
+      "validation_metrics_check": "MISMATCH"
+    },
+    "90d": {
+      "readiness": "Limited",
+      "val_count": 139,
+      "val_products": 51,
+      "val_date_range": "2026-06-01 to 2026-07-15",
+      "dev_metrics": {
+        "MAE": 891.8083452183565,
+        "RMSE": 1421.0638039613132,
+        "R2": 0.38766415684412636,
+        "sMAPE": 19.775007373311524
+      },
+      "prod_metrics": {
+        "MAE": 1422.3826706701045,
+        "RMSE": 1814.7583537639753,
+        "R2": 0.0013802870306839354,
+        "sMAPE": 34.15416668371867
+      },
+      "validation_metrics_check": "PASS"
+    },
+    "180d": {
+      "readiness": "Insufficient validation data",
+      "status": "Insufficient validation data"
+    },
+    "365d": {
+      "readiness": "Insufficient validation data",
+      "status": "Insufficient validation data"
+    }
+  },
+  "live_inference": {
+    "products_with_history": 745,
+    "7d": {
+      "n_products": 745,
+      "prediction_coverage_pct": 100.0,
+      "zero_predictions": 0,
+      "nan_predictions": 0,
+      "inference_ms": 12.7,
+      "trend_distribution": {
+        "increasing": 650,
+        "stable": 73,
+        "decreasing": 22
+      }
+    },
+    "14d": {
+      "n_products": 745,
+      "prediction_coverage_pct": 100.0,
+      "zero_predictions": 0,
+      "nan_predictions": 0,
+      "inference_ms": 6.8,
+      "trend_distribution": {
+        "increasing": 621,
+        "stable": 98,
+        "decreasing": 26
+      }
+    },
+    "30d": {
+      "n_products": 745,
+      "prediction_coverage_pct": 100.0,
+      "zero_predictions": 0,
+      "nan_predictions": 0,
+      "inference_ms": 5.9,
+      "trend_distribution": {
+        "increasing": 467,
+        "stable": 236,
+        "decreasing": 42
+      }
+    },
+    "90d": {
+      "n_products": 745,
+      "prediction_coverage_pct": 100.0,
+      "zero_predictions": 0,
+      "nan_predictions": 0,
+      "inference_ms": 6.1,
+      "trend_distribution": {
+        "increasing": 203,
+        "stable": 383,
+        "decreasing": 159
+      }
+    }
+  },
+  "unvalidated_horizons": {
+    "180d": "Experimental \u2014 insufficient genuine historical validation data",
+    "365d": "Unverified \u2014 no genuine historical target data"
+  }
+}
