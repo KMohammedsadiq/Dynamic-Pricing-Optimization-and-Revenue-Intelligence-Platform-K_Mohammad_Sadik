@@ -458,6 +458,7 @@ def get_strategy_distribution_all_products(db, return_raw=False):
     bulk SQL queries - no N+1 DB queries.
     Uses demand_predictor for ML trend. Skips XGBoost optimal price for performance.
     """
+    from app.services.strategy_service import PricingStrategyEngine
     from app.models.product_catalog import ProductCatalog
     from app.models.competitor_price import CompetitorPriceHistory
     from app.utils.financials import calculate_financials as cf
@@ -486,7 +487,10 @@ def get_strategy_distribution_all_products(db, return_raw=False):
     except Exception:
         batch_trends = {}
 
-    all_comps = db.query(CompetitorPriceHistory).filter(
+    all_comps = db.query(
+        CompetitorPriceHistory.product_id, 
+        CompetitorPriceHistory.price
+    ).filter(
         CompetitorPriceHistory.data_source != 'TEST_HISTORICAL'
     ).order_by(CompetitorPriceHistory.scraped_at.asc()).all()
 
@@ -515,6 +519,9 @@ def get_strategy_distribution_all_products(db, return_raw=False):
             fin = cf(rev, units, avg_cost)
             margin_pct = fin["profit_margin_pct"]
             current_price = float(stats.avg_price or 0)
+            # BUG FIX: cost_price_val MUST be set in the if-branch too.
+            # avg_cost is the per-unit cost from the Product financial aggregation.
+            cost_price_val = avg_cost
         else:
             current_price = float(cat_prod.base_price or 0)
             cost_price_val = float(cat_prod.cost_price or 0)
@@ -534,7 +541,6 @@ def get_strategy_distribution_all_products(db, return_raw=False):
         # Fast dictionary lookup instead of ML inference loop
         forecast_trend = batch_trends.get(pid, "Stable")
 
-        from app.services.strategy_service import PricingStrategyEngine
         strategy = PricingStrategyEngine.evaluate_rules(
             current_price=current_price,
             cost_price=cost_price_val,

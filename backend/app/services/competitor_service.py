@@ -30,7 +30,13 @@ def get_market_intelligence_data(db: Session) -> dict:
 
     # ── 2. Load all competitor history ordered oldest → newest (one query) ────
     history = (
-        db.query(CompetitorPriceHistory)
+        db.query(
+            CompetitorPriceHistory.product_id,
+            CompetitorPriceHistory.competitor_name,
+            CompetitorPriceHistory.price,
+            CompetitorPriceHistory.scraped_at,
+            CompetitorPriceHistory.data_source
+        )
         .order_by(CompetitorPriceHistory.scraped_at.asc())
         .all()
     )

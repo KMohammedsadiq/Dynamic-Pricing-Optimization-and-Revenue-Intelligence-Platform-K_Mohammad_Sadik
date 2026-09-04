@@ -7,7 +7,7 @@ from app.api.deps import get_current_user_token
 from app.services import analytics_service
 from app.services.strategy_service import PricingStrategyEngine
 from ml.demand_predictor import demand_predictor
-from ml.predictor import Predictor
+from ml.predictor import predictor  # module-level singleton — pkl loaded once at startup
 
 router = APIRouter()
 
@@ -36,10 +36,8 @@ def get_pricing_strategy(
         except Exception:
             demand_trend = "Stable"
             
-        # Get ML Optimal Price
-        # We simulate the input data format used by the Predictor
+        # Get ML Optimal Price using the module-level singleton (pkl loaded once at startup)
         try:
-            p = Predictor()
             from app.models.product_catalog import ProductCatalog
             prod = db.query(ProductCatalog).filter_by(product_id=product_id).first()
             if prod:
@@ -58,7 +56,7 @@ def get_pricing_strategy(
                     'competitor_price': float(prod.base_price or 0),
                     'promotion_type': 'No Promotion'
                 }
-                pred_result = p.predict(input_data)
+                pred_result = predictor.predict(input_data)
                 optimal_price = pred_result.get("predicted_price")
             else:
                 optimal_price = None
