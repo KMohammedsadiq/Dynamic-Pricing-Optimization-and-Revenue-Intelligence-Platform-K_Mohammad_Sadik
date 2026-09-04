@@ -53,9 +53,9 @@ function KpiCard({ label, value, sub, accent }) {
 function SectionHeader({ icon: Icon, title, subtitle, linkTo, linkLabel }) {
   const navigate = useNavigate();
   return (
-    <div className="flex items-center justify-between mb-4">
+    <div className="flex items-start sm:items-center justify-between mb-4 gap-2 flex-wrap">
       <div className="flex items-center gap-2">
-        <Icon className="w-5 h-5 text-blue-400" />
+        <Icon className="w-5 h-5 text-blue-400 flex-shrink-0" />
         <div>
           <h2 className="text-base font-bold text-gray-50">{title}</h2>
           {subtitle && <p className="text-xs text-gray-500">{subtitle}</p>}
@@ -278,7 +278,7 @@ export default function ExecutiveBi() {
 
         {/* Category table */}
         <div className="overflow-x-auto border border-[#374151] rounded-lg mt-4">
-          <table className="w-full text-left text-sm">
+          <table className="w-full text-left text-sm min-w-[550px]">
             <thead className="ent-table-header">
               <tr>
                 {["Category","Revenue","COGS","Gross Profit","Margin %","Contribution"].map(h => (

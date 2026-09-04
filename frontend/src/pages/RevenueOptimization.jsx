@@ -133,11 +133,11 @@ export default function RevenueOptimization() {
         </button>
       </div>
 
-      <div className="flex flex-col lg:flex-row gap-8 items-start">
+      <div className="flex flex-col lg:flex-row gap-4 lg:gap-8 items-start">
         
         {/* SIDEBAR NAVIGATION */}
         <div className="w-full lg:w-64 flex-shrink-0 ent-panel overflow-hidden">
-          <div className="flex flex-col">
+          <div className="flex flex-row overflow-x-auto lg:flex-col lg:overflow-visible">
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = activeTab === item.id;
@@ -145,14 +145,14 @@ export default function RevenueOptimization() {
                 <button
                   key={item.id}
                   onClick={() => { setActiveTab(item.id); setPage(1); }}
-                  className={`flex items-center gap-3 px-4 py-3.5 text-sm font-semibold border-b border-[#374151] last:border-b-0 transition-colors text-left
+                  className={`flex items-center gap-2 lg:gap-3 px-3 lg:px-4 py-3 lg:py-3.5 text-xs lg:text-sm font-semibold border-b border-[#374151] last:border-b-0 transition-colors text-left whitespace-nowrap flex-shrink-0 lg:flex-shrink
                     ${isActive 
-                      ? 'bg-blue-600/10 text-blue-500 border-l-4 border-l-blue-500 pl-3' 
+                      ? 'bg-blue-600/10 text-blue-500 border-l-4 border-l-blue-500 lg:pl-3' 
                       : 'text-gray-400 hover:bg-[#374151]/50 border-l-4 border-l-transparent hover:text-gray-100'
                     }
                   `}
                 >
-                  <Icon className={`w-4 h-4 ${isActive ? 'text-blue-500' : 'text-gray-500'}`} />
+                  <Icon className={`w-4 h-4 flex-shrink-0 ${isActive ? 'text-blue-500' : 'text-gray-500'}`} />
                   {item.label}
                 </button>
               );
@@ -240,7 +240,7 @@ export default function RevenueOptimization() {
                   </div>
 
                   <div className="overflow-x-auto border border-[#374151] rounded-lg">
-                    <table className="w-full text-left text-sm whitespace-nowrap">
+                    <table className="w-full text-left text-sm whitespace-nowrap min-w-[700px]">
                       <thead className="ent-table-header">
                         <tr>
                           <th className="px-4 py-3 font-bold text-gray-300 text-xs uppercase tracking-wider">Product</th>
