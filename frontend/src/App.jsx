@@ -17,6 +17,7 @@ import Forecasts from "./pages/Forecasts";
 import Competitors from "./pages/Competitors";
 import RevenueOptimization from "./pages/RevenueOptimization";
 import ExecutiveBi from "./pages/ExecutiveBi";
+import SmartPriceAdvisor from "./pages/SmartPriceAdvisor";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -51,6 +52,7 @@ export default function App() {
               <Route path="products/:id" element={<ProductDetails />} />
               <Route path="predictions" element={<PricePrediction />} />
               <Route path="revenue-optimization" element={<RevenueOptimization />} />
+              <Route path="smart-price" element={<SmartPriceAdvisor />} />
             </Route>
 
             {/* Business Analyst and Admin Routes */}

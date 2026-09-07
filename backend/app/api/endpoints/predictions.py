@@ -185,3 +185,178 @@ def get_revenue_optimization_recommendation(product_id: str, db: Session = Depen
         import traceback
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# SMART PRICE ADVISOR
+# Combines XGBoost + Demand Forecast + Competitor Intelligence
+# into a single unified Final Price with transparent breakdown.
+# ─────────────────────────────────────────────────────────────────────────────
+
+@router.get("/smart-price/{product_id}")
+def smart_price_advisor(product_id: str, db: Session = Depends(get_db)):
+    """
+    Runs all three pricing engines internally and returns one unified final price:
+    1. XGBoost ML price prediction  -> base price
+    2. 30-day demand forecast       -> demand adjustment (+3% / 0% / -3%)
+    3. Competitor price analysis    -> competitor adjustment (+2% / 0% / -3%)
+    Final price = base x demand_factor x competitor_factor  (with cost floor guarantee)
+    """
+    import datetime
+
+    try:
+        from app.models.product_catalog import ProductCatalog
+        from app.models.competitor_price import CompetitorPriceHistory
+        import ml.predictor as _predictor_module
+        from ml.recommendation import RecommendationEngine
+
+        # ── Step 1: Load product ──────────────────────────────────────────────
+        prod = db.query(ProductCatalog).filter_by(product_id=product_id).first()
+        if not prod:
+            raise HTTPException(status_code=404, detail=f"Product '{product_id}' not found.")
+
+        current_price  = float(prod.base_price) if prod.base_price else 0.0
+        cost_price_val = float(prod.cost_price) if prod.cost_price else current_price * 0.8
+
+        # ── Step 2: XGBoost prediction ────────────────────────────────────────
+        month = datetime.datetime.now().month
+        season = (
+            "Winter" if month in [12, 1, 2] else
+            "Spring" if month in [3, 4, 5] else
+            "Summer" if month in [6, 7, 8] else
+            "Autumn"
+        )
+
+        feature_dict = {
+            "category":          prod.category or "Electronics",
+            "brand":             prod.brand or "Unknown",
+            "season":            season,
+            "base_price":        current_price,
+            "promotion_type":    prod.promotion_type or "No Promotion",
+            "inventory_level":   int(prod.inventory_level) if prod.inventory_level else 100,
+            "demand_index":      float(prod.demand_index) if prod.demand_index else 100.0,
+            "launch_year":       prod.launch_year or 2023,
+            "days_since_launch": prod.days_since_launch or 365,
+            "product_lifecycle": prod.product_lifecycle or "Maturity",
+            "cost_price":        cost_price_val,
+            "competitor_price":  float(prod.competitor_price) if prod.competitor_price else current_price,
+            "average_rating":    float(prod.average_rating) if prod.average_rating else 4.0,
+            "review_count":      int(prod.review_count) if prod.review_count else 100,
+            "historical_sales":  int(prod.historical_sales) if prod.historical_sales else 1000,
+            "profit_margin":     float(prod.profit_margin) if prod.profit_margin else 20.0,
+            "supplier_name":     prod.supplier_name or "Unknown",
+            "current_price":     current_price,
+        }
+
+        xgb_result   = _predictor_module.predictor.predict(feature_dict)
+        xgb_price    = xgb_result["predicted_price"]
+        xgb_stability = xgb_result["prediction_stability"]
+
+        # ── Step 3: 30-day demand forecast ───────────────────────────────────
+        demand_trend = "Stable"
+        demand_units = None
+        demand_conf  = None
+        demand_err   = None
+        try:
+            dr           = demand_predictor.predict(product_id, 30)
+            demand_trend = dr.get("demand_trend", "Stable")
+            demand_units = dr.get("predicted_demand")
+            demand_conf  = dr.get("confidence_score")
+        except Exception as ex:
+            demand_err = str(ex)
+
+        # ── Step 4: Competitor prices from DB ────────────────────────────────
+        comps       = db.query(CompetitorPriceHistory).filter_by(product_id=product_id).all()
+        comp_prices = [float(c.price) for c in comps if c.price and float(c.price) > 0]
+        market_avg  = round(sum(comp_prices) / len(comp_prices), 2) if comp_prices else None
+        market_low  = round(min(comp_prices), 2) if comp_prices else None
+        amazon_p    = next((float(c.price) for c in comps if c.competitor_name == "Amazon"), None)
+        flipkart_p  = next((float(c.price) for c in comps if c.competitor_name == "Flipkart"), None)
+
+        # ── Step 5: Demand adjustment ─────────────────────────────────────────
+        demand_adj = {"Increasing": +0.03, "Stable": 0.00, "Decreasing": -0.03}.get(demand_trend, 0.0)
+
+        # ── Step 6: Competitor adjustment ────────────────────────────────────
+        comp_adj    = 0.0
+        comp_signal = "Competitive — no adjustment needed"
+        if market_avg and market_avg > 0:
+            gap = (xgb_price - market_avg) / market_avg
+            if gap > 0.10:
+                comp_adj    = -0.03
+                comp_signal = f"Price is {gap*100:.1f}% above market average — adjusted down 3%"
+            elif gap < -0.10:
+                comp_adj    = +0.02
+                comp_signal = f"Price is {abs(gap)*100:.1f}% below market average — adjusted up 2%"
+            else:
+                comp_signal = f"Price is within 10% of market average ({gap*100:+.1f}%) — no adjustment"
+
+        # ── Step 7: Compute final price ───────────────────────────────────────
+        final         = round(xgb_price * (1 + demand_adj) * (1 + comp_adj), 2)
+        cost_floor    = cost_price_val * 1.10
+        floor_applied = final < cost_floor
+        if floor_applied:
+            final = round(cost_floor, 2)
+
+        # ── Step 8: Recommendation engine on final price ──────────────────────
+        rec = RecommendationEngine().generate_recommendation(current_price, final, feature_dict)
+
+        # ── Step 9: Return full breakdown ─────────────────────────────────────
+        return {
+            "product": {
+                "id":            prod.product_id,
+                "name":          prod.product_name,
+                "brand":         prod.brand,
+                "category":      prod.category,
+                "current_price": current_price,
+                "cost_price":    cost_price_val,
+            },
+            "engines": {
+                "xgboost": {
+                    "price":     round(xgb_price, 2),
+                    "stability": xgb_stability,
+                    "label":     "XGBoost ML Base Price",
+                },
+                "demand": {
+                    "trend":            demand_trend,
+                    "adjustment_pct":   round(demand_adj * 100, 1),
+                    "adjustment_label": f"{demand_trend} demand -> {'+' if demand_adj >= 0 else ''}{demand_adj*100:.1f}%",
+                    "predicted_units":  demand_units,
+                    "confidence":       demand_conf,
+                    "error":            demand_err,
+                },
+                "competitor": {
+                    "market_average":   market_avg,
+                    "market_lowest":    market_low,
+                    "amazon_price":     amazon_p,
+                    "flipkart_price":   flipkart_p,
+                    "adjustment_pct":   round(comp_adj * 100, 1),
+                    "adjustment_label": comp_signal,
+                },
+            },
+            "final_price": {
+                "value":                   final,
+                "cost_floor":              round(cost_floor, 2),
+                "floor_applied":           floor_applied,
+                "change_from_current_pct": round((final - current_price) / current_price * 100, 1) if current_price else 0,
+                "recommendation":          rec.get("recommendation"),
+                "summary":                 rec.get("recommendation_reason"),
+            },
+            "factors": {
+                "increasing": rec.get("factors_increasing", []),
+                "reducing":   rec.get("factors_reducing", []),
+                "neutral":    rec.get("neutral_factors", []),
+            },
+            "revenue": {
+                "current":   rec.get("current_revenue"),
+                "projected": rec.get("expected_revenue"),
+                "impact":    rec.get("revenue_impact"),
+            },
+            "generated_at": datetime.datetime.now().isoformat(),
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=str(e))

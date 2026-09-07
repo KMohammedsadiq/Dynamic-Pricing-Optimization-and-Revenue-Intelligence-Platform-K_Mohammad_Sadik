@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Outlet, Link, useLocation } from "react-router-dom";
-import { LayoutDashboard, Package, TrendingUp, BarChart3, LineChart, LogOut, UploadCloud, Hexagon, Users, Shield, Menu, X, FileBarChart2 } from "lucide-react";
+import { LayoutDashboard, Package, TrendingUp, BarChart3, LineChart, LogOut, UploadCloud, Hexagon, Users, Shield, Menu, X, FileBarChart2, Zap } from "lucide-react";
 import { logout, getUser } from "../utils/auth";
 
 export default function MainLayout() {
@@ -48,6 +48,7 @@ export default function MainLayout() {
             { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, role: 'all' },
             { path: '/products', label: 'Products', icon: Package, role: ['Admin', 'Pricing Manager'] },
             { path: '/predictions', label: 'Price Prediction', icon: TrendingUp, role: ['Admin', 'Pricing Manager'] },
+            { path: '/smart-price', label: 'Smart Price Advisor', icon: Zap, role: ['Admin', 'Pricing Manager'] },
             { path: '/forecasts', label: 'Demand Forecast', icon: LineChart, role: ['Admin', 'Business Analyst'] },
             { path: '/competitors', label: 'Competitor Analysis', icon: Users, role: 'Admin' },
             { path: '/revenue-optimization', label: 'Pricing Strategy', icon: TrendingUp, role: ['Admin', 'Pricing Manager'] },
