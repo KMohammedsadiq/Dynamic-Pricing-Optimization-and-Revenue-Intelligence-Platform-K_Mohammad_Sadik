@@ -228,23 +228,23 @@ def smart_price_advisor(product_id: str, db: Session = Depends(get_db)):
         )
 
         feature_dict = {
-            "category":          prod.category or "Electronics",
-            "brand":             prod.brand or "Unknown",
+            "category":          getattr(prod, 'category', None) or "Electronics",
+            "brand":             getattr(prod, 'brand', None) or "Unknown",
             "season":            season,
             "base_price":        current_price,
-            "promotion_type":    prod.promotion_type or "No Promotion",
-            "inventory_level":   int(prod.inventory_level) if prod.inventory_level else 100,
-            "demand_index":      float(prod.demand_index) if prod.demand_index else 100.0,
-            "launch_year":       prod.launch_year or 2023,
-            "days_since_launch": prod.days_since_launch or 365,
-            "product_lifecycle": prod.product_lifecycle or "Maturity",
+            "promotion_type":    "No Promotion",
+            "inventory_level":   int(prod.initial_inventory) if prod.initial_inventory else 100,
+            "demand_index":      100.0,
+            "launch_year":       getattr(prod, 'launch_year', None) or 2023,
+            "days_since_launch": getattr(prod, 'days_since_launch', None) or 365,
+            "product_lifecycle": getattr(prod, 'product_lifecycle', None) or "Maturity",
             "cost_price":        cost_price_val,
             "competitor_price":  float(prod.competitor_price) if prod.competitor_price else current_price,
             "average_rating":    float(prod.average_rating) if prod.average_rating else 4.0,
             "review_count":      int(prod.review_count) if prod.review_count else 100,
             "historical_sales":  int(prod.historical_sales) if prod.historical_sales else 1000,
             "profit_margin":     float(prod.profit_margin) if prod.profit_margin else 20.0,
-            "supplier_name":     prod.supplier_name or "Unknown",
+            "supplier_name":     getattr(prod, 'supplier_name', None) or "Unknown",
             "current_price":     current_price,
         }
 
