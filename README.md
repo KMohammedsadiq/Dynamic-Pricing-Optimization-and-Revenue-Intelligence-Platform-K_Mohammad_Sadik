@@ -1,10 +1,17 @@
-# PricePilot AI — Dynamic Pricing & Revenue Intelligence Platform
+<div align="center">
 
-> **Built for Indian Retail** | React · FastAPI · XGBoost · PostgreSQL · Tailwind CSS · Python 3.11
+# 💰 PricePilot AI
 
-PricePilot AI is an end-to-end intelligent pricing system that transforms raw sales history into explainable price recommendations. It integrates machine learning demand forecasting, XGBoost price optimization, live competitor intelligence, and a 12-factor business reasoning engine into a single enterprise dark-mode dashboard.
+**Dynamic Pricing & Revenue Intelligence Platform for Retail**
+
+*Historical sales data → ML price optimization → demand forecasting → live competitor intelligence → explainable business recommendations — all in one dashboard.*
+
+![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=black) ![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white) ![Python](https://img.shields.io/badge/Python-3.11+-3776AB?logo=python&logoColor=white) ![FastAPI](https://img.shields.io/badge/FastAPI-0.111-009688?logo=fastapi&logoColor=white) ![XGBoost](https://img.shields.io/badge/XGBoost-≥1.7-FF6600?logoColor=white) ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?logo=postgresql&logoColor=white)
+
+</div>
 
 ---
+
 
 ## Why PricePilot AI?
 
