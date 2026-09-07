@@ -6,7 +6,14 @@
 
 *Historical sales data → ML price optimization → demand forecasting → live competitor intelligence → explainable business recommendations — all in one dashboard.*
 
-![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=black) ![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white) ![Python](https://img.shields.io/badge/Python-3.11+-3776AB?logo=python&logoColor=white) ![FastAPI](https://img.shields.io/badge/FastAPI-0.111-009688?logo=fastapi&logoColor=white) ![XGBoost](https://img.shields.io/badge/XGBoost-≥1.7-FF6600?logoColor=white) ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?logo=postgresql&logoColor=white)
+![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=black) ![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white) ![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-v4-38BDF8?logo=tailwindcss&logoColor=white) ![Recharts](https://img.shields.io/badge/Recharts-Latest-22B5BF) ![Axios](https://img.shields.io/badge/Axios-Latest-5A29E4?logo=axios&logoColor=white)
+
+![Python](https://img.shields.io/badge/Python-3.11+-3776AB?logo=python&logoColor=white) ![FastAPI](https://img.shields.io/badge/FastAPI-0.111-009688?logo=fastapi&logoColor=white) ![Uvicorn](https://img.shields.io/badge/Uvicorn-0.30-4051B5?logo=uvicorn&logoColor=white) ![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-2.0-D71F00) ![Alembic](https://img.shields.io/badge/Alembic-1.13-6BA539) ![Pydantic](https://img.shields.io/badge/Pydantic-v2-E92063?logo=pydantic&logoColor=white)
+
+![XGBoost](https://img.shields.io/badge/XGBoost-≥1.7-FF6600) ![Scikit--learn](https://img.shields.io/badge/Scikit--learn-Latest-F7931E?logo=scikitlearn&logoColor=white) ![Pandas](https://img.shields.io/badge/Pandas-Latest-150458?logo=pandas&logoColor=white) ![NumPy](https://img.shields.io/badge/NumPy-Latest-013243?logo=numpy&logoColor=white) ![JWT](https://img.shields.io/badge/JWT-Auth-000000?logo=jsonwebtokens&logoColor=white)
+
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?logo=postgresql&logoColor=white) ![RapidAPI](https://img.shields.io/badge/RapidAPI-Amazon_&_Flipkart-0055DA?logo=rapidapi&logoColor=white) ![SerpApi](https://img.shields.io/badge/SerpApi-Google_Shopping-34A853) ![ZenRows](https://img.shields.io/badge/ZenRows-Scraping-FF6B35)
+
 
 </div>
 
