@@ -2,6 +2,8 @@ from pydantic import BaseModel, Field
 from typing import Optional
 
 class HistoricalPriceRequest(BaseModel):
+    product_name: str = Field(..., description="Product name to match")
+    product_model: str = Field(..., description="Product model to match")
     category: str = Field(..., description="Product category to match")
     brand: str = Field(..., description="Brand name to match")
     region: str = Field(..., description="Region code to match")

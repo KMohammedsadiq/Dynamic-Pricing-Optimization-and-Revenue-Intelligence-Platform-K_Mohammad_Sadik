@@ -1,16 +1,22 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
+from sqlalchemy.orm import Session
+from app.db.session import get_db
+from app.api.deps import get_current_user_token
 from app.schemas.historical import HistoricalPriceRequest, HistoricalPriceResponse
 from app.services.historical_price_service import historical_price_service
 
 router = APIRouter()
 
 @router.post("/historical-price-analysis", response_model=HistoricalPriceResponse)
-def analyze_historical_price(request_data: HistoricalPriceRequest):
+def analyze_historical_price(request_data: HistoricalPriceRequest, db: Session = Depends(get_db), current_user: dict = Depends(get_current_user_token)):
     """
     Analyzes historical pricing records.
     Dataset is natively in INR — all prices returned directly in INR without conversion.
     """
     result = historical_price_service.analyze(
+        db=db,
+        product_name=request_data.product_name,
+        product_model=request_data.product_model,
         category=request_data.category,
         brand=request_data.brand,
         region=request_data.region,

@@ -439,11 +439,11 @@ All endpoints are prefixed `/api/v1` and require `Authorization: Bearer <token>`
 
 | Method | Route | Description |
 |--------|-------|-------------|
-| GET | `/dashboard/kpis` | Total revenue, ASP, product count, avg demand |
-| GET | `/dashboard/revenue-by-category` | Category revenue bar chart data |
-| GET | `/dashboard/inventory-overview` | Stockout / Low / Medium / High counts |
-| GET | `/dashboard/top-products` | Top 5 products by revenue |
-| GET | `/dashboard/revenue-optimization` | Batch price recommendations (828 products) |
+| GET | `/dashboard/kpis/executive` | High-level metrics: revenue, margins, total products |
+| GET | `/dashboard/charts/profit-bridge` | Waterfall chart data for revenue bridging |
+| GET | `/dashboard/charts/pricing-strategy` | Distribution of pricing recommendation actions |
+| GET | `/dashboard/tables/margins` | Margin analysis data for top products |
+| GET | `/dashboard/recent-activity` | Feed of latest product & sync actions |
 
 **Products**
 
@@ -458,24 +458,29 @@ All endpoints are prefixed `/api/v1` and require `Authorization: Bearer <token>`
 
 | Method | Route | Description |
 |--------|-------|-------------|
-| POST | `/predictions/price` | XGBoost price prediction + recommendation |
-| POST | `/predictions/demand` | Demand forecast for product + horizon |
+| POST | `/predictions/predict-price` | XGBoost price prediction |
+| POST | `/predictions/business-recommendation` | Full 12-factor business logic recommendation |
+| GET | `/predictions/forecast` | Demand forecast for product + horizon |
+| GET | `/predictions/smart-price/{id}` | Unified engine executing XGBoost, Demand, Competitor, and rules |
+| GET | `/predictions/revenue-optimization/{id}` | Detailed revenue projection for pricing strategy |
 
 **Analytics**
 
 | Method | Route | Description |
 |--------|-------|-------------|
-| GET | `/analytics/revenue-trend` | Weekly revenue trend (last N weeks) |
-| GET | `/analytics/category-margin` | Gross margin by category |
+| GET | `/analytics/revenue-trends` | Revenue over time trends |
+| GET | `/analytics/category-performance` | Sales and margin grouped by category |
+| GET | `/analytics/pricing-strategies` | List of all products and their recommended actions |
 
 **Competitor Sync**
 
 | Method | Route | Description |
 |--------|-------|-------------|
-| GET | `/competitors/sync/{product_id}` | Trigger live sync |
-| GET | `/competitors/status/{product_id}` | Return last cached sync result |
-| GET | `/amazon/search` | Amazon product search proxy |
-| GET | `/flipkart/search` | Flipkart product search proxy |
+| POST | `/competitors/{product_id}/sync` | Trigger live RapidAPI sync for Amazon & Flipkart |
+| GET | `/competitors/{product_id}/history` | Return historical competitor prices |
+| GET | `/competitors/summary` | Global competitor tracking metrics |
+| POST | `/amazon/test` | Amazon RapidAPI proxy endpoint |
+| POST | `/flipkart/test` | Flipkart RapidAPI proxy endpoint |
 
 Interactive docs: `http://127.0.0.1:8000/docs`
 

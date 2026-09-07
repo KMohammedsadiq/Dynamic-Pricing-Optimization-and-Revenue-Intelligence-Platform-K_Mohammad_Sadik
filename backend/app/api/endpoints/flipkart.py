@@ -1,5 +1,6 @@
 import requests
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
+from app.api.deps import get_current_user_token
 from pydantic import BaseModel
 from typing import Dict, Any
 
@@ -16,7 +17,7 @@ class FlipkartTestRequest(BaseModel):
     query_params: Dict[str, Any]
 
 @router.post("/test")
-def test_flipkart_api(request: FlipkartTestRequest):
+def test_flipkart_api(request: FlipkartTestRequest, current_user: dict = Depends(get_current_user_token)):
     """
     Secure proxy to call RapidAPI Flipkart Data without exposing the API key to the frontend.
     """

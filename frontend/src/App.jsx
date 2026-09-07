@@ -1,29 +1,41 @@
+import React, { Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MainLayout from "./layouts/MainLayout";
-
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import Upload from "./pages/Upload";
-import Products from "./pages/Products";
-import Dashboard from "./pages/Dashboard";
-import ProductDetails from "./pages/ProductDetails";
-import Landing from "./pages/Landing";
-import Users from "./pages/Users";
-import Analytics from "./pages/Analytics";
-import PricePrediction from "./pages/PricePrediction";
-import AmazonApiTest from "./pages/AmazonApiTest";
-import FlipkartApiTest from "./pages/FlipkartApiTest";
-import Forecasts from "./pages/Forecasts";
-import Competitors from "./pages/Competitors";
-import RevenueOptimization from "./pages/RevenueOptimization";
-import ExecutiveBi from "./pages/ExecutiveBi";
-import SmartPriceAdvisor from "./pages/SmartPriceAdvisor";
-
 import ProtectedRoute from "./components/ProtectedRoute";
+
+// Lazy-loaded pages
+const Login = lazy(() => import("./pages/Login"));
+const Register = lazy(() => import("./pages/Register"));
+const Upload = lazy(() => import("./pages/Upload"));
+const Products = lazy(() => import("./pages/Products"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const ProductDetails = lazy(() => import("./pages/ProductDetails"));
+const Landing = lazy(() => import("./pages/Landing"));
+const Users = lazy(() => import("./pages/Users"));
+const Analytics = lazy(() => import("./pages/Analytics"));
+const PricePrediction = lazy(() => import("./pages/PricePrediction"));
+const AmazonApiTest = lazy(() => import("./pages/AmazonApiTest"));
+const FlipkartApiTest = lazy(() => import("./pages/FlipkartApiTest"));
+const Forecasts = lazy(() => import("./pages/Forecasts"));
+const Competitors = lazy(() => import("./pages/Competitors"));
+const RevenueOptimization = lazy(() => import("./pages/RevenueOptimization"));
+const ExecutiveBi = lazy(() => import("./pages/ExecutiveBi"));
+const SmartPriceAdvisor = lazy(() => import("./pages/SmartPriceAdvisor"));
+
+// Fallback loader
+const Fallback = () => (
+  <div className="flex h-screen w-full items-center justify-center bg-[#111827]">
+    <div className="flex flex-col items-center">
+      <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#374151] border-t-purple-500"></div>
+      <p className="mt-4 text-sm font-medium text-gray-400 tracking-wide">Loading PricePilot AI...</p>
+    </div>
+  </div>
+);
 
 export default function App() {
   return (
     <BrowserRouter>
+      <Suspense fallback={<Fallback />}>
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<Landing />} />
@@ -64,6 +76,7 @@ export default function App() {
           </Route>
         </Route>
       </Routes>
+      </Suspense>
     </BrowserRouter>
   );
 }

@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, Query, HTTPException
 from sqlalchemy.orm import Session
 from app.db.session import get_db
 from app.schemas.prediction import PredictionRequest, PredictionResponse
+from app.api.deps import get_current_user_token
 from app.services.prediction_service import prediction_service
 
 from ml.demand_predictor import demand_predictor
@@ -30,7 +31,7 @@ def _to_python(obj):
     return obj
 
 @router.post("/predict-price", response_model=PredictionResponse)
-def predict_price_endpoint(request_data: PredictionRequest, db: Session = Depends(get_db)):
+def predict_price_endpoint(request_data: PredictionRequest, db: Session = Depends(get_db), current_user: dict = Depends(get_current_user_token)):
     """
     Predict optimal product price using the trained XGBoost pipeline.
     Combines static DB product attributes with dynamic user input.
@@ -40,7 +41,7 @@ def predict_price_endpoint(request_data: PredictionRequest, db: Session = Depend
     return result
 
 @router.post("/business-recommendation", response_model=PredictionResponse)
-def business_recommendation_endpoint(request_data: PredictionRequest, db: Session = Depends(get_db)):
+def business_recommendation_endpoint(request_data: PredictionRequest, db: Session = Depends(get_db), current_user: dict = Depends(get_current_user_token)):
     """
     Alias for /predict-price. Only one underlying ML flow is executed.
     """
@@ -53,7 +54,8 @@ def business_recommendation_endpoint(request_data: PredictionRequest, db: Sessio
 @router.get("/forecast")
 def demand_forecast_endpoint(
     product_id: str = Query(..., description="Product ID to forecast"),
-    horizon: int = Query(..., description="Forecast horizon in days (7, 14, 30, 90, 180, 365)")
+    horizon: int = Query(..., description="Forecast horizon in days (7, 14, 30, 90, 180, 365)"),
+    current_user: dict = Depends(get_current_user_token)
 ):
     """
     Predict future demand using the XGBoost Demand Forecasting models.
@@ -67,7 +69,7 @@ def demand_forecast_endpoint(
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.get("/products")
-def available_products_endpoint(db: Session = Depends(get_db)):
+def available_products_endpoint(db: Session = Depends(get_db), current_user: dict = Depends(get_current_user_token)):
     """
     Get a list of all product IDs available for Demand Forecasting.
     """
@@ -94,7 +96,7 @@ def available_products_endpoint(db: Session = Depends(get_db)):
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.get("/revenue-optimization/{product_id}")
-def get_revenue_optimization_recommendation(product_id: str, db: Session = Depends(get_db)):
+def get_revenue_optimization_recommendation(product_id: str, db: Session = Depends(get_db), current_user: dict = Depends(get_current_user_token)):
     """
     Returns a unified PricePilot recommendation gathering data from:
     - Product DB
@@ -104,23 +106,66 @@ def get_revenue_optimization_recommendation(product_id: str, db: Session = Depen
     - Recommendation Engine
     """
     try:
+        from app.models.product import Product
         from app.models.product_catalog import ProductCatalog
         from app.models.competitor_price import CompetitorPriceHistory
-        from ml.predictor import Predictor
+        import ml.predictor as _predictor_module
         from ml.recommendation import RecommendationEngine
 
         # 1. Product Info
-        prod = db.query(ProductCatalog).filter_by(product_id=product_id).first()
+        prod = (
+            db.query(Product)
+            .filter(Product.product_id == product_id, Product.is_deleted == False)
+            .order_by(Product.id.desc())
+            .first()
+        )
         if not prod:
-            raise HTTPException(status_code=404, detail="Product not found in ML catalog.")
+            catalog_prod = db.query(ProductCatalog).filter_by(product_id=product_id).first()
+            if not catalog_prod:
+                raise HTTPException(status_code=404, detail="Product not found in catalog.")
+            p = catalog_prod
+            prod_name         = p.product_name or product_id
+            prod_brand        = getattr(p, 'brand', None) or "Unknown"
+            prod_category     = getattr(p, 'category', None) or "General"
+            current_price     = float(p.base_price) if p.base_price else 100.0
+            cost_price_val    = float(p.cost_price) if p.cost_price else current_price * 0.8
+            promotion_type    = "No Promotion"
+            inventory_level   = int(p.initial_inventory) if p.initial_inventory else 100
+            demand_index_val  = 100.0
+            launch_year       = getattr(p, 'launch_year', None) or 2023
+            days_since_launch = getattr(p, 'days_since_launch', None) or 365
+            lifecycle         = getattr(p, 'product_lifecycle', None) or "Maturity"
+            competitor_price  = float(p.competitor_price) if p.competitor_price else current_price
+            avg_rating        = float(p.average_rating) if p.average_rating else 4.0
+            review_count      = int(p.review_count) if p.review_count else 100
+            hist_sales        = int(p.historical_sales) if p.historical_sales else 1000
+            profit_margin     = float(p.profit_margin) if p.profit_margin else 20.0
+            supplier_name     = getattr(p, 'supplier_name', None) or "Unknown"
+        else:
+            prod_name         = prod.product_name or product_id
+            prod_brand        = getattr(prod, 'brand', None) or "Unknown"
+            prod_category     = getattr(prod, 'category', None) or "General"
+            current_price     = float(prod.base_price or prod.current_price or prod.unit_price or 100.0)
+            cost_price_val    = float(prod.cost_price) if prod.cost_price else current_price * 0.8
+            promotion_type    = getattr(prod, 'promotion_type', None) or "No Promotion"
+            inventory_level   = int(prod.inventory_level) if prod.inventory_level else 100
+            demand_index_val  = float(prod.demand_index) if prod.demand_index else 100.0
+            launch_year       = getattr(prod, 'launch_year', None) or 2023
+            days_since_launch = getattr(prod, 'days_since_launch', None) or 365
+            lifecycle         = getattr(prod, 'product_lifecycle', None) or "Maturity"
+            competitor_price  = float(prod.competitor_price) if prod.competitor_price else current_price
+            avg_rating        = float(prod.average_rating) if prod.average_rating else 4.0
+            review_count      = int(prod.review_count) if prod.review_count else 100
+            hist_sales        = int(prod.historical_sales) if prod.historical_sales else 1000
+            profit_margin     = float(prod.profit_margin) if prod.profit_margin else 20.0
+            supplier_name     = getattr(prod, 'supplier_name', None) or "Unknown"
 
         # 2. Demand Forecast
         try:
             forecast_data = demand_predictor.predict(product_id, 30)
-            forecast = forecast_data.get("forecast", [])
             history = forecast_data.get("historical_data", [])
         except Exception:
-            forecast = []
+            forecast_data = {}
             history = []
 
         # 3. Competitor Prices
@@ -128,38 +173,48 @@ def get_revenue_optimization_recommendation(product_id: str, db: Session = Depen
         amazon = next((c for c in comps if c.competitor_name == "Amazon"), None)
         flipkart = next((c for c in comps if c.competitor_name == "Flipkart"), None)
 
-        comp_prices = [float(c.price) for c in comps if c.price > 0]
+        comp_prices = [float(c.price) for c in comps if c.price and float(c.price) > 0]
         market_lowest = min(comp_prices) if comp_prices else None
         market_average = sum(comp_prices)/len(comp_prices) if comp_prices else None
 
         # 4. ML Optimal Price
-        base_price = float(prod.base_price) if prod.base_price else 0.0
-        cost_price = base_price * 0.8
+        import datetime
+        month = datetime.datetime.now().month
+        season = (
+            "Winter" if month in [12, 1, 2] else
+            "Spring" if month in [3, 4, 5] else
+            "Summer" if month in [6, 7, 8] else
+            "Autumn"
+        )
 
         input_data = {
-            'product_name': prod.product_name,
-            'brand': prod.brand,
-            'category': prod.category,
-            'cost_price': cost_price,
-            'average_rating': 4.5,
-            'historical_sales': 1500,
-            'product_lifecycle': 'Mature',
-            'season': 'Winter',
-            'current_price': base_price,
-            'demand_index': 1.0,
-            'inventory_level': 50,
-            'competitor_price': market_average if market_average else base_price,
-            'promotion_type': 'No Promotion'
+            'product_name': prod_name,
+            'brand': prod_brand,
+            'category': prod_category,
+            'cost_price': cost_price_val,
+            'average_rating': avg_rating,
+            'historical_sales': hist_sales,
+            'product_lifecycle': lifecycle,
+            'season': season,
+            'current_price': current_price,
+            'demand_index': demand_index_val,
+            'inventory_level': inventory_level,
+            'competitor_price': float(market_average) if market_average else current_price,
+            'promotion_type': promotion_type,
+            'launch_year': launch_year,
+            'days_since_launch': days_since_launch,
+            'profit_margin': profit_margin,
+            'supplier_name': supplier_name,
+            'base_price': current_price
         }
 
-        p = Predictor()
-        pred_result = p.predict(input_data)
+        pred_result = _predictor_module.predictor.predict(input_data)
         optimal_price = pred_result.get("predicted_price")
 
         # 5. Recommendation Engine
         rec_engine = RecommendationEngine()
         rec_data = rec_engine.generate_recommendation(
-            current_price=base_price,
+            current_price=current_price,
             predicted_price=optimal_price,
             feature_dict=input_data
         )
@@ -167,43 +222,44 @@ def get_revenue_optimization_recommendation(product_id: str, db: Session = Depen
         # 6. Price Gap
         price_gap_pct = ((optimal_price - market_average) / market_average * 100) if market_average else 0
 
-        return {
+        response = {
             "product": {
-                "id": prod.product_id,
-                "name": prod.product_name,
-                "brand": prod.brand,
-                "category": prod.category,
-                "current_price": base_price,
-                "cost_price": cost_price
+                "id": product_id,
+                "name": prod_name,
+                "brand": prod_brand,
+                "category": prod_category,
+                "current_price": float(current_price),
+                "cost_price": float(cost_price_val)
             },
             "demand": {
                 "history": history[-30:] if history else [],
-                "forecast": forecast
+                "forecast": forecast_data
             },
             "competitors": {
                 "amazon": {
-                    "price": amazon.price if amazon else None,
+                    "price": float(amazon.price) if amazon else None,
                     "confidence": amazon.match_confidence if amazon else None
                 },
                 "flipkart": {
-                    "price": flipkart.price if flipkart else None,
+                    "price": float(flipkart.price) if flipkart else None,
                     "confidence": flipkart.match_confidence if flipkart else None
                 },
-                "market_lowest": market_lowest,
-                "market_average": market_average,
-                "price_gap_pct": price_gap_pct
+                "market_lowest": float(market_lowest) if market_lowest else None,
+                "market_average": float(market_average) if market_average else None,
+                "price_gap_pct": float(price_gap_pct)
             },
             "ml": {
-                "optimal_price": optimal_price,
-                "multiplier": pred_result.get("predicted_multiplier"),
-                "stability": pred_result.get("prediction_stability")
+                "optimal_price": float(optimal_price),
+                "multiplier": float(pred_result.get("predicted_multiplier")) if pred_result.get("predicted_multiplier") else None,
+                "stability": float(pred_result.get("prediction_stability")) if pred_result.get("prediction_stability") else None
             },
             "recommendation": {
                 "action": rec_data.get("recommendation"),
                 "reason": rec_data.get("recommendation_reason"),
-                "factors": rec_data.get("pricing_factors")
+                "factors": rec_data.get("factors_increasing", []) + rec_data.get("factors_reducing", []) + rec_data.get("neutral_factors", [])
             }
         }
+        return _to_python(response)
     except Exception as e:
         import traceback
         traceback.print_exc()
@@ -217,7 +273,7 @@ def get_revenue_optimization_recommendation(product_id: str, db: Session = Depen
 # ─────────────────────────────────────────────────────────────────────────────
 
 @router.get("/smart-price/{product_id}")
-def smart_price_advisor(product_id: str, db: Session = Depends(get_db)):
+def smart_price_advisor(product_id: str, db: Session = Depends(get_db), current_user: dict = Depends(get_current_user_token)):
     """
     Runs all three pricing engines internally and returns one unified final price:
     1. XGBoost ML price prediction  -> base price (uses Product table which matches demand CSV)
@@ -334,7 +390,7 @@ def smart_price_advisor(product_id: str, db: Session = Depends(get_db)):
         try:
             dr           = demand_predictor.predict(product_id, 30)
             demand_trend = dr.get("demand_trend", "Stable")
-            demand_units = dr.get("predicted_demand")
+            demand_units = dr.get("predicted_demand_units")
             demand_conf  = dr.get("confidence_score")
         except Exception as ex:
             demand_err = str(ex)
