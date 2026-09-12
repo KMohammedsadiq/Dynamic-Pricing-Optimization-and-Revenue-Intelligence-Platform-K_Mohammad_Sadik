@@ -13,11 +13,16 @@ app = FastAPI(
 
 @app.on_event("startup")
 def create_default_admin():
-    from app.db.session import SessionLocal
+    from app.db.session import SessionLocal, engine, Base
+    import app.models  # This imports all models so Base knows about them
     from app.crud.crud_user import get_user_by_email
     from app.models.role import Role
     from app.models.user import User
     from app.core.security import get_password_hash
+
+    # Create all tables in the database if they don't exist yet!
+    print("Creating database tables if they don't exist...")
+    Base.metadata.create_all(bind=engine)
 
     db = SessionLocal()
     try:
