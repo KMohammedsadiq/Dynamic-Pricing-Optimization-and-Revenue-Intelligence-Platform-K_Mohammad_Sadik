@@ -11,6 +11,40 @@ app = FastAPI(
     version="1.0.0"
 )
 
+@app.on_event("startup")
+def create_default_admin():
+    from app.db.session import SessionLocal
+    from app.crud.crud_user import get_user_by_email
+    from app.models.role import Role
+    from app.models.user import User
+    from app.core.security import get_password_hash
+
+    db = SessionLocal()
+    try:
+        # Create Admin role if not exists
+        admin_role = db.query(Role).filter(Role.name == "Admin").first()
+        if not admin_role:
+            admin_role = Role(name="Admin")
+            db.add(admin_role)
+            db.commit()
+            db.refresh(admin_role)
+            
+        admin_user = get_user_by_email(db, email="admin@pricepilot.com")
+        if not admin_user:
+            admin_user = User(
+                full_name="System Administrator",
+                email="admin@pricepilot.com",
+                password_hash=get_password_hash("admin"),
+                role_id=admin_role.id
+            )
+            db.add(admin_user)
+            db.commit()
+            print("Default admin created: admin@pricepilot.com / admin")
+    except Exception as e:
+        print(f"Failed to create default admin: {e}")
+    finally:
+        db.close()
+
 # Set up CORS (Cross-Origin Resource Sharing)
 # This allows our React frontend to communicate with this backend.
 app.add_middleware(
