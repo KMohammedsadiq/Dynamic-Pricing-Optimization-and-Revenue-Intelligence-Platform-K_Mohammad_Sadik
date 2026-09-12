@@ -34,8 +34,8 @@ async def upload_dataset(
     # to only insert brand new rows from the CSV and ignore rows that already exist in the database!
 
     try:
-        contents = await file.read()
-        df = pd.read_csv(io.StringIO(contents.decode("utf-8")))
+        # Pass the SpooledTemporaryFile stream directly into pandas to drastically reduce RAM usage
+        df = pd.read_csv(file.file)
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
