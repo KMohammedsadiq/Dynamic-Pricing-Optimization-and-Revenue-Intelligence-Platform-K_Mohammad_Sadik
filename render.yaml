@@ -5,6 +5,7 @@ databases:
   - name: pricepilot-db
     databaseName: pricepilot_db
     user: pricepilot
+    region: ohio
     plan: free
 
 services:
