@@ -15,3 +15,4 @@ joblib
 xgboost>=1.7.0
 numpy
 requests
+PyJWT
