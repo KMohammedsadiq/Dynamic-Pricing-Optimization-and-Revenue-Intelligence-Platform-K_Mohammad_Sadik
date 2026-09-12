@@ -14,8 +14,10 @@ def get_products(
     sort_by: str = None,
     sort_desc: bool = False
 ):
-    # Only return non-deleted products
-    query = db.query(ProductCatalog).filter(ProductCatalog.is_deleted == False)
+    # Only return non-deleted products (treating NULL as False)
+    query = db.query(ProductCatalog).filter(
+        or_(ProductCatalog.is_deleted == False, ProductCatalog.is_deleted.is_(None))
+    )
 
     # 1. Search Logic
     if search:
@@ -56,7 +58,7 @@ def get_products(
 def get_product(db: Session, product_id: int):
     return db.query(ProductCatalog).filter(
         ProductCatalog.id == product_id,
-        ProductCatalog.is_deleted == False
+        or_(ProductCatalog.is_deleted == False, ProductCatalog.is_deleted.is_(None))
     ).first()
 
 
