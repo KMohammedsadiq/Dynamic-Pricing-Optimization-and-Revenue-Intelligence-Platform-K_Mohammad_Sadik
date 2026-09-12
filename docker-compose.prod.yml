@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    container_name: pricepilot_db_prod
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-pricepilot}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-pricepilot_secure_pass}
+      POSTGRES_DB: ${POSTGRES_DB:-pricepilot_db}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data_prod:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-pricepilot} -d ${POSTGRES_DB:-pricepilot_db}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: pricepilot_backend_prod
+    restart: always
+    environment:
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-pricepilot}:${POSTGRES_PASSWORD:-pricepilot_secure_pass}@db:5432/${POSTGRES_DB:-pricepilot_db}
+      - SECRET_KEY=${SECRET_KEY:-your_super_secret_production_key_change_me}
+      - RAPID_API_KEY=${RAPID_API_KEY}
+      - AMAZON_API_HOST=${AMAZON_API_HOST:-real-time-amazon-data.p.rapidapi.com}
+      - FLIPKART_API_HOST=${FLIPKART_API_HOST:-flipkart-apis.p.rapidapi.com}
+      - ENVIRONMENT=production
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        # VITE_API_BASE_URL must point to the domain where the backend is hosted
+        - VITE_API_BASE_URL=${VITE_API_BASE_URL:-http://localhost:8000/api/v1}
+    container_name: pricepilot_frontend_prod
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data_prod:

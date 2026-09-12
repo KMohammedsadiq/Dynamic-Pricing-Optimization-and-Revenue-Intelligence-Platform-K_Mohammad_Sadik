@@ -8,8 +8,7 @@ from app.db.session import get_db
 app = FastAPI(
     title="Dynamic Pricing Optimization and Revenue Intelligence System ",
     description="Backend API for Dynamic Pricing Optimization and Revenue Intelligence System",
-    version="1.0.0",
-    debug=True
+    version="1.0.0"
 )
 
 # Set up CORS (Cross-Origin Resource Sharing)
