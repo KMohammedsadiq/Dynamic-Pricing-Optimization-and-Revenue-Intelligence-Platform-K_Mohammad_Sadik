@@ -48,3 +48,5 @@ services:
         # Render provides the backend URL automatically. Append /api/v1 to it.
         # Ensure you replace this placeholder if you rename the backend service.
         value: ${pricepilot-backend.url}/api/v1
+      - key: VITE_GOOGLE_CLIENT_ID
+        sync: false
