@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy import desc
 from typing import List, Dict, Any
+import logging
 
 from app.db.session import get_db
 from app.api.deps import get_current_user_token
@@ -9,8 +10,8 @@ from app.models.competitor_price import CompetitorPriceHistory
 from app.models.product_catalog import ProductCatalog
 from app.services.competitor_sync_service import CompetitorSyncService
 from app.services.competitor_service import get_market_intelligence_data
-from sqlalchemy.exc import OperationalError
 
+logger = logging.getLogger(__name__)
 router = APIRouter()
 
 @router.get("/summary")
@@ -121,20 +122,19 @@ def get_competitor_history(product_id: str, db: Session = Depends(get_db), curre
 @router.post("/sync/{product_id}")
 def sync_competitor_prices(product_id: str, db: Session = Depends(get_db), current_user: dict = Depends(get_current_user_token)):
     """
-    Triggers a live sync from RapidAPI (Amazon & Flipkart) for this product.
+    Triggers a live sync from ZenRows (Amazon & Flipkart) for this product.
+    All exceptions are caught here and returned as JSON to avoid CORS issues.
     """
     try:
-        product = db.query(ProductCatalog).filter(ProductCatalog.product_id == product_id).with_for_update(nowait=True).first()
-    except OperationalError:
-        db.rollback()
-        raise HTTPException(status_code=429, detail="A sync for this product is already in progress. Please wait.")
+        # Find the product first (without locking — safer for cloud DBs)
+        product = db.query(ProductCatalog).filter(ProductCatalog.product_id == product_id).first()
         
-    if not product:
-        raise HTTPException(status_code=404, detail="Product not found in catalog.")
-        
-    service = CompetitorSyncService(db)
-    
-    try:
+        if not product:
+            raise HTTPException(status_code=404, detail=f"Product '{product_id}' not found in catalog.")
+
+        # Instantiate the service inside try/except so import errors are also caught
+        service = CompetitorSyncService(db)
+
         results = service.sync_product(
             product_id=product.product_id,
             product_name=product.product_name,
@@ -146,5 +146,15 @@ def sync_competitor_prices(product_id: str, db: Session = Depends(get_db), curre
             "message": "Sync completed",
             "results": results
         }
+
+    except HTTPException:
+        # Re-raise HTTP exceptions unchanged (404, 429, etc.)
+        raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        import traceback
+        logger.error(f"[Sync] Unhandled error for {product_id}: {traceback.format_exc()}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Sync failed: {str(e)}"
+        )
+
