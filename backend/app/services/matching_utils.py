@@ -101,11 +101,13 @@ def extract_exclusions(text: str) -> set:
     words = set(t.split())
     
     exc_list = [
-        'case', 'cover', 'screen', 'protector', 'charger', 'cable', 'battery', 
-        'adapter', 'keyboard', 'mouse', 'bag', 'stand', 'compatible', 
+        'case', 'cover', 'protector', 'charger', 'cable', 'battery', 
+        'adapter', 'mouse', 'bag', 'stand', 'compatible', 
         'replacement', 'refurbished', 'renewed', 'used', 'sleeve', 'skin', 'sticker',
         'flash', 'drive', 'stylus', 'pen', 'holder', 'dock', 'hub', 'mount', 'strap', 
-        'band', 'glass', 'film', 'lens'
+        'band', 'lens'
+        # Removed: 'keyboard' (appears in laptop listings as 'Backlit Keyboard')
+        # Removed: 'screen', 'glass', 'film' (appear in laptop listings as '15.6" Screen')
     ]
     
     for exc in exc_list:
@@ -143,16 +145,19 @@ def compare_attributes(internal_attr: set, candidate_attr: set, attr_name: str, 
         return "MISMATCH"
 
 def compare_modifiers(internal_mods: set, candidate_mods: set, attr_name: str, reasons: list) -> str:
-    """For modifiers, if candidate has extra modifiers that internal lacks, it's a MISMATCH."""
+    """For modifiers: if candidate has extra modifiers the internal lacks, treat as UNKNOWN (not MISMATCH).
+    Only hard-reject when INTERNAL specifies a modifier but the CANDIDATE is missing it.
+    """
     extra_in_candidate = candidate_mods - internal_mods
     if extra_in_candidate:
-        reasons.append(f"{attr_name} MISMATCH (candidate has extra: {extra_in_candidate})")
-        return "MISMATCH"
+        # Candidate has Pro/Max/Plus but internal doesn't — could be a variant, treat as UNKNOWN
+        reasons.append(f"{attr_name} UNKNOWN (candidate has extra: {extra_in_candidate}, may be a variant)")
+        return "UNKNOWN"  # Not a hard mismatch
         
     missing_in_candidate = internal_mods - candidate_mods
     if missing_in_candidate:
-        reasons.append(f"{attr_name} UNKNOWN/MISMATCH (candidate missing: {missing_in_candidate})")
-        return "MISMATCH" # Strictly require modifiers to match both ways
+        reasons.append(f"{attr_name} MISMATCH (internal specifies {missing_in_candidate} but candidate is missing it)")
+        return "MISMATCH"  # Internal requires this modifier — hard reject
         
     reasons.append(f"{attr_name} MATCH")
     return "MATCH"
