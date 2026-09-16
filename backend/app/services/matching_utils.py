@@ -316,14 +316,16 @@ def calculate_match_confidence(internal_product: dict, candidate_name: str, bran
         
     final_score = int(ratio * 100)
     
-    # Penalty for UNKNOWNs
+    # Penalty for UNKNOWNs — reduced from 5 to 2 per attribute
+    # Most UNKNOWNs are caused by our catalog lacking detailed specs (not candidate's fault)
     unknowns = sum(1 for val in diag.values() if val == "UNKNOWN")
     if unknowns > 0:
-        final_score = max(0, final_score - (unknowns * 5))
-        reasons.append(f"Penalty: deducted {unknowns * 5}% for UNKNOWN attributes.")
+        final_score = max(0, final_score - (unknowns * 2))
+        reasons.append(f"Penalty: deducted {unknowns * 2}% for {unknowns} UNKNOWN attribute(s).")
         
     reasons.append(f"final confidence score = {final_score}%")
-    status = "ACCEPTED" if final_score >= 85 else "REJECTED"
+    # Lowered threshold from 85 -> 70 to allow generic product names to match
+    status = "ACCEPTED" if final_score >= 70 else "REJECTED"
     
     return {"confidence": final_score, "reasons": reasons, "status": status, "diagnostics": diag}
 
