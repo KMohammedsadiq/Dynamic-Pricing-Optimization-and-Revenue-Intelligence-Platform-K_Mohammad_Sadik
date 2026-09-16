@@ -68,6 +68,93 @@ async def read_root():
     """
     return {"message": "Welcome to Dynamic Pricing Optimization and Revenue Intelligence System API", "status": "healthy", "version": "1.0.0"}
 
+@app.post("/admin/fix-product-catalog")
+async def fix_product_catalog(db: Session = Depends(get_db)):
+    """
+    One-time admin fix: copies real product_name and cost_price from the
+    historical 'products' table into 'product_catalog' where data is missing.
+    Safe to call multiple times (only updates rows that have wrong/null data).
+    """
+    try:
+        # Step 1: Update product_name where it equals product_id (was auto-set incorrectly)
+        r1 = db.execute(text("""
+            UPDATE product_catalog pc
+            SET product_name = sub.product_name
+            FROM (
+                SELECT DISTINCT ON (product_id) product_id, product_name
+                FROM products
+                WHERE product_name IS NOT NULL
+                  AND product_name != ''
+                  AND product_name != product_id
+                ORDER BY product_id, product_name
+            ) sub
+            WHERE pc.product_id = sub.product_id
+              AND (pc.product_name IS NULL
+                   OR pc.product_name = ''
+                   OR pc.product_name = pc.product_id)
+        """))
+        names_updated = r1.rowcount
+
+        # Step 2: Update cost_price where it is null or 0
+        r2 = db.execute(text("""
+            UPDATE product_catalog pc
+            SET cost_price = sub.avg_cost
+            FROM (
+                SELECT product_id, AVG(cost_price) AS avg_cost
+                FROM products
+                WHERE cost_price IS NOT NULL AND cost_price > 0
+                GROUP BY product_id
+            ) sub
+            WHERE pc.product_id = sub.product_id
+              AND (pc.cost_price IS NULL OR pc.cost_price = 0)
+        """))
+        costs_updated = r2.rowcount
+
+        # Step 3: Update current_price where null or 0
+        r3 = db.execute(text("""
+            UPDATE product_catalog pc
+            SET current_price = sub.avg_price
+            FROM (
+                SELECT product_id, AVG(current_price) AS avg_price
+                FROM products
+                WHERE current_price > 0
+                GROUP BY product_id
+            ) sub
+            WHERE pc.product_id = sub.product_id
+              AND (pc.current_price IS NULL OR pc.current_price = 0)
+        """))
+        prices_updated = r3.rowcount
+
+        # Step 4: Update base_price where null or 0
+        r4 = db.execute(text("""
+            UPDATE product_catalog pc
+            SET base_price = sub.avg_base
+            FROM (
+                SELECT product_id, AVG(base_price) AS avg_base
+                FROM products
+                WHERE base_price > 0
+                GROUP BY product_id
+            ) sub
+            WHERE pc.product_id = sub.product_id
+              AND (pc.base_price IS NULL OR pc.base_price = 0)
+        """))
+        base_updated = r4.rowcount
+
+        db.commit()
+
+        return {
+            "status": "success",
+            "names_updated": names_updated,
+            "cost_prices_updated": costs_updated,
+            "current_prices_updated": prices_updated,
+            "base_prices_updated": base_updated,
+            "message": "product_catalog has been fixed successfully"
+        }
+    except Exception as e:
+        db.rollback()
+        return {"status": "error", "message": str(e)}
+
+
 @app.get("/test-db")
 async def test_db_connection(db: Session = Depends(get_db)):
     """
