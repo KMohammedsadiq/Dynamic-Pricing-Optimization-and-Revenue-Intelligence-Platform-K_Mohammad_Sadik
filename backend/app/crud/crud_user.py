@@ -20,7 +20,7 @@ def create_user(db: Session, user: UserCreate):
     hashed_password = get_password_hash(user.password)
     
     # 2. Handle the user's role
-    role_name = user.role_name or "Business Analyst"
+    role_name = user.role_name or "Admin"
     role = db.query(Role).filter(Role.name == role_name).first()
     
     # If the requested role doesn't exist in the database, create it
