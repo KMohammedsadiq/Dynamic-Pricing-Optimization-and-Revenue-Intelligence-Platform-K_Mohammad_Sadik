@@ -6,6 +6,7 @@ class UserCreate(BaseModel):
     full_name: str = Field(..., min_length=2, max_length=50, description="The user's full name")
     email: EmailStr = Field(..., description="A valid email address")
     password: str = Field(..., min_length=8, description="Password must be at least 8 characters long")
+    role_name: str | None = Field(None, description="The role to assign to the user (e.g. 'Admin', 'Business Analyst')")
 
 # Response Schema: What we return back to the client
 class UserResponse(BaseModel):

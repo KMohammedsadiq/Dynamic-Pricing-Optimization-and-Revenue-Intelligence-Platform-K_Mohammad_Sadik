@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
 from app.models.user import User
+from app.models.role import Role
 from app.schemas.user import UserCreate
 from app.core.security import get_password_hash
 
@@ -18,11 +19,23 @@ def create_user(db: Session, user: UserCreate):
     # 1. Hash the plain-text password
     hashed_password = get_password_hash(user.password)
     
-    # 2. Create the SQLAlchemy model instance
+    # 2. Handle the user's role
+    role_name = user.role_name or "Business Analyst"
+    role = db.query(Role).filter(Role.name == role_name).first()
+    
+    # If the requested role doesn't exist in the database, create it
+    if not role:
+        role = Role(name=role_name)
+        db.add(role)
+        db.commit()
+        db.refresh(role)
+
+    # 3. Create the SQLAlchemy model instance
     db_user = User(
         full_name=user.full_name,
         email=user.email,
-        password_hash=hashed_password
+        password_hash=hashed_password,
+        role_id=role.id
     )
     
     # 3. Add to the session and commit (save) to the database

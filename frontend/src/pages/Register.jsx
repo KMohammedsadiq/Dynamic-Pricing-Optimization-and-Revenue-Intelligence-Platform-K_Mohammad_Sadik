@@ -11,6 +11,7 @@ export default function Register() {
     email: "",
     password: "",
     confirmPassword: "",
+    role: "Business Analyst",
   });
 
   const [errors, setErrors] = useState({});
@@ -62,13 +63,14 @@ export default function Register() {
         const payload = {
           full_name: formData.fullName,
           email: formData.email,
-          password: formData.password
+          password: formData.password,
+          role_name: formData.role
         };
 
         const result = await authService.registerUser(payload);
 
         setSuccessMessage(`Success! User ${result.full_name} registered successfully.`);
-        setFormData({ fullName: "", email: "", password: "", confirmPassword: "" });
+        setFormData({ fullName: "", email: "", password: "", confirmPassword: "", role: "Business Analyst" });
 
       } catch (err) {
         if (err.response) {
@@ -188,6 +190,26 @@ export default function Register() {
               error={errors.confirmPassword}
               allowToggle={true}
             />
+
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-1.5">
+                Account Role
+              </label>
+              <div className="relative">
+                <select
+                  name="role"
+                  value={formData.role}
+                  onChange={handleChange}
+                  className="w-full bg-[#1F2937] border border-[#374151] text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 appearance-none cursor-pointer"
+                >
+                  <option value="Business Analyst">Business Analyst</option>
+                  <option value="Admin">Admin</option>
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
+                  <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                </div>
+              </div>
+            </div>
 
             <div className="mt-8 pt-2">
               <Button type="submit" fullWidth disabled={loading}>
