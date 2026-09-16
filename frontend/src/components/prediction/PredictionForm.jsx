@@ -27,9 +27,10 @@ const PredictionForm = ({ onSubmit, onReset, isSubmitting }) => {
   const [errors, setErrors] = useState({});
 
   // Existing Product State
-  const [products,        setProducts]        = useState([]);
-  const [searchQuery,     setSearchQuery]     = useState('');
-  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [products,          setProducts]          = useState([]);
+  const [isLoadingProducts, setIsLoadingProducts]  = useState(true);
+  const [productsError,     setProductsError]      = useState(null);
+  const [selectedProduct,   setSelectedProduct]    = useState(null);
 
   const initialExistingState = {
     promotion_type:  'No Promotion',
@@ -57,22 +58,32 @@ const PredictionForm = ({ onSubmit, onReset, isSubmitting }) => {
   };
   const [newData, setNewData] = useState(initialNewState);
 
-  useEffect(() => {
+  const loadProducts = () => {
+    setIsLoadingProducts(true);
+    setProductsError(null);
     api.get('/products?limit=1000')
-      .then(r => setProducts(r.data.data || []))
-      .catch(err => console.error('Failed to load products', err));
-  }, []);
-
-  // Helper: find product by name (case-insensitive, trimmed)
-  const findProduct = (val) => {
-    const norm = (val || '').trim().toLowerCase();
-    return products.find(p => (p.product_name || '').trim().toLowerCase() === norm);
+      .then(r => {
+        setProducts(r.data.data || []);
+        setIsLoadingProducts(false);
+      })
+      .catch(err => {
+        console.error('Failed to load products', err);
+        setProductsError('Could not load products. Check your connection.');
+        setIsLoadingProducts(false);
+      });
   };
 
+  useEffect(() => { loadProducts(); }, []);
+
+  // When a product is chosen from the select dropdown
   const handleProductSelect = (e) => {
-    const val = e.target.value;
-    setSearchQuery(val);
-    const prod = findProduct(val);
+    const productId = e.target.value;
+    if (!productId) {
+      setSelectedProduct(null);
+      setExistingData(initialExistingState);
+      return;
+    }
+    const prod = products.find(p => String(p.id) === String(productId));
     if (prod) {
       setSelectedProduct(prod);
       setExistingData(prev => ({
@@ -81,25 +92,6 @@ const PredictionForm = ({ onSubmit, onReset, isSubmitting }) => {
         competitor_price: prod.competitor_price     || (prod.base_price ? (prod.base_price * 0.95).toFixed(2) : ''),
       }));
       setErrors({});
-    } else {
-      setSelectedProduct(null);
-    }
-  };
-
-  // Also try to match when user leaves the input (covers copy-paste & manual typing)
-  const handleProductBlur = (e) => {
-    const val = e.target.value;
-    if (!selectedProduct && val.trim()) {
-      const prod = findProduct(val);
-      if (prod) {
-        setSelectedProduct(prod);
-        setExistingData(prev => ({
-          ...prev,
-          inventory_level:  prod.initial_inventory   || 120,
-          competitor_price: prod.competitor_price     || (prod.base_price ? (prod.base_price * 0.95).toFixed(2) : ''),
-        }));
-        setErrors({});
-      }
     }
   };
 
@@ -218,23 +210,30 @@ const PredictionForm = ({ onSubmit, onReset, isSubmitting }) => {
               {/* Section: Select Product */}
               <div className="px-5 pt-5 pb-4 border-b border-gray-800">
                 <p className={SECTION_TITLE}>Select Product</p>
-                <input
-                  list="product-list"
-                  value={searchQuery}
-                  onChange={handleProductSelect}
-                  onBlur={handleProductBlur}
-                  placeholder="Type product name…"
-                  className={INPUT}
-                  id="product-search"
-                  autoComplete="off"
-                />
-                <datalist id="product-list">
-                  {products.map(p => <option key={p.id} value={p.product_name} />)}
-                </datalist>
-                {errors.product && <p className="text-red-400 text-xs mt-1">{errors.product}</p>}
-                {products.length > 0 && !selectedProduct && searchQuery.length === 0 && (
-                  <p className="text-gray-600 text-xs mt-1">{products.length} products available — start typing to search</p>
+                {isLoadingProducts ? (
+                  <div className="flex items-center gap-2 py-2">
+                    <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+                    <span className="text-xs text-gray-400">Loading products…</span>
+                  </div>
+                ) : productsError ? (
+                  <div className="space-y-2">
+                    <p className="text-red-400 text-xs">{productsError}</p>
+                    <button type="button" onClick={loadProducts} className="text-xs text-blue-400 underline hover:text-blue-300">Retry</button>
+                  </div>
+                ) : (
+                  <select
+                    value={selectedProduct ? selectedProduct.id : ''}
+                    onChange={handleProductSelect}
+                    className={INPUT}
+                    id="product-search"
+                  >
+                    <option value="">-- Select a product ({products.length} available) --</option>
+                    {products.map(p => (
+                      <option key={p.id} value={p.id}>{p.product_name}</option>
+                    ))}
+                  </select>
                 )}
+                {errors.product && <p className="text-red-400 text-xs mt-1">{errors.product}</p>}
               </div>
 
               {/* Section: Product Information */}
@@ -271,7 +270,7 @@ const PredictionForm = ({ onSubmit, onReset, isSubmitting }) => {
               </div>
 
               {/* Section: Market Conditions */}
-              <div className={`px-5 py-4 ${!selectedProduct ? 'opacity-40 pointer-events-none' : ''}`}>
+              <div className="px-5 py-4">
                 <p className={SECTION_TITLE}>Today's Market Conditions</p>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
