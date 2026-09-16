@@ -35,6 +35,7 @@ const PredictionForm = ({ onSubmit, onReset, isSubmitting }) => {
   const [searchQuery,       setSearchQuery]        = useState('');
   const [isDropdownOpen,    setIsDropdownOpen]     = useState(false);
   const dropdownRef = useRef(null);
+  const inputRef = useRef(null);
 
   const initialExistingState = {
     promotion_type:  'No Promotion',
@@ -242,9 +243,13 @@ const PredictionForm = ({ onSubmit, onReset, isSubmitting }) => {
                   <div className="relative" ref={dropdownRef}>
                     <div 
                       className={`${INPUT} flex items-center justify-between cursor-text`}
-                      onClick={() => setIsDropdownOpen(true)}
+                      onClick={() => {
+                        setIsDropdownOpen(true);
+                        inputRef.current?.focus();
+                      }}
                     >
                       <input
+                        ref={inputRef}
                         type="text"
                         value={searchQuery}
                         onChange={(e) => {
