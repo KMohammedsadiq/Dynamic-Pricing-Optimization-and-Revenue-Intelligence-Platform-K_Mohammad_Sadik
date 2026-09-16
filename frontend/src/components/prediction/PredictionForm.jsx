@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { ChevronDown, Search, X } from 'lucide-react';
 import api from '../../services/api';
 
 const SEASONS    = ['Spring', 'Summer', 'Autumn', 'Winter'];
@@ -31,6 +32,9 @@ const PredictionForm = ({ onSubmit, onReset, isSubmitting }) => {
   const [isLoadingProducts, setIsLoadingProducts]  = useState(true);
   const [productsError,     setProductsError]      = useState(null);
   const [selectedProduct,   setSelectedProduct]    = useState(null);
+  const [searchQuery,       setSearchQuery]        = useState('');
+  const [isDropdownOpen,    setIsDropdownOpen]     = useState(false);
+  const dropdownRef = useRef(null);
 
   const initialExistingState = {
     promotion_type:  'No Promotion',
@@ -75,25 +79,39 @@ const PredictionForm = ({ onSubmit, onReset, isSubmitting }) => {
 
   useEffect(() => { loadProducts(); }, []);
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   // When a product is chosen from the select dropdown
-  const handleProductSelect = (e) => {
-    const productId = e.target.value;
-    if (!productId) {
+  const handleProductSelect = (prod) => {
+    if (!prod) {
       setSelectedProduct(null);
+      setSearchQuery('');
       setExistingData(initialExistingState);
       return;
     }
-    const prod = products.find(p => String(p.id) === String(productId));
-    if (prod) {
-      setSelectedProduct(prod);
-      setExistingData(prev => ({
-        ...prev,
-        inventory_level:  prod.initial_inventory   || 120,
-        competitor_price: prod.competitor_price     || (prod.base_price ? (prod.base_price * 0.95).toFixed(2) : ''),
-      }));
-      setErrors({});
-    }
+    setSelectedProduct(prod);
+    setSearchQuery(prod.product_name);
+    setIsDropdownOpen(false);
+    setExistingData(prev => ({
+      ...prev,
+      inventory_level:  prod.initial_inventory   || 120,
+      competitor_price: prod.competitor_price     || (prod.base_price ? (prod.base_price * 0.95).toFixed(2) : ''),
+    }));
+    setErrors({});
   };
+
+  const filteredProducts = products.filter(p => 
+    p.product_name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   const handleExistingChange = (e) => {
     const { name, value } = e.target;
@@ -165,8 +183,8 @@ const PredictionForm = ({ onSubmit, onReset, isSubmitting }) => {
   const handleResetClick = () => {
     if (activeTab === 'existing') {
       setExistingData(initialExistingState);
-      setSearchQuery('');
       setSelectedProduct(null);
+      setSearchQuery('');
     } else {
       setNewData(initialNewState);
     }
@@ -221,17 +239,65 @@ const PredictionForm = ({ onSubmit, onReset, isSubmitting }) => {
                     <button type="button" onClick={loadProducts} className="text-xs text-blue-400 underline hover:text-blue-300">Retry</button>
                   </div>
                 ) : (
-                  <select
-                    value={selectedProduct ? selectedProduct.id : ''}
-                    onChange={handleProductSelect}
-                    className={INPUT}
-                    id="product-search"
-                  >
-                    <option value="">-- Select a product ({products.length} available) --</option>
-                    {products.map(p => (
-                      <option key={p.id} value={p.id}>{p.product_name}</option>
-                    ))}
-                  </select>
+                  <div className="relative" ref={dropdownRef}>
+                    <div 
+                      className={`${INPUT} flex items-center justify-between cursor-text`}
+                      onClick={() => setIsDropdownOpen(true)}
+                    >
+                      <input
+                        type="text"
+                        value={searchQuery}
+                        onChange={(e) => {
+                          setSearchQuery(e.target.value);
+                          setIsDropdownOpen(true);
+                          if (selectedProduct && e.target.value !== selectedProduct.product_name) {
+                            setSelectedProduct(null); // Clear selection if they start typing something else
+                          }
+                        }}
+                        onFocus={() => setIsDropdownOpen(true)}
+                        placeholder={`Search ${products.length} products...`}
+                        className="bg-transparent border-none outline-none w-full text-sm text-gray-100 placeholder-gray-500"
+                      />
+                      <div className="flex items-center text-gray-500">
+                        {searchQuery && (
+                          <button 
+                            type="button" 
+                            onClick={(e) => { e.stopPropagation(); handleProductSelect(null); }}
+                            className="p-1 hover:text-gray-300 transition-colors"
+                          >
+                            <X size={14} />
+                          </button>
+                        )}
+                        <button 
+                          type="button" 
+                          onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                          className="p-1 hover:text-gray-300 transition-colors"
+                        >
+                          <ChevronDown size={16} />
+                        </button>
+                      </div>
+                    </div>
+
+                    {isDropdownOpen && (
+                      <div className="absolute z-10 w-full mt-1 bg-gray-800 border border-gray-700 rounded shadow-lg max-h-60 overflow-y-auto custom-scrollbar">
+                        {filteredProducts.length > 0 ? (
+                          filteredProducts.map(p => (
+                            <div
+                              key={p.id}
+                              onClick={() => handleProductSelect(p)}
+                              className="px-3 py-2 text-sm text-gray-200 hover:bg-blue-600 hover:text-white cursor-pointer transition-colors border-b border-gray-700/50 last:border-0"
+                            >
+                              {p.product_name}
+                            </div>
+                          ))
+                        ) : (
+                          <div className="px-3 py-3 text-sm text-gray-500 text-center">
+                            No products found matching "{searchQuery}"
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
                 )}
                 {errors.product && <p className="text-red-400 text-xs mt-1">{errors.product}</p>}
               </div>
