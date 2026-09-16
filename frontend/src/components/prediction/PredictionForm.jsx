@@ -63,10 +63,16 @@ const PredictionForm = ({ onSubmit, onReset, isSubmitting }) => {
       .catch(err => console.error('Failed to load products', err));
   }, []);
 
+  // Helper: find product by name (case-insensitive, trimmed)
+  const findProduct = (val) => {
+    const norm = (val || '').trim().toLowerCase();
+    return products.find(p => (p.product_name || '').trim().toLowerCase() === norm);
+  };
+
   const handleProductSelect = (e) => {
     const val = e.target.value;
     setSearchQuery(val);
-    const prod = products.find(p => p.product_name === val);
+    const prod = findProduct(val);
     if (prod) {
       setSelectedProduct(prod);
       setExistingData(prev => ({
@@ -77,6 +83,23 @@ const PredictionForm = ({ onSubmit, onReset, isSubmitting }) => {
       setErrors({});
     } else {
       setSelectedProduct(null);
+    }
+  };
+
+  // Also try to match when user leaves the input (covers copy-paste & manual typing)
+  const handleProductBlur = (e) => {
+    const val = e.target.value;
+    if (!selectedProduct && val.trim()) {
+      const prod = findProduct(val);
+      if (prod) {
+        setSelectedProduct(prod);
+        setExistingData(prev => ({
+          ...prev,
+          inventory_level:  prod.initial_inventory   || 120,
+          competitor_price: prod.competitor_price     || (prod.base_price ? (prod.base_price * 0.95).toFixed(2) : ''),
+        }));
+        setErrors({});
+      }
     }
   };
 
@@ -199,14 +222,19 @@ const PredictionForm = ({ onSubmit, onReset, isSubmitting }) => {
                   list="product-list"
                   value={searchQuery}
                   onChange={handleProductSelect}
+                  onBlur={handleProductBlur}
                   placeholder="Type product name…"
                   className={INPUT}
                   id="product-search"
+                  autoComplete="off"
                 />
                 <datalist id="product-list">
                   {products.map(p => <option key={p.id} value={p.product_name} />)}
                 </datalist>
                 {errors.product && <p className="text-red-400 text-xs mt-1">{errors.product}</p>}
+                {products.length > 0 && !selectedProduct && searchQuery.length === 0 && (
+                  <p className="text-gray-600 text-xs mt-1">{products.length} products available — start typing to search</p>
+                )}
               </div>
 
               {/* Section: Product Information */}
