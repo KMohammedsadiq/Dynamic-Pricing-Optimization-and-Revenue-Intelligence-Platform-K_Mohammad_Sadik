@@ -55,8 +55,6 @@ export default function MainLayout() {
             { path: '/analytics', label: 'Profitability Analytics', icon: BarChart3, role: ['Admin', 'Business Analyst'] },
             { path: '/executive-bi', label: 'Executive BI', icon: FileBarChart2, role: ['Admin', 'Business Analyst'] },
             { path: '/upload', label: 'Upload Data', icon: UploadCloud, role: 'Admin' },
-            { path: '/amazon-test', label: 'Amazon API Test', icon: UploadCloud, role: 'Admin' },
-            { path: '/flipkart-test', label: 'Flipkart API Test', icon: UploadCloud, role: 'Admin' },
             { path: '/users', label: 'User Mgmt', icon: Shield, role: 'Admin' },
           ].map((item) => {
             const roles = Array.isArray(item.role) ? item.role : [item.role];
