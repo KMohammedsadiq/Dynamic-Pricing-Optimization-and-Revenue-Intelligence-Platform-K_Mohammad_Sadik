@@ -62,9 +62,9 @@ def update_user_role(
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
         
-    # Prevent Admin from demoting themselves accidentally
-    if user.email == "mohammedsadiq4850@gmail.com" and request.role_name != "Admin":
-        raise HTTPException(status_code=403, detail="Cannot change the role of the Admin")
+    # Prevent Admin from changing their own role (to avoid accidentally locking themselves out)
+    if user.id == token_payload.get("user_id"):
+        raise HTTPException(status_code=403, detail="You cannot change your own role")
         
     # Update role
     user.role_id = target_role.id

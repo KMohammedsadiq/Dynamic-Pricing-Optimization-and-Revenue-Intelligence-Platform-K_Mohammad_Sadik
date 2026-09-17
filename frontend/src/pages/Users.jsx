@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Shield, ShieldAlert, CheckCircle, Search, User as UserIcon } from "lucide-react";
 import api from "../services/api";
+import { getUser } from "../utils/auth";
 
 export default function UsersManagement() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const currentUser = getUser();
 
   const fetchUsers = async () => {
     try {
@@ -119,7 +121,7 @@ export default function UsersManagement() {
                       <select
                         value={user.role_name}
                         onChange={(e) => handleRoleChange(user.id, e.target.value)}
-                        disabled={user.email === "mohammedsadiq4850@gmail.com"}
+                        disabled={currentUser && user.email === currentUser.email}
                         className="bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-1 focus:ring-brand-500 disabled:opacity-50"
                       >
                         <option value="Admin">Admin</option>
