@@ -52,10 +52,13 @@ def update_user_role(
     """
     Update a specific user's role.
     """
-    # Find the target role
+    # Find the target role, or create it if it doesn't exist
     target_role = db.query(Role).filter(Role.name == request.role_name).first()
     if not target_role:
-        raise HTTPException(status_code=400, detail="Invalid role name")
+        target_role = Role(name=request.role_name)
+        db.add(target_role)
+        db.commit()
+        db.refresh(target_role)
         
     # Find the user
     user = db.query(User).filter(User.id == user_id).first()
